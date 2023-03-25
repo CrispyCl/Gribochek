@@ -1,6 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, EmailField, FileField, SelectMultipleField
-from wtforms.validators import DataRequired
+from wtforms import PasswordField, StringField, SubmitField, EmailField, FileField
 
 
 class EditUserForm(FlaskForm):
