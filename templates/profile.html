@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    {% if current_user.id == user.id %}
+    <style>.btn_dd_menu {
+    display: none;
+}</style>
+    {% endif %}
+</head>
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6 profile_head">
+                <button class="btn back" style="background-color: #fff; font-size: 1em; letter-spacing: 1px; "> <img
+                        src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24"> Назад
+                </button>
+                <div class="user_img position-relative">
+                    <img src="{{ url_for('static', filename=user.img	)}}" />
+                </div>
+                <div class="col-xs-6 name_surname_email">
+                    {% if user.role != 3 %}
+                    <div class="name_surname text-wrap">
+                        {{ user.surname }} {{ user.name }}
+                    </div>
+                    {% endif %}
+                    <div class="email text-wrap">
+                        {{ user.email }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="margin-bottom: 20px;">
+        <div class="profile_main text-center">
+            Здесь будет расписание, а пока кря
+        </div>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+    </div>
+</div>
+
+<script>
+    let btnBack = document.querySelector('.btn.back')
+    btnBack.addEventListener('click', () => { window.history.back() })
+</script>
+
+
+
+{% endblock %}

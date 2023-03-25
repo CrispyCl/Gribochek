@@ -1,0 +1,150 @@
+.teacher,
+.date_time {
+    margin: 10px auto;
+    padding: 0 10%;
+    padding-bottom: 10px;
+    text-transform: capitalize;
+}
+
+.teacher h1 {
+    color: #000;
+    font-size: 45px;
+    text-align: center;
+    padding-bottom: 15px;
+    text-shadow: 10 15px 10px rgba(0, 0, 0, 0.2);
+}
+
+.teacher .container .box .text.text-center h2 {
+    color: #000;
+    text-align: center;
+    padding-bottom: 15px;
+    text-shadow: 10 15px 10px rgba(0, 0, 0, 0.2);
+}
+
+.teacher .container {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+}
+
+.teacher .box,
+.date_time {
+    padding: 20px 10px;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #4a98f7;
+    background: #ececec;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.teacher .box img,
+.date_time img {
+    margin-top: 15px;
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.teacher .box p.teacher_email {
+    margin-bottom: 3px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.teacher .box p.teacher_email i {
+    margin-right: 10px;
+}
+
+.teacher .box p.teacher_about {
+    overflow: hidden;
+}
+
+.teacher .box h3,
+.teacher .container .box .time_box .date_of_day h3 {
+    color: #444;
+    padding: 10px 0;
+    font-size: 20px;
+}
+
+.teacher .box p {
+    color: #777;
+    font-style: 14px;
+    line-height: 1.6;
+}
+
+.teacher .box .btn {
+    color: #fff;
+    border: none;
+    outline: none;
+    font-style: 17px;
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: #333;
+    border-radius: 5px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.teacher .box .btn:hover {
+    letter-spacing: 1px;
+    transform: scale(1.03);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 0 !important;
+}
+
+.two_cols {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.time_box {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 0;
+}
+
+.date_time {
+    width: 100%;
+    height: 354.98px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.date_of_day {
+    margin-right: 10px;
+}
+
+.teacher,
+.date_time {
+    padding: 0;
+    width: 100%;
+}
+
+.date_time .text.text-center h2 {
+    color: #000;
+    text-align: center;
+    padding-bottom: 15px;
+    text-shadow: 10 15px 10px rgba(0, 0, 0, 0.2);
+
+}

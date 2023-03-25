@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{title}}</title>
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+		integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+		integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+		crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+		integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+</head>
+
+
+
+
+<body>
+
+	<div class="body">
+
+		<!-- Header -->
+		<header>
+			<div class="message-content" style="display: none;">{{ message|tojson }}</div>
+
+
+			<nav class="nav">
+				<i class='bx bx-menu navOpenBtn'></i>
+				<a href="/" class="logo">ОЦ "Грибочек"</a>
+
+				<ul class="nav-links">
+					<i class="fa-solid fa-xmark navCloseBtn"></i>
+					<a href="/" class="logo_2">Beseda s Mishei</a>
+					{% if not current_user.is_authenticated %}
+					<button class="btn_login_2">Войти</button>
+					{% else %}
+					<a href="/logout" class="btn_login_2">Выйти</a>
+					{% endif %}
+					<li><a href="#">Аудитории</a></li>
+					<li><a href="#">Группы</a></li>
+					{% if current_user.is_authenticated and current_user.role == 1 %}
+					<li><a href="/teachers">Преподователи</a></li>
+					{% endif %}
+					{% if current_user.role in [2, 3, 4] %}
+					<div class="uch_div">
+						<button class="uch_link_btn" onclick="add_show_uch()">Пользователи
+							<i class="fa fa-caret-down"></i>
+						</button>
+						<div class="uch_content">
+							<a href="/users">Ученики</a>
+							<a href="/teachers">Преподователи</a>
+							{% if current_user.role == 4 %}
+							<a href="#">Админы</a>
+							{% endif %}
+						</div>
+					</div>
+					{% endif %}
+					{% if current_user.role in [3, 4] %}
+					<div class="reg_div">
+						<button class="reg_link_btn" onclick="add_show()">Панель управления
+							<i class="fa fa-caret-down"></i>
+						</button>
+						<div class="reg_content">
+							<a href="/register/student">Создать ученика</a>
+							<a href="/register/teacher">Создать учителя</a>
+							{% if current_user.role == 4 %}
+							<a href="/register/admin">Создать админа</a>
+							{% endif %}
+						</div>
+					</div>
+					{% endif %}
+				</ul>
+				{% if not current_user.is_authenticated %}
+				<div class="right_nav" style="display: flex; width: 82px; justify-content: center;">
+					<i class='bx bx-search search-icon' id="searchIcon"></i>
+					<div class="search-box" style="z-index: 9;">
+						<i class='bx bx-search search-icon'></i>
+						<input type="text" placeholder="Да, да, я поиск 2.0">
+					</div>
+					<div class="login_btn">
+						<button class="btn_login">Войти</button>
+					</div>
+				</div>
+				{% else %}
+				<div class="right_nav">
+					<i class='bx bx-search search-icon' id="searchIcon"></i>
+					<div class="search-box" style="z-index: 9;">
+						<i class='bx bx-search search-icon'></i>
+						<input type="text" placeholder="Да, да, я поиск 2.0">
+					</div>
+					<li><a href="/profile/{{current_user.id}}" class="profile_href"><img
+								src="{{ url_for('static', filename=current_user.img	)}}"></a>
+						<a class="btn_dd_menu" easy-toggle="#dropdown-menu" easy-class="show" easy-rcoe id="href_link"
+							onclick="href_link()" href=""><img
+								src="{{ url_for('static', filename=current_user.img	)}}"></a>
+
+					</li>
+				</div>
+				<div class="dd-menu" id="dropdown-menu" style="z-index: 999;">
+					<div class="menu">
+						<div class="user-info">
+							<img src="{{ url_for('static', filename=current_user.img) }}">
+							{% if current_user.role in (3, 4) %}
+							<h2 style="font-size: medium;"><b>{{ current_user.email }}</b></h2>
+							{% else %}
+							<h2 style="font-size: medium;"><b>{{ current_user.name }} {{ current_user.surname }}</b>
+							</h2>
+							{% endif %}
+
+						</div>
+						<hr>
+						<!-- <a href="/create_recipe" class="menu-link">
+							<img src="/static/svg/add-svgrepo-com.svg">
+							<p style="text-decoration: none;">Добавить рецепт</p>
+							<span>></span>
+						</a> -->
+						{% if current_user.role in (1, 2) %}
+						<a href="/profile/{{current_user.id}}" class="menu-link">
+							<img src="/static/svg/user-svgrepo-com.svg">
+							<p style="text-decoration: none;">Мой профиль</p>
+						</a>
+						{% endif %}
+						<a href="/logout" class="menu-link">
+							<img src="/static/svg/logout-svgrepo-com.svg">
+							<p style="text-decoration: none;">Выйти</p>
+						</a>
+					</div>
+				</div>
+				{% endif %}
+			</nav>
+		</header>
+
+		<main class="main">
+
+
+			<!-- login -->
+			{% if not current_user.is_authenticated %}
+			<div class="wrapper-login">
+				<span class="icon-close">
+					<i class="fa-sharp fa-solid fa-xmark"></i>
+				</span>
+				<div class="form-box login">
+					<h2>Вход</h2>
+					<form class="login_form" method="post">
+						<div class="input-box-login">
+							<span class="icon">
+								<i class='bx bx-envelope'></i>
+							</span>
+							<input type="email" class="form-control" name="email" placeholder="Почта" required>
+						</div>
+						<div class="input-box-login">
+							<span class="icon">
+								<i class='bx bxs-lock-alt'></i>
+							</span>
+							<input type="password" class="form-control" name="password" placeholder="Пароль" required>
+						</div>
+						<div class="form-check">
+							<input type="checkbox" name="remember" value="T">
+							<label>Запомнить меня</label>
+						</div>
+
+						<button type="submit" class="btn_for_wrapper-login">Войти</button>
+					</form>
+				</div>
+			</div>
+			{% endif %}
+
+
+			<!-- Good Alert Box  -->
+			<div class="good_alert_box">
+				<div class="good_alert_box_content">
+					<i class="fa-solid fa-check check"></i>
+
+					<div class="good_alert_message">
+						<span class="text text-1">Успех!</span>
+						<span class="text text-2"></span>
+					</div>
+				</div>
+				<i class="fa-solid fa-xmark close"></i>
+
+				<div class="good_alert_progress"></div>
+			</div>
+
+
+			<!-- Bad Alert Box -->
+
+			<div class="bad_alert_box">
+				<div class="bad_alert_box_content">
+					<i class="fa-solid fa-xmark check"></i>
+
+					<div class="bad_alert_message">
+						<span class="text text-1">Поздравляю, ты крякнулся</span>
+						<span class="text text-2"></span>
+					</div>
+				</div>
+				<i class="fa-solid fa-xmark close"></i>
+
+				<div class="bad_alert_progress"></div>
+			</div>
+
+
+
+
+			{% block content %}{% endblock %}
+
+
+		</main>
+		<footer class="footer">
+			<!-- <div class="grid-child">
+				<div class="small mx-auto" style="font-size:large; color:white">
+					Sponsors:<img src="/static/img/footer/cat.png">
+					<img src="/static/img/footer/flask.png">
+					<img src="/static/img/footer/sqlite.png">
+					<img src="/static/img/footer/yandex.png">
+					<img src="/static/img/footer/cereals-tradition.png">
+					<img src="/static/img/footer/pre-transformed.png">
+				</div>
+			</div> -->
+
+
+			<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2); padding: 5px 10px !important;">
+				<div class="text-white">Web-site created by ChinaGrib Team🍄🍄🍄</div>
+			</div>
+		</footer>
+	</div>
+	<script src="{{ url_for('static', filename='scripts/base.js') }}"></script>
+	<script src="{{ url_for('static', filename='scripts/login.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/users.css') }}">
+
+
+<div class="all_table">
+    <div class="user">
+        <div class="inter_user">
+            <img src="/static/img/dobrohotov.jpg">
+            <div style="margin-left: 20px;">
+                <p class="user_fi">Dobrohotov Sergey</p>
+                <p class="user_email">dobrohotov@gamil.com</p>
+            </div>
+        </div>
+        <div class="about_user">
+            <a class="btn" href="#">Профиль</a>
+            <a class="btn" href="#">Группы</a>
+        </div>
+    </div>
+    <div class="user">
+        <div class="inter_user">
+            <img src="/static/img/dobrohotov_rppg.jpg">
+            <div style="margin-left: 20px;">
+                <p class="user_fi">Доброхотов Сергей c рпг</p>
+                <p class="user_email">dobrohotov@gamil.com</p>
+            </div>
+        </div>
+        <div class="about_user">
+            <a class="btn" href="#">Профиль</a>
+            <a class="btn" href="#">Группы</a>
+        </div>
+    </div>
+    <div class="user">
+        <div class="inter_user">
+            <img src="/static/img/1.jpg">
+            <div style="margin-left: 20px;">
+                <p class="user_fi">Зубенко Михаил</p>
+                <p class="user_email">zybenko@gmail.com</p>
+            </div>
+        </div>
+        <div class="about_user">
+            <a class="btn" href="#">Профиль</a>
+            <a class="btn" href="#">Группы</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
