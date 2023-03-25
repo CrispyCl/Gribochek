@@ -80,7 +80,7 @@ GoodAlertClose.addEventListener('click', () => {
 searchIcon.addEventListener("click", () => {
     nav.classList.toggle("openSearch");
     nav.classList.remove("openSideNav");
-    if (wrapper.contains('Login')) {
+    if (wrapper.classList.contains('Login')) {
         wrapper.classList.remove('Login');
     }
     if (nav.classList.contains("openSearch")) {

@@ -22,7 +22,7 @@
                 {% endfor %}
             </div>
             <div class="form-field d-flex align-items-center">
-                <span class="fa-solid fa-user"></span>
+                <span><b>Ф</b></span>
                 <b style="width: -webkit-fill-available;">{{ form.surname(class="form-control", type="text",
                     placeholder="Фамилия") }}</b>
                 {% for error in form.surname.errors %}
@@ -32,8 +32,7 @@
                 {% endfor %}
             </div>
             <div class="form-field d-flex align-items-center">
-                <span class="fa-solid fa-user"></span>
-
+                <span><b>И</b></span>
                 <b style="width: -webkit-fill-available;">{{ form.name(class="form-control", type="text",
                     placeholder="Имя") }}</b>
                 {% for error in form.name.errors %}
@@ -43,7 +42,7 @@
                 {% endfor %}
             </div>
             <div class="form-field d-flex align-items-center">
-                <span class="fa-solid fa-user"></span>
+                <span><b>О</b></span>
                 <b style="width: -webkit-fill-available;">{{ form.otchestvo(class="form-control", type="text",
                     placeholder="Отчество") }}</b>
                 {% for error in form.otchestvo.errors %}

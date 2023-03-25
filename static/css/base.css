@@ -526,7 +526,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px rgb(255, 0, 0) inset !important;
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
 
@@ -623,6 +623,7 @@ input:-webkit-autofill:active {
 /* Alert Box */
 
 .good_alert_box {
+    z-index: 5;
     position: fixed;
     top: 25px;
     right: 30px;
@@ -637,6 +638,7 @@ input:-webkit-autofill:active {
 }
 
 .bad_alert_box {
+    z-index: 5;
     position: fixed;
     top: 25px;
     right: 30px;
@@ -930,13 +932,11 @@ a.menu-link:active {
 
 @media screen and (max-width: 920px) {
 
-    .menu,
-    .btn_dd_menu {
+    .menu-link{
         display: none;
     }
-
-    .profile_href {
-        display: block;
+    .dd-menu .menu hr{
+        display: none;
     }
 }
 

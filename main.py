@@ -334,18 +334,48 @@ def edit_user(user_id):
                            user=user)
 
 
-@app.route('/teachers')
-def teachers():
+@app.route('/show/users')
+def show_users():
+    if not current_user.is_authenticated:
+        abort(404)
+    if current_user.role == 1:
+        abort(404)
+    smessage = session['message']
+    db_sess = db_session.create_session()
+    users = db_sess.query(User).filter(User.role == 1).all()
+
+    session['message'] = dumps(ST_message)
+    return render_template('show_users.html', message=smessage, users=users)
+
+
+@app.route('/show/teachers')
+def show_teachers():
     if not current_user.is_authenticated:
         abort(404)
     db_sess = db_session.create_session()
     teachers = db_sess.query(User).filter(User.role == 2).all()
-    return render_template('teachers.html', message=dumps(ST_message), teachers=teachers, title='Список учителей')
+    return render_template('show_teachers.html', message=dumps(ST_message), teachers=teachers, title='Список учителей')
 
 
-@app.route('/users')
-def users():
-    return render_template('users.html', message=dumps(ST_message))
+@app.route('/show/admins')
+def show_admins():
+    if not current_user.is_authenticated:
+        abort(404)
+    if current_user.role != 4:
+        abort(404)
+    db_sess = db_session.create_session()
+    admins = db_sess.query(User).filter(User.role == 3).all()
+    return render_template('show_admins.html', message=dumps(ST_message), admins=admins, title='Список администраторов')
+
+
+@app.route('/show/audiences')
+def audience_list():
+    if not current_user.is_authenticated:
+        abort(404)
+    smessage = session['message']
+    db_sess = db_session.create_session()
+    audiences = db_sess.query(Audience).all()
+    return render_template('show_audiences.html', audiences=audiences, title='Список аудиторий', message=smessage)
 
 
 @app.route('/group/1')
@@ -357,16 +387,6 @@ def group():
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
-
-
-@app.route('/audience_list')
-def audience_list():
-    if not current_user.is_authenticated:
-        abort(404)
-    smessage = session['message']
-    db_sess = db_session.create_session()
-    audiences = db_sess.query(Audience).all()
-    return render_template('audience_list.html', audiences=audiences, title='Список аудиторий', message=smessage)
 
 
 @app.route('/audience/<int:aud_id>', methods=["GET", "POST"])
@@ -387,17 +407,6 @@ def audience(aud_id):
 def logout():
     logout_user()
     return redirect("/")
-
-
-@app.route('/admins')
-def admins():
-    if not current_user.is_authenticated:
-        abort(404)
-    if current_user.role != 4:
-        abort(404)
-    db_sess = db_session.create_session()
-    admins = db_sess.query(User).filter(User.role == 3).all()
-    return render_template('admins.html', message=dumps(ST_message), admins=admins, title='Список администраторов')
 
 
 @app.route('/user_delete/<int:user_id>', methods=['GET', 'POST'])

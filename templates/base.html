@@ -40,14 +40,17 @@
 
 				<ul class="nav-links">
 					<i class="fa-solid fa-xmark navCloseBtn"></i>
-					<a href="/" class="logo_2">Beseda s Mishei</a>
+					<a href="/" class="logo_2">ОЦ "Грибочек"</a>
 					{% if not current_user.is_authenticated %}
 					<button class="btn_login_2">Войти</button>
 					{% else %}
 					<a href="/logout" class="btn_login_2">Выйти</a>
 					{% endif %}
-					<li><a href="#">Аудитории</a></li>
+					<li><a href="#">Расписание</a></li>
+					{% if current_user.is_authenticated %}
+					<li><a href="/show/audiences">Аудитории</a></li>
 					<li><a href="#">Группы</a></li>
+					{% endif %}
 					{% if current_user.is_authenticated and current_user.role == 1 %}
 					<li><a href="/teachers">Преподователи</a></li>
 					{% endif %}
@@ -57,10 +60,10 @@
 							<i class="fa fa-caret-down"></i>
 						</button>
 						<div class="uch_content">
-							<a href="/users">Ученики</a>
-							<a href="/teachers">Преподователи</a>
+							<a href="/show/users">Ученики</a>
+							<a href="/show/teachers">Преподователи</a>
 							{% if current_user.role == 4 %}
-							<a href="#">Админы</a>
+							<a href="/show/admins">Админы</a>
 							{% endif %}
 						</div>
 					</div>
@@ -98,9 +101,7 @@
 						<i class='bx bx-search search-icon'></i>
 						<input type="text" placeholder="Да, да, я поиск 2.0">
 					</div>
-					<li><a href="/profile/{{current_user.id}}" class="profile_href"><img
-								src="{{ url_for('static', filename=current_user.img	)}}"></a>
-						<a class="btn_dd_menu" easy-toggle="#dropdown-menu" easy-class="show" easy-rcoe id="href_link"
+					<li><a href="/logout" class="btn_login" style="display: none;">Выйти</a><a class="btn_dd_menu" easy-toggle="#dropdown-menu" easy-class="show" easy-rcoe id="href_link"
 							onclick="href_link()" href=""><img
 								src="{{ url_for('static', filename=current_user.img	)}}"></a>
 
@@ -130,7 +131,7 @@
 							<p style="text-decoration: none;">Мой профиль</p>
 						</a>
 						{% endif %}
-						<a href="/logout" class="menu-link">
+						<a href="/logout" class="menu-link" id="1488">
 							<img src="/static/svg/logout-svgrepo-com.svg">
 							<p style="text-decoration: none;">Выйти</p>
 						</a>
@@ -144,7 +145,6 @@
 
 
 			<!-- login -->
-			{% if not current_user.is_authenticated %}
 			<div class="wrapper-login">
 				<span class="icon-close">
 					<i class="fa-sharp fa-solid fa-xmark"></i>
@@ -173,7 +173,6 @@
 					</form>
 				</div>
 			</div>
-			{% endif %}
 
 
 			<!-- Good Alert Box  -->
