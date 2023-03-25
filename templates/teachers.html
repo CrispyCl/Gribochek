@@ -5,111 +5,25 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/teachers.css') }}">
 
 <div class="wrapper">
-    <h1>PLITCA chocolate</h1>
+    <h1>Список преподавателей</h1>
     <div class="container">
+        {% if not teachers %}
+            <h3 align="center">Нет преподавателей</h3>
+        {% else %}
+        {% for teacher in teachers %}
         <div class="box">
-            <img src="/static/img/dobrohotov.jpg">
-            <h3>Доброхотов С.Б.</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <a class="btn" href="#">Профиль</a>
+            <img src="{{ url_for('static',  filename=teacher.img) }}">
+            <h3>{{teacher.surname}} {{teacher.name}} {{teacher.otchestvo}}</h3>
+            <p class="teacher_email"><i class='bx bx-envelope'></i>{{teacher.email}}</p>
+            <a class="btn" href="/profile/{{teacher.id}}">Профиль</a>
             <a class="btn" href="#">Группы</a>
+            {% if current_user.role in (3, 4) %}
+            <a class="btn" href="/edit_user/{{teacher.id}}">Редактировать</a>
+            {% endif %}
         </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov_rppg.jpg">
-            <h3>Доброхотов С.Б. c рпг</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группы</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/1.jpg">
-            <h3>Зубенко М.П.</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>zybenko@gmail.com</p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группы</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov.jpg">
-            <h3>Доброхотов С.Б.</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группы</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov_rppg.jpg">
-            <h3>Доброхотов С.Б. c рпг</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группы</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov.jpg">
-            <h3>Доброхотов С.Б.</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группы</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov_rppg.jpg">
-            <h3>Доброхотов С.Б. c рпг</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группы</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov.jpg">
-            <h3>Доброхотов С.Б.</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <p class="teacher_about">Lorem ipsum dolor sit, amet consectetur adipisicing elit. d;ljasd aljdsjkha aljsd
-            </p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группа</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov_rppg.jpg">
-            <h3>Доброхотов С.Б. c рпг</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <p class="teacher_about">Lorem ipsum dolor sit, amet consectetur adipisicing elit. d;ljasd aljdsjkha aljsd
-            </p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группа</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov.jpg">
-            <h3>Доброхотов С.Б.</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <p class="teacher_about">Lorem ipsum dolor sit, amet consectetur adipisicing elit. d;ljasd aljdsjkha aljsd
-            </p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группа</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov_rppg.jpg">
-            <h3>Доброхотов С.Б. c рпг</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <p class="teacher_about">Lorem ipsum dolor sit, amet consectetur adipisicing elit. d;ljasd aljdsjkha aljsd
-            </p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группы</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov.jpg">
-            <h3>Доброхотов С.Б.</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <p class="teacher_about">Lorem ipsum dolor sit, amet consectetur adipisicing elit. d;ljasd aljdsjkha aljsd
-            </p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группа</a>
-        </div>
-        <div class="box">
-            <img src="/static/img/dobrohotov_rppg.jpg">
-            <h3>Доброхотов С.Б. c рпг</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>dobrohotob@gmail.com</p>
-            <p class="teacher_about">Lorem ipsum dolor sit, amet consectetur adipisicing elit. d;ljasd aljdsjkha aljsd
-            </p>
-            <a class="btn" href="#">Профиль</a>
-            <a class="btn" href="#">Группа</a>
-        </div>
+        {% endfor %}
+        {% endif %}
+
     </div>
 </div>
 
