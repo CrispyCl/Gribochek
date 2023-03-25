@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, abort, url_for, session
+from flask import Flask, redirect, render_template, request, abort, session
 from PIL import Image
 from flask_login import LoginManager, current_user, login_required, logout_user, login_user
 
@@ -10,7 +10,6 @@ from forms.audience import AudienceForm
 from forms.edit_user import EditUserForm
 from forms.user import RegisterForm
 from static.python.functions import create_main_admin, ST_message
-from copy import copy
 from json import dumps, loads
 
 current_user.is_authenticated: bool
@@ -337,7 +336,11 @@ def edit_user(user_id):
 
 @app.route('/teachers')
 def teachers():
-    return render_template('teachers.html', message=dumps(ST_message))
+    if not current_user.is_authenticated:
+        abort(404)
+    db_sess = db_session.create_session()
+    teachers = db_sess.query(User).filter(User.role == 2).all()
+    return render_template('teachers.html', message=dumps(ST_message), teachers=teachers, title='Список учителей')
 
 
 @app.route('/users')
@@ -363,7 +366,7 @@ def audience_list():
     smessage = session['message']
     db_sess = db_session.create_session()
     audiences = db_sess.query(Audience).all()
-    return render_template('audience_list.html', audiences=audiences, title='Список аудиторий', message=smessage, curuser=current_user)
+    return render_template('audience_list.html', audiences=audiences, title='Список аудиторий', message=smessage)
 
 
 @app.route('/audience/<int:aud_id>', methods=["GET", "POST"])
@@ -386,8 +389,31 @@ def logout():
     return redirect("/")
 
 
+@app.route('/admins')
+def admins():
+    if not current_user.is_authenticated:
+        abort(404)
+    if current_user.role != 4:
+        abort(404)
+    db_sess = db_session.create_session()
+    admins = db_sess.query(User).filter(User.role == 3).all()
+    return render_template('admins.html', message=dumps(ST_message), admins=admins, title='Список администраторов')
+
+
+@app.route('/user_delete/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def user_delete(user_id):
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == user_id,).first()
+    if user:
+        db_sess.delete(user)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/')
+
+
 if __name__ == '__main__':
-    # db_session.global_init("db/structure.db")
     db_session.global_init("db/GriBD.db")
     create_main_admin(db_session.create_session())
-    app.run(port=8081, host='127.0.0.1')
+    app.run(port=8080, host='127.0.0.1')
