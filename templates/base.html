@@ -49,7 +49,7 @@
 					<li><a href="#">Расписание</a></li>
 					{% if current_user.is_authenticated %}
 					<li><a href="/show/audiences">Аудитории</a></li>
-					<li><a href="#">Группы</a></li>
+					<li><a href="/show/groups">Группы</a></li>
 					{% endif %}
 					{% if current_user.is_authenticated and current_user.role == 1 %}
 					<li><a href="/teachers">Преподователи</a></li>

@@ -102,7 +102,7 @@ def register_admin():
         db_sess.commit()
         message = dumps({'status': 1, 'text': 'Администратор зарегистрирован'})
         session['message'] = message
-        return redirect('/')
+        return redirect('/show/admins')
     return render_template('register_admin.html', title='Регистрация админа', form=form, message=dumps(ST_message))
 
 
@@ -150,7 +150,7 @@ def register_teacher():
         db_sess.commit()
         message = dumps({'status': 1, 'text': 'Учитель зарегистрирован'})
         session['message'] = message
-        return redirect('/')
+        return redirect('/show/teachers')
     return render_template('register_teacher.html', title='Регистрация преподавателя', form=form, message=dumps(ST_message))
 
 
@@ -204,7 +204,7 @@ def register_student():
         db_sess.commit()
         message = dumps({'status': 1, 'text': 'Ученик зарегистрирован'})
         session['message'] = message
-        return redirect('/')
+        return redirect('/show/users')
     session['message'] = dumps(ST_message)
     return render_template('register_student.html', title='Регистрация студента', form=form, message=smessage)
 
@@ -253,7 +253,7 @@ def create_audience():
         db_sess.commit()
         message = dumps({'status': 1, 'text': 'Аудитория создана'})
         session['message'] = message
-        return redirect('/')
+        return redirect('/show/audiences')
     session['message'] = dumps(ST_message)
     return render_template('create_audience.html', title='Создание аудитории', form=form,
                            message=smessage)
@@ -307,7 +307,7 @@ def edit_user(user_id):
             db_sess.commit()
             message = dumps({'status': 1, 'text': 'Профиль изменён'})
             session['message'] = message
-            return redirect('/')
+            return redirect(f'/profile/{user_id}')
         else:
             if user.role == 3:
                 if db_sess.query(User).filter(User.email == form.email.data).first() and form.email.data != user.email:
@@ -321,7 +321,7 @@ def edit_user(user_id):
                 db_sess.commit()
                 message = dumps({'status': 1, 'text': 'Профиль изменён'})
                 session['message'] = message
-                return redirect('/')
+                return redirect(f'/profile/{user_id}')
             else:
                 if form.new_password.data:
                     user.set_password(form.new_password.data)
@@ -332,7 +332,7 @@ def edit_user(user_id):
                 db_sess.commit()
                 message = dumps({'status': 1, 'text': 'Профиль изменён'})
                 session['message'] = message
-                return redirect('/')
+                return redirect(f'/profile/{user_id}')
     session['message'] = dumps(ST_message)
     return render_template('edit_user.html', title='Изменение профиля', form=form, message=smessage,
                            user=user)
@@ -472,7 +472,7 @@ def accept_create_group():
         l = load_week_by_group_form(db_sess, form)
         if l:
             session['message'] = dumps({'status': 1, 'text': 'Группа создана'})
-            return redirect('/')
+            return redirect('/show/groups')
     print(form)
     session['message'] = dumps(ST_message)
     return render_template('accept_create_group.html', title='Подтверждение создания', message=smessage,
@@ -542,11 +542,8 @@ def show_groups():
         audience = db_sess.query(Audience).filter(Audience.id == groups[i].audience_id).first()
         audiences.append(audience)
     session['message'] = dumps(ST_message)
-    print(groups)
-    print(audiences)
     return render_template('show_groups.html', title='Список групп', message=smessage,
                            groups=groups, audiences=audiences, le=len(groups), dicts=dicts)
-
 
 
 @app.route('/audience/<int:aud_id>', methods=["GET", "POST"])

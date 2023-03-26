@@ -28,6 +28,7 @@
 .inter_user {
     display: flex;
     align-items: center;
+    justify-content: center;
     margin-left: 20px;
 }
 
@@ -38,7 +39,7 @@
 }
 
 .all_table .user p {
-    font-size: 18px;
+    font-size: 25px;
 }
 
 .all_table .user .about_user .btn {
@@ -55,4 +56,35 @@
 
 .user_fi {
     font-weight: 600;
+}
+
+#132 {
+    margin-left: 20px;
+}
+
+@media screen and (max-width: 875px) {
+    .table {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .table .user {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 0px;
+        width: 100%;
+    }
+
+    .table .inter_user {
+
+        margin: 0 auto;
+        min-width: 270px;
+    }
+
+    #123 {
+        margin-left: 0px;
+    }
 }

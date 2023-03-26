@@ -1,16 +1,66 @@
-.container {
-    margin-top: 20px;
+.container.about {
     background-color: white;
+    padding: 10px;
     border-radius: 10px;
 }
 
-.profile_head {
+.container.user {
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 10px 0 10px 0;
-    width: 100%;
 }
+
+.btn.back {
+    background-color: #fff;
+    font-size: 1em;
+    letter-spacing: 1px;
+    position: relative;
+    margin-bottom: 38.86px;
+}
+
+.about {
+    margin: 0 auto;
+}
+
+.btn.btn_edit {
+    margin: 1px;
+    background-color: #333;
+    color: #fff;
+    font-size: 1em;
+    letter-spacing: 1px;
+    position: relative;
+    outline: none;
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-size: x-large;
+    font-weight: 600;
+}
+
+.col.btn-col.btn_edit a {
+    color: #000;
+    display: block;
+    height: 100%;
+    width: 70%;
+}
+
+
+.all_about_containers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.col.btn-col.btn_back {
+    max-width: 100px;
+}
+
+.col.btn-col.btn_edit {
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+
 
 .name_surname_email {
     text-align: center;
@@ -19,20 +69,30 @@
 
 .name_surname,
 .email {
-    background-color: #14A5AE;
+    text-align: center;
     border-radius: 6px;
     padding: 5px 15px 5px 15px;
     margin-top: 10px;
     min-width: 150px;
     width: auto;
+    font-size: x-large;
+    font-weight: 600;
+}
+
+.all_table {
+    margin-top: 20px;
 }
 
 .user_img img {
-    margin-left: 10px;
     width: 120px;
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.user_img {
+    display: flex;
+    align-items: center;
 }
 
 .profile_main {
@@ -51,7 +111,7 @@
 }
 
 @media screen and (max-width: 590px) {
-    .btn.back {
+    .col.btn-col.btn_back {
         display: none;
     }
 

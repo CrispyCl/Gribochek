@@ -11,78 +11,81 @@
     <h3 align="center">Нет учеников</h3>
     {% else %}
     {% for user in users %}
-    <div class="user">
-        <div class="inter_user">
-            <img src="{{ url_for('static', filename=user.img) }}">
-            <div style="margin-left: 20px;">
-                <p class="user_fi">{{ user.surname }} {{ user.name }}</p>
-                <p class="user_email">{{ user.email }}</p>
+    <div class="table">
+        <div class="user">
+            <div class="inter_user">
+                <img src="{{ url_for('static', filename=user.img) }}">
+                <div id="123">
+                    <p class="user_fi">{{ user.surname }} {{ user.name }}</p>
+                    <p class="user_email"><span class="fa-solid fa-envelope" style="margin-right: 10px;"></span>{{
+                        user.email }}</p>
+                </div>
             </div>
-        </div>
-        <div class="about_user">
-            <a class="btn" href="/profile/{{ user.id }}">Профиль</a>
-            <a class="btn" href="#">Группы</a>
+            <div class="about_user">
+                <a class="btn" href="/profile/{{ user.id }}">Профиль</a>
+                <a class="btn" href="#">Группы</a>
+            </div>
         </div>
     </div>
     {% endfor %}
     {% endif %}
-<!--    <div class="user">-->
-<!--        <div class="inter_user">-->
-<!--            <img src="/static/img/dobrohotov_rppg.jpg">-->
-<!--            <div style="margin-left: 20px;">-->
-<!--                <p class="user_fi">Доброхотов Сергей c рпг</p>-->
-<!--                <p class="user_email">dobrohotov@gamil.com</p>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="about_user">-->
-<!--            <a class="btn" href="#">Профиль</a>-->
-<!--            <a class="btn" href="#">Группы</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="user">-->
-<!--        <div class="inter_user">-->
-<!--            <img src="/static/img/1.jpg">-->
-<!--            <div style="margin-left: 20px;">-->
-<!--                <p class="user_fi">Зубенко Михаил</p>-->
-<!--                <p class="user_email">zybenko@gmail.com</p>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="about_user">-->
-<!--            <a class="btn" href="#">Профиль</a>-->
-<!--            <a class="btn" href="#">Группы</a>-->
-<!--        </div>-->
-<!--    </div>-->
+    <!--    <div class="user">-->
+    <!--        <div class="inter_user">-->
+    <!--            <img src="/static/img/dobrohotov_rppg.jpg">-->
+    <!--            <div style="margin-left: 20px;">-->
+    <!--                <p class="user_fi">Доброхотов Сергей c рпг</p>-->
+    <!--                <p class="user_email">dobrohotov@gamil.com</p>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="about_user">-->
+    <!--            <a class="btn" href="#">Профиль</a>-->
+    <!--            <a class="btn" href="#">Группы</a>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div class="user">-->
+    <!--        <div class="inter_user">-->
+    <!--            <img src="/static/img/1.jpg">-->
+    <!--            <div style="margin-left: 20px;">-->
+    <!--                <p class="user_fi">Зубенко Михаил</p>-->
+    <!--                <p class="user_email">zybenko@gmail.com</p>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <div class="about_user">-->
+    <!--            <a class="btn" href="#">Профиль</a>-->
+    <!--            <a class="btn" href="#">Группы</a>-->
+    <!--        </div>-->
+    <!--    </div>-->
 </div>
 
 <style>
     h1 {
-    color: #000;
-    font-size: 45px;
-    text-align: center;
-    padding-bottom: 15px;
-    text-shadow: 10 15px 10px rgba(0, 0, 0, 0.2);
-}
+        color: #000;
+        font-size: 45px;
+        text-align: center;
+        padding-bottom: 15px;
+        text-shadow: 10 15px 10px rgba(0, 0, 0, 0.2);
+    }
 
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin-bottom: 0 !important;
-}
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin-bottom: 0 !important;
+    }
 
-.all_table {
-    margin: 10px auto;
-    padding: 0 10%;
-    padding-bottom: 10px;
-    text-transform: capitalize;
-}
+    .all_table {
+        margin: 10px auto;
+        padding: 0 10%;
+        padding-bottom: 10px;
+        text-transform: capitalize;
+    }
 </style>
 {% endblock %}

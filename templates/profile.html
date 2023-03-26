@@ -7,93 +7,153 @@
 </head>
 
 {% if current_user.id == user.id %}
-    <style>.btn_dd_menu {
+<style>
+    .btn_dd_menu {
         display: none;
     }
 
-    .right_nav li .btn_login{
+    .right_nav li .btn_login {
         display: block !important;
     }
 </style>
 {% endif %}
 
-<div>
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-6 profile_head">
-                <button class="btn back" style="background-color: #fff; font-size: 1em; letter-spacing: 1px; "> <img
-                        src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24"> Назад
-                </button>
-                <div class="user_img position-relative">
-                    <img src="{{ url_for('static', filename=user.img) }}" />
+<div class="all_table">
+    <div class="all_about_containers">
+        <div class="container con_user">
+            <div class="row">
+                <div class="col btn-col btn_back">
+                    <button class="btn back"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24">
+                        Назад
+                    </button>
                 </div>
-                <div class="col-xs-6 name_surname_email">
-                    {% if user.role != 3 %}
-                    <div class="name_surname text-wrap">
-                        {{ user.surname }} {{ user.name }}
-                    </div>
-                    {% endif %}
-                    <div class="email text-wrap">
-                        {{ user.email }}
+                <div class="col">
+                    <div class="container about">
+                        <div class="row">
+                            <div class="user_img">
+                                <img src="{{ url_for('static', filename=user.img) }}">
+                                <div class="about">
+                                    {% if user.role != 3 %}
+                                    <div class="name_surname text-wrap">
+                                        {{ user.surname }} {{ user.name }}
+                                    </div>
+                                    {% endif %}
+                                    <div class="email text-wrap">
+                                        <span class="fa-solid fa-envelope" style="margin-right: 10px;"></span>{{
+                                        user.email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 name_surname_email">
+
+                                {% if current_user.id == user.id or current_user.role in (3, 4) %}
+                                <div class="col btn-col btn_edit">
+                                    <a href="/edit_user/{{ user.id }}">
+                                        <button class="btn btn_edit">Редактировать</button>
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {% if current_user.id == user.id or current_user.role in (3, 4) %}
-                <a href="/edit_user/{{ user.id }}" style="color: #000">Редактировать</a>
-                {% endif %}
             </div>
         </div>
-    </div>
-    <div class="container" style="margin-bottom: 20px;">
-        <div class="profile_main text-center">
-            Здесь будет расписание, а пока кря
+        <div class="col">
+            <div class="container about" style="margin-top: 20px;">
+                <div class="row">
+                    <div class="smt"></div>
+                    <div class="profile_main text-center">
+                        Здесь будет расписание, а пока кря
+                    </div>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
+                        ga ga ga ga
+                        ga
+                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                </div>
+            </div>
         </div>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-        <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-            ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-    </div>
-</div>
 
-<script>
-    document.querySelector('.btn.back').addEventListener('click', () => { window.history.back() })
-</script>
+        <script>
+            document.querySelector('.btn.back').addEventListener('click', () => { window.history.back() })
+        </script>
 
 
 
-{% endblock %}
+        {% endblock %}

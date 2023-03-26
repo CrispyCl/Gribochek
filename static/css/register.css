@@ -19,9 +19,13 @@ input[type="file"] {
 }
 
 .wrapper_register {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     max-width: 500px;
     min-height: 500px;
-    margin: 100px auto;
+    margin: 0 0 auto 0;
+    margin-top: 30px;
     padding: 10px 40px 40px 40px;
     border-radius: 25px;
     background-color: #fff;
@@ -69,15 +73,12 @@ input[type="file"] {
     box-shadow: none;
     width: 100%;
     height: 50px;
-    background-color: #223243;
+    background-color: #333;
     color: #fff;
     border-radius: 10px;
     letter-spacing: 1.3px;
 }
 
-.wrapper_register .btn:hover {
-    background-color: #00dfc4;
-}
 
 input[type="file"] {
     display: none;
@@ -101,6 +102,25 @@ input[type="file"] {
     font-size: 1.2em;
 }
 
+.bac_btn_div {
+    margin: 30px 20px 0 0;
+}
+
+.btn.back {
+    background-color: #fff;
+    font-size: 1em;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: relative;
+}
+
 @media screen and (max-width: 400px) {
     .btn.mt-3 {
         font-size: 0.9rem;
@@ -110,5 +130,11 @@ input[type="file"] {
 @media screen and (max-width: 365px) {
     .btn.mt-3 {
         font-size: 0.85rem;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .bac_btn_div {
+        display: none;
     }
 }
