@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="wrapper_register">
+        <div class="text-center mt-4 name">
+            <b>
+                <h2><b style="font-weight: 700; font-size: 1em; letter-spacing: 2px; color: #000;">Создание Группы</b></h2>
+            </b>
+        </div>
+        {% if not form.teacher_id.choices %}
+            <h3 align="center">Нет доступных учителей</h3>
+        {% elif not form.audience_id.choices %}
+            <h3 align="center">Нет доступных аудиторий</h3>
+        {% else %}
+        <form class="p-3 mt-3">
+            <div class="form-field d-flex align-items-center">
+                <b style="width: -webkit-fill-available;">{{ form.subject(class="form-control", type="text",
+                    placeholder="Название группы") }}</b>
+                {% for error in form.subject.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </div>
+            <div class="form-field d-flex align-items-center">
+                {{ form.teacher_id(class="form-control") }}
+            </div>
+            <div class="form-field d-flex align-items-center">
+                {{ form.audience_id(class="form-control") }}
+            </div>
+            <div class="form-field d-flex align-items-center">
+                {{ form.course_start_date.label }}
+                {{ form.course_start_date(class="form-control") }}
+            </div>
+            <div class="form-field d-flex align-items-center">
+                {{ form.course_end_date.label }}
+                {{ form.course_end_date(class="form-control") }}
+            </div>
+            <div class="form-field d-flex align-items-center">
+                <p>
+                    {{ form.day0.label }}
+                    {{ form.day0(class="form-control", min='0', max='2') }}
+                    {{ form.day1.label }}
+                    {{ form.day1(class="form-control", min='0', max='2') }}
+                    {{ form.day2.label }}
+                    {{ form.day2(class="form-control", min='0', max='2') }}
+                    {{ form.day3.label }}
+                    {{ form.day3(class="form-control", min='0', max='2') }}
+                    {{ form.day4.label }}
+                    {{ form.day4(class="form-control", min='0', max='2') }}
+                    {{ form.day5.label }}
+                    {{ form.day5(class="form-control", min='0', max='2') }}
+                </p>
+            </div>
+            <b>{{ form.submit(value="Создать аудиторию", class="btn mt-3", style="font-weight: bold;") }}</b>
+        </form>
+        {% endif %}
+    </div>
+</form>
+
+<style>
+    @media screen and (max-width: 400px) {
+    .btn.mt-3 {
+        font-size: 0.9rem;
+    }
+    @media screen and (max-width: 365px) {
+    .btn.mt-3 {
+        font-size: 0.85rem;
+    }
+}
+</style>
+
+
+{% endblock %}

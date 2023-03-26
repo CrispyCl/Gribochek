@@ -6,6 +6,10 @@
 
 
 <div class="all_table">
+    <h1>Список учеников</h1>
+    {% if not teachers %}
+    <h3 align="center">Нет учеников</h3>
+    {% else %}
     {% for user in users %}
     <div class="user">
         <div class="inter_user">
@@ -21,6 +25,7 @@
         </div>
     </div>
     {% endfor %}
+    {% endif %}
 <!--    <div class="user">-->
 <!--        <div class="inter_user">-->
 <!--            <img src="/static/img/dobrohotov_rppg.jpg">-->
@@ -49,5 +54,35 @@
 <!--    </div>-->
 </div>
 
+<style>
+    h1 {
+    color: #000;
+    font-size: 45px;
+    text-align: center;
+    padding-bottom: 15px;
+    text-shadow: 10 15px 10px rgba(0, 0, 0, 0.2);
+}
 
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 0 !important;
+}
+
+.all_table {
+    margin: 10px auto;
+    padding: 0 10%;
+    padding-bottom: 10px;
+    text-transform: capitalize;
+}
+</style>
 {% endblock %}

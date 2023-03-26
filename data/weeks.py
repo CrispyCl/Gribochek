@@ -8,7 +8,8 @@ class Week(SqlAlchemyBase):
 
     id = sqlalchemy.Column(
         sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    date = sqlalchemy.Column(sqlalchemy.Date, nullable=False)
+    week_start_date = sqlalchemy.Column(sqlalchemy.Date, nullable=False)
+    week_end_date = sqlalchemy.Column(sqlalchemy.Date, nullable=False)
     audience_id = sqlalchemy.Column(sqlalchemy.Integer,
                                     sqlalchemy.ForeignKey("audiences.id"))
 

@@ -6,6 +6,13 @@
 
 {% if not audiences %}
 <h3 align="center">Нет аудиторий</h3>
+{% if current_user.role in (3, 4) %}
+<div id="create">
+    <h3>
+        <a href="/create_audience"><div href="/create_audience" class="btn_create">Создать аудиторию</div></a>
+    </h3>
+</div>
+{% endif %}
 {% else %}
 
 <div class="all_table">
