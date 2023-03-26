@@ -5,13 +5,16 @@ from json import dumps, loads
 
 from data import db_session
 from data.audiences import Audience
+from data.groups import Group
 from data.users import User
 from forms.admin import RegisterAdminForm
 from forms.audience import AudienceForm
 from forms.edit_user import EditUserForm
 from forms.group import CreateGroupForm
 from forms.user import RegisterForm
-from static.python.functions import create_main_admin, ST_message, DateEncoder, DecodeDate, get_pars_list, DAYS, PARS_TIMES, get_need_days
+from static.python.functions import create_main_admin, DateEncoder, DecodeDate, get_pars_list, get_need_days, \
+    load_week_by_group_form
+from static.python.variables import ST_message, DAYS, PARS_TIMES
 
 current_user.is_authenticated: bool
 
@@ -357,8 +360,8 @@ def create_group():
     if request.method == 'GET':
         pass
     if form.validate_on_submit():
-        teacher_id = form.teacher_id.data
-        audience_id = form.audience_id.data
+        teacher_id = int(form.teacher_id.data)
+        audience_id = int(form.audience_id.data)
         st_date = form.course_start_date.data
         en_date = form.course_end_date.data
         day0 = form.day0.data
@@ -387,6 +390,8 @@ def create_group():
             'day3': bool(day3),
             'day4': bool(day4),
             'day5': bool(day5),
+            'day0time': '',
+            'day1time': '',
         }
         session['form_group'] = dumps(form_group)
         # frm = loads(session['form_group'])
@@ -410,16 +415,68 @@ def choice_group_days():
     need_days = get_need_days(form=form)
     days = get_pars_list(db_session.create_session(), form=form, need_days=need_days)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
-    print(days)
+    lef_days = len(list(filter(lambda x: x, days)))
     if request.method == 'GET':
-        pass
+        for day in days:
+            if not day:
+                continue
+            if not any(day):
+                session['message'] = dumps({'status': 0, 'text': 'Рассписание составить невозможно'})
+                return redirect('/create_group')
+            if lef_days == 1 and len(list(filter(lambda p: p, day))) < 2:
+                session['message'] = dumps({'status': 0, 'text': 'Рассписание составить невозможно'})
+                return redirect('/create_group')
     if request.method == 'POST':
-        selects = []
-        remember = request.form.getlist(f'remember')
-        print(remember)
+        remember1 = request.form.getlist(f'remember0')
+        remember2 = request.form.getlist(f'remember1')
+        if not remember1 or not remember2:
+            message = dumps({'status': 0, 'text': 'Выберите 2 промежутка времени'})
+            return render_template('choice_group_days.html', title='Выбор расписания', message=message,
+                                   days=days, form=form, dicts=dicts, need_days=need_days, lef_days=lef_days)
+        remember1 = int(remember1[0])
+        remember2 = int(remember2[0])
+        if remember1 == remember2 and lef_days == 1:
+            message = dumps({'status': 0, 'text': 'Выберите разное время'})
+            return render_template('choice_group_days.html', title='Выбор расписания', message=message,
+                                   days=days, form=form, dicts=dicts, need_days=need_days, lef_days=lef_days)
+        form['st_date'] = DateEncoder(form['st_date'])
+        form['en_date'] = DateEncoder(form['en_date'])
+        form['day0time'] = min(remember1, remember2)
+        form['day1time'] = max(remember1, remember2)
+        form['days'] = need_days
+
+        session['form_group'] = dumps(form)
+        return redirect('/accept_create_group')
     session['message'] = dumps(ST_message)
     return render_template('choice_group_days.html', title='Выбор расписания', message=smessage,
-                           days=days, form=form, dicts=dicts, need_days=need_days)
+                           days=days, form=form, dicts=dicts, need_days=need_days, lef_days=lef_days)
+
+
+@app.route('/accept_create_group', methods=['GET', 'POST'])
+def accept_create_group():
+    if not session['form_group']:
+        abort(404)
+    form = loads(session['form_group'])
+    form['st_date'] = DecodeDate(form['st_date'])
+    form['en_date'] = DecodeDate(form['en_date'])
+    if not form.get('day0time'):
+        abort(404)
+    smessage = session['message']
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    db_sess = db_session.create_session()
+    groups = db_sess.query(Group).all()
+    last_id = 0 if not groups else groups[-1].id + 1
+    teacher = db_sess.query(User).get(form['teacher_id'])
+    audience = db_sess.query(Audience).get(form['audience_id'])
+    if request.method == 'POST':
+        l = load_week_by_group_form(db_sess, form)
+        if l:
+            session['message'] = dumps({'status': 1, 'text': 'Группа создана'})
+            return redirect('/')
+    print(form)
+    session['message'] = dumps(ST_message)
+    return render_template('accept_create_group.html', title='Подтверждение создания', message=smessage,
+                           form=form, last_id=last_id, teacher=teacher, audience=audience, dicts=dicts)
 
 
 @app.route('/show/users')
@@ -440,9 +497,11 @@ def show_users():
 def show_teachers():
     if not current_user.is_authenticated:
         abort(404)
+    smessage = session['message']
     db_sess = db_session.create_session()
     teachers = db_sess.query(User).filter(User.role == 2).all()
-    return render_template('show_teachers.html', message=dumps(ST_message), teachers=teachers, title='Список учителей')
+    session['message'] = dumps(ST_message)
+    return render_template('show_teachers.html', message=smessage, teachers=teachers, title='Список учителей')
 
 
 @app.route('/show/admins')
@@ -451,19 +510,43 @@ def show_admins():
         abort(404)
     if current_user.role != 4:
         abort(404)
+    smessage = session['message']
     db_sess = db_session.create_session()
     admins = db_sess.query(User).filter(User.role == 3).all()
-    return render_template('show_admins.html', message=dumps(ST_message), admins=admins, title='Список администраторов')
+    session['message'] = dumps(ST_message)
+    return render_template('show_admins.html', message=smessage, admins=admins, title='Список администраторов')
 
 
 @app.route('/show/audiences')
-def audience_list():
+def show_audiences():
     if not current_user.is_authenticated:
         abort(404)
     smessage = session['message']
     db_sess = db_session.create_session()
     audiences = db_sess.query(Audience).all()
+
+    session['message'] = dumps(ST_message)
     return render_template('show_audiences.html', audiences=audiences, title='Список аудиторий', message=smessage)
+
+
+@app.route('/show/groups')
+def show_groups():
+    if not current_user.is_authenticated:
+        abort(404)
+    smessage = session['message']
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    db_sess = db_session.create_session()
+    groups = db_sess.query(Group).all()
+    audiences = []
+    for i in range(len(groups)):
+        audience = db_sess.query(Audience).filter(Audience.id == groups[i].audience_id).first()
+        audiences.append(audience)
+    session['message'] = dumps(ST_message)
+    print(groups)
+    print(audiences)
+    return render_template('show_groups.html', title='Список групп', message=smessage,
+                           groups=groups, audiences=audiences, le=len(groups), dicts=dicts)
+
 
 
 @app.route('/audience/<int:aud_id>', methods=["GET", "POST"])
@@ -511,7 +594,6 @@ def logout():
 
 
 if __name__ == '__main__':
-    db_session.global_init("db/structure.db")
-    # db_session.global_init("db/GriBD.db")
-    # create_main_admin(db_session.create_session())
-    # app.run(port=8080, host='127.0.0.1')
+    db_session.global_init("db/GriBD.db")
+    create_main_admin(db_session.create_session())
+    app.run(port=8080, host='127.0.0.1')

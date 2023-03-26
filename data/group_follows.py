@@ -2,7 +2,7 @@ import sqlalchemy
 from .db_session import SqlAlchemyBase
 
 
-class Group(SqlAlchemyBase):
+class GroupFollow(SqlAlchemyBase):
     __tablename__ = 'group_follows'
 
     id = sqlalchemy.Column(

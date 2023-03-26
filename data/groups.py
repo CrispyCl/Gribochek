@@ -8,12 +8,15 @@ class Group(SqlAlchemyBase):
 
     id = sqlalchemy.Column(
         sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    subj = sqlalchemy.Column(sqlalchemy.String, nullable=False)
+    subject = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     teacher_id = sqlalchemy.Column(sqlalchemy.Integer,
                                    sqlalchemy.ForeignKey("users.id"))
     audience_id = sqlalchemy.Column(sqlalchemy.Integer,
                                     sqlalchemy.ForeignKey("audiences.id"))
-    hours_need = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    week_day0 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    week_day1 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    timeday0 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    timeday1 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
     course_start_date = sqlalchemy.Column(sqlalchemy.DATE, nullable=True)
     course_end_date = sqlalchemy.Column(sqlalchemy.DATE, nullable=True)
 

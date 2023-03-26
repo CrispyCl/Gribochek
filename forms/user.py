@@ -9,7 +9,7 @@ class RegisterForm(FlaskForm):
     password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
     name = StringField('Имя', validators=[DataRequired(), Length(min=2, max=20)])
     surname = StringField('Фамилия', validators=[DataRequired(), Length(min=2, max=30)])
-    otchestvo = StringField('Отчество', validators=[DataRequired(), Length(min=0, max=30)])
+    otchestvo = StringField('Отчество', validators=[Length(min=0, max=30)])
     # group = SelectField(u'', choices=(), validate_choice=False)
     img = FileField()
     submit = SubmitField()
