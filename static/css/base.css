@@ -321,6 +321,10 @@ a {
         right: 150px;
         max-width: 400px;
     }
+
+    .uch_link_btn {
+        margin-right: 6px !important;
+    }
 }
 
 
@@ -484,25 +488,6 @@ a {
     } */
 
 }
-
-@media screen and (max-width: 600px) {
-    .nav .logo {
-        font-size: 20px;
-    }
-}
-
-@media screen and (max-width: 495px) {
-    .nav .logo {
-        font-size: 15px;
-    }
-}
-
-@media screen and (max-width: 395px) {
-    .nav .logo {
-        font-size: 12px;
-    }
-}
-
 
 
 /*A tyt budet chocolate plitca*/
@@ -932,10 +917,11 @@ a.menu-link:active {
 
 @media screen and (max-width: 920px) {
 
-    .menu-link{
+    .menu-link {
         display: none;
     }
-    .dd-menu .menu hr{
+
+    .dd-menu .menu hr {
         display: none;
     }
 }

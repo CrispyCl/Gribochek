@@ -4,16 +4,19 @@
 
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
-    {% if current_user.id == user.id %}
-    <style>.btn_dd_menu {
-    display: none;
-}
-.right_nav li .btn_login{
-display: block !important;
-}
-</style>
-    {% endif %}
 </head>
+
+{% if current_user.id == user.id %}
+    <style>.btn_dd_menu {
+        display: none;
+    }
+    
+    .right_nav li .btn_login{
+        display: block !important;
+    }
+</style>
+{% endif %}
+
 <div>
     <div class="container">
         <div class="row">
@@ -22,7 +25,7 @@ display: block !important;
                         src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24"> Назад
                 </button>
                 <div class="user_img position-relative">
-                    <img src="{{ url_for('static', filename=user.img	)}}" />
+                    <img src="{{ url_for('static', filename=user.img) }}" />
                 </div>
                 <div class="col-xs-6 name_surname_email">
                     {% if user.role != 3 %}
@@ -88,8 +91,7 @@ display: block !important;
 </div>
 
 <script>
-    let btnBack = document.querySelector('.btn.back')
-    btnBack.addEventListener('click', () => { window.history.back() })
+    document.querySelector('.btn.back').addEventListener('click', () => { window.history.back() })
 </script>
 
 

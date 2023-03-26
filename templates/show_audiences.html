@@ -1,34 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/teachers.css') }}">
-{% if current_user.role in (3, 4) %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/show_audience.css') }}">
 
 
-
-<div>
-    <h3><a href="/create_audience">Создать аудиторию</a></h3>
-</div>
-{% endif %}
 {% if not audiences %}
-    <h3 align="center">Нет аудиторий</h3>
+<h3 align="center">Нет аудиторий</h3>
 {% else %}
-        <table align="center" width="800" height="100">
-            <tr> <td align="left"> <h5> Все аудитории: </h5> </td>
-            </tr></table>
-    <div class="wrapper">
-        <div class="container">
-        {% for audience in audiences %}
-            <div class="box">
-            <img src="{{ url_for('static',  filename=audience.image) }}">
-            <h3>{{audience.name}}</h3>
-            <a class="btn" href="/audience/{{audience.id}}">Перейти</a>
+
+<div class="all_table">
+    <div class="table_header text-center">Все аудитории:</div>
+    <div class="items_of_table">
+        {% if current_user.role in (3, 4) %}
+        <div id="create">
+            <h3>
+                <a href="/create_audience"><div href="/create_audience" class="btn_create">Создать аудиторию</div></a>
+            </h3>
+        </div>
+        {% endif %}
+        <div class="wrapper">
+            <div class="container">
+                {% for audience in audiences %}
+                <div class="box">
+                    <img src="{{ url_for('static',  filename=audience.image) }}">
+                    <h3>{{audience.name}}</h3>
+                    <a class="btn" href="/audience/{{audience.id}}">Перейти</a>
+                </div>
+                {% endfor %}
             </div>
-    {% endfor %}
-            </div>
+        </div>
     </div>
+</div>
+
 {% endif %}
 <style>
-    .wrapper .container .box img{
+    .wrapper .container .box img {
         border-radius: 10% !important;
     }
 </style>
