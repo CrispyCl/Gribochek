@@ -32,6 +32,9 @@
                     <img src="{{ url_for('static',  filename=audience.image) }}">
                     <h3>{{audience.name}}</h3>
                     <a class="btn" href="/audience/{{audience.id}}">Перейти</a>
+                    {% if current_user.role in (3, 4) %}
+                    <a class="btn" href="/edit_audience/{{audience.id}}">Редактировать</a>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>

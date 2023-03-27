@@ -2,10 +2,13 @@ import datetime
 
 from PIL import Image
 
+from data.audiences import Audience
 from data.days import Day
 from data.groups import Group
 from data.users import User
 from data.weeks import Week
+from static.python.vClassFunctions import get_day, get_audience
+from static.python.variables import vWeek
 
 
 def DateEncoder(date: datetime.date):

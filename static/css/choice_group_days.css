@@ -1,0 +1,35 @@
+.all {
+    margin-top: 20px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    max-width: 700px;
+    margin: 0 auto;
+    border: 2px solid #4a98f7;
+    border-radius: 10px;
+}
+
+.first {
+    margin-top: 10px;
+}
+
+.checks {
+    min-width: 700px;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn.btn_submit {
+    margin: 10px;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: larger;
+}
+
+.radio_and_time {
+    margin: 0 10px;
+}

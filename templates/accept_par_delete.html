@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/audience.css') }}">
+
+<div class="all_table">
+    <div class="all_about_containers">
+        <div class="container">
+            <div class="row">
+                <div class="col btn-col">
+                    <button class="btn back"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24">
+                        Назад
+                    </button>
+                </div>
+                <div class="col">
+                    <div class="container about">
+                        <div class="row">
+                            <div class="user_img">
+                                <div class="name_audience">
+                                    <div class="audience"><b>Подтверждение отмены занятия</b></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-left: 30px">
+                        <h5><b>Группа:</b> ...</h5>
+                        <h5><b>Дата:</b> ...</h5>
+                        <h5><b>Время:</b> ...</h5>
+                        </div>
+                    </div>
+                    <div class="col btn-col">
+                    <button class="btn back">
+                        Отменить занятие
+                    </button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let btnBack = document.querySelector('.btn.back')
+    btnBack.addEventListener('click', () => { window.history.back() })
+</script>
+
+
+
+{% endblock %}

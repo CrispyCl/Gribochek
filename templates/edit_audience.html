@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/create_audience.css') }}">
+
+<form action="" method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="bac_btn_div">
+        <button class="btn back"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24"> Назад
+        </button>
+    </div>
+    <div class="wrapper_register">
+        <div class="text-center mt-4 name">
+            <b>
+                <h2><b style="font-weight: 700; font-size: 1em; letter-spacing: 2px; color: #000;">Изменение аудитории</b>
+                </h2>
+            </b>
+        </div>
+        <form class="p-3 mt-3">
+            <div class="items">
+                <div class="form-field d-flex align-items-center">
+                    <b style="width: -webkit-fill-available;">{{ form.name(class="form-control", type="text",
+                        placeholder="Название аудитории") }}</b>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div style="width: -webkit-fill-available;">
+                        <label class="custom-file-upload"><span class="fa fa-cloud-upload"></span>
+                            {{ form.img(class="form-control", type="file", accept=".jpg") }}
+                            <span>Изменить фото аудитории</span></label>
+                    </div>
+                    {% for error in form.img.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                </div>
+                <div class="eventable">
+                    <div class="is">{{ form.is_eventable() }}</div>
+                    <div class="is_lable">{{ form.is_eventable.label }}</div>
+                </div>
+            </div>
+            <b>{{ form.submit(value="Изменить аудиторию", class="btn mt-3", style="font-weight: bold;") }}</b>
+        </form>
+    </div>
+</form>
+
+<script>
+    document.querySelector('.btn.back').addEventListener('click', () => { window.history.back() })
+
+    $('.custom-file-upload input[type=file]').on('change', function () {
+        let file = this.files[0];
+        $(this).next().html(file.name);
+    });
+</script>
+
+
+{% endblock %}

@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Flask, redirect, render_template, request, abort, session
 from PIL import Image
 from flask_login import LoginManager, current_user, login_required, logout_user, login_user
@@ -9,11 +11,13 @@ from data.groups import Group
 from data.users import User
 from forms.admin import RegisterAdminForm
 from forms.audience import AudienceForm
+from forms.edit_audience import EditAudienceForm
 from forms.edit_user import EditUserForm
 from forms.group import CreateGroupForm
 from forms.user import RegisterForm
 from static.python.functions import create_main_admin, DateEncoder, DecodeDate, get_pars_list, get_need_days, \
     load_week_by_group_form
+from static.python.vClassFunctions import get_week_audience
 from static.python.variables import ST_message, DAYS, PARS_TIMES
 
 current_user.is_authenticated: bool
@@ -30,9 +34,9 @@ def index():
     if not session.get('message'):
         session['message'] = dumps(ST_message)
     session['form_group'] = None
+    db_sess = db_session.create_session()
     smessage = session['message']
     if request.method == 'POST':
-        db_sess = db_session.create_session()
         password = request.form['password']
         email = request.form['email']
         remember = bool(request.form.getlist('remember'))
@@ -338,6 +342,41 @@ def edit_user(user_id):
                            user=user)
 
 
+@app.route('/edit_audience/<int:aud_id>', methods=['GET', 'POST'])
+def edit_audience(aud_id):
+    if not current_user.is_authenticated:
+        abort(404)
+    if current_user.role not in (3, 4):
+        abort(404)
+    form = EditAudienceForm()
+    smessage = session['message']
+    db_sess = db_session.create_session()
+    audience = db_sess.query(Audience).filter(Audience.id == aud_id).first()
+    if request.method == 'GET':
+        form.name.data = audience.name
+        form.is_eventable.data = audience.is_eventable
+    if form.validate_on_submit():
+        if db_sess.query(Audience).filter(Audience.name == form.name.data).first() and \
+                audience.name != form.name.data:
+            message = {'status': 0, 'text': 'Такая аудитория уже есть'}
+            return render_template('edit_audience.html', title='Изменение аудитории',
+                                   form=form,
+                                   message=dumps(message))
+        if form.name.data:
+            audience.name = form.name.data
+        audience.is_eventable = form.is_eventable.data
+        if form.img.data:
+            form.img.data.save(f'static/{audience.image}')
+        db_sess.merge(audience)
+        db_sess.commit()
+        message = dumps({'status': 1, 'text': 'Аудитория изменена'})
+        session['message'] = message
+        return redirect('/show/audiences')
+    session['message'] = dumps(ST_message)
+    return render_template('edit_audience.html', title='Изменение аудитории', form=form,
+                           message=smessage)
+
+
 @app.route('/create_group', methods=['GET', 'POST'])
 def create_group():
     if not current_user.is_authenticated:
@@ -375,7 +414,7 @@ def create_group():
             return render_template('create_group.html', title='Создание группы', form=form,
                                    message=message)
         if day0 + day1 + day2 + day3 + day4 + day5 != 2:
-            message = dumps({'status': 0, 'text': 'Суммарное количество пар на группы должно быть 2'})
+            message = dumps({'status': 0, 'text': 'Суммарное количество пар на группу должно быть 2'})
             return render_template('create_group.html', title='Создание группы', form=form,
                                    message=message)
         form_group = {
@@ -465,7 +504,7 @@ def accept_create_group():
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     db_sess = db_session.create_session()
     groups = db_sess.query(Group).all()
-    last_id = 0 if not groups else groups[-1].id + 1
+    last_id = 1 if not groups else groups[-1].id + 1
     teacher = db_sess.query(User).get(form['teacher_id'])
     audience = db_sess.query(Audience).get(form['audience_id'])
     if request.method == 'POST':
@@ -559,9 +598,18 @@ def audience(aud_id):
         return redirect(f'/audience/{aud_id}')
 
 
-@app.route('/group/1')
-def group():
-    return render_template('group.html', message=dumps(ST_message))
+@app.route('/group_profile/<int:group_id>')
+def group_profile(group_id):
+    db_sess = db_session.create_session()
+    group = db_sess.query(Group).get(group_id)
+    if not group:
+        abort(404)
+    audience = db_sess.query(Audience).get(group.audience_id)
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    week = get_week_audience(db_sess, audience.id, datetime.date.today())
+
+    return render_template('group_profile.html', title='Страница группы', message=dumps(ST_message),
+                           group=group, audience=audience, dicts=dicts, week=week)
 
 
 @app.route('/user_delete/<int:user_id>', methods=['GET', 'POST'])

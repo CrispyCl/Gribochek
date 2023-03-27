@@ -1,13 +1,15 @@
+.table_header {
+    font-size: xx-large;
+    font-weight: 500;
+}
+
+
 .teacher,
 .date_time {
     margin: 10px auto;
     padding: 0 10%;
     padding-bottom: 10px;
     text-transform: capitalize;
-}
-
-.table_header.text-center {
-    font-size: xxx-large;
 }
 
 .teacher h1 {
@@ -39,14 +41,23 @@
     border: 2px solid #4a98f7;
     background: #ececec;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    min-height: 300px;
+    max-height: 300px;
 }
 
-.teacher .box img,
-.date_time img {
+.teacher .box img {
     margin-top: 15px;
     height: 120px;
     width: 120px;
     border-radius: 10%;
+    object-fit: cover;
+}
+
+.date_time img {
+    margin-top: 15px;
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
     object-fit: cover;
 }
 
@@ -117,6 +128,7 @@ h6 {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    margin-top: 20px;
 }
 
 .time_box {
@@ -151,4 +163,33 @@ h6 {
     padding-bottom: 15px;
     text-shadow: 10 15px 10px rgba(0, 0, 0, 0.2);
 
+}
+
+.submit_create {
+    background-color: #333;
+    border-radius: 10px;
+    width: 50%;
+    padding: 5px;
+    align-self: center;
+    color: #fff;
+    font-size: x-large;
+    font-weight: 500;
+    margin-top: 30px;
+}
+
+.all_table {
+    display: flex;
+    flex-direction: column;
+}
+
+form {
+    margin-top: 30px;
+}
+
+@media screen and (max-width: 900px) {
+    .two_cols {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
 }

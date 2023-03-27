@@ -7,5 +7,7 @@ class GroupFollow(SqlAlchemyBase):
 
     id = sqlalchemy.Column(
         sqlalchemy.Integer, primary_key=True, autoincrement=True)
-    group_id = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
-    user_id = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    group_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                 sqlalchemy.ForeignKey("groups.id"))
+    user_id = sqlalchemy.Column(sqlalchemy.Integer,
+                                sqlalchemy.ForeignKey("users.id"))

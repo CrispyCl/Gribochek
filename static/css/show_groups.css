@@ -1,0 +1,49 @@
+.all {
+    margin-top: 30px;
+}
+
+.tabel_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.all_group {
+    font-size: xx-large;
+}
+
+.btn.btn_add {
+    background-color: rgb(39, 83, 122);
+    color: #fff;
+    font-size: x-large;
+}
+
+.btn.btn_about {
+    background-color: #333;
+    color: #fff;
+    font-size: large;
+}
+
+.container.group {
+    display: flex;
+    border: 2px solid #4a98f7;
+    background-color: #fff;
+    justify-content: space-between;
+    margin-top: 20px;
+    align-items: center;
+    border-radius: 10px;
+    min-height: 80px;
+    font-size: x-large;
+    height: 120px;
+}
+
+.name_group {
+    min-width: 300px;
+    max-width: 300px;
+}
+
+.day_time b,
+.name_group b {
+    font-weight: 600;
+}

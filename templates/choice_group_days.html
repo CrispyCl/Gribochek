@@ -2,75 +2,88 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/choice_group_days.css') }}">
+
 <form class="login_form" method="post">
     <div class="wrapper_register">
         <div class="text-center mt-4 name">
             <b>
-                <h2><b style="font-weight: 700; font-size: 1em; letter-spacing: 2px; color: #000;">Расписание группы "{{ form['subject'] }}"</b></h2>
+                <h2><b style="font-weight: 700; font-size: 1em; letter-spacing: 2px; color: #000;">Расписание группы "{{
+                        form['subject'] }}"</b></h2>
             </b>
         </div>
         <form class="p-3 mt-3">
+            <div class="all">
                 {% set d_items = namespace(it=0) %}
                 {% if lef_days == 2 %}
-                    {% for day in days %}
+                {% for day in days %}
+                <div class="first">
                     {% if loop.index in need_days %}
-<!--                    {{ d_i }}-->
-                    <h3>{{ dicts['DAYS'][loop.index] }}</h3>
-                    <div class="form-check">
+                    <h3 class="text-center">{{ dicts['DAYS'][loop.index] }}</h3>
+                    <div class="form-check checks">
                         {% for par in day %}
                         {% if par %}
-                        <input type="radio" name="remember{{ d_items.it }}" value="{{ (loop.index - 1) }}">
-                        <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
+                        <div class="radio_and_time"><input type="radio" name="remember{{ d_items.it }}"
+                                value="{{ (loop.index - 1) }}">
+                            <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
+                        </div>
+
                         {% endif %}
                         {% endfor %}
                     </div>
                     {% set d_items.it = 1 %}
                     {% endif %}
-                    {% endfor %}
+                </div>
+                {% endfor %}
                 {% else %}
-                    {% for day in days %}
-                    {% if day %}
-                    <h3>{{ dicts['DAYS'][days.index(day) + 1] }}</h3>
-                    <div class="form-check">
-                        {% for par in day %}
-                        {% if par %}
-                        <input type="radio" name="remember0" value="{{ (loop.index - 1) }}">
+                {% for day in days %}
+                {% if day %}
+                <h3>{{ dicts['DAYS'][days.index(day) + 1] }}</h3>
+                <div class="form-check checks">
+                    {% for par in day %}
+                    {% if par %}
+                    <div class="radio_and_time"><input type="radio" name="remember0" value="{{ (loop.index - 1) }}">
                         <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
-                        {% endif %}
-                        {% endfor %}
                     </div>
                     {% endif %}
                     {% endfor %}
-                    {% for day in days %}
-                    {% if day %}
-                    <h3>{{ dicts['DAYS'][days.index(day) + 1] }}</h3>
-                    <div class="form-check">
-                        {% for par in day %}
-                        {% if par %}
-                        <input type="radio" name="remember1" value="{{ (loop.index - 1) }}">
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% for day in days %}
+                {% if day %}
+                <h3>{{ dicts['DAYS'][days.index(day) + 1] }}</h3>
+                <div class="form-check checks">
+                    {% for par in day %}
+                    {% if par %}
+                    <div class="radio_and_time"><input type="radio" name="remember1" value="{{ (loop.index - 1) }}">
                         <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
-                        {% endif %}
-                        {% endfor %}
                     </div>
                     {% endif %}
                     {% endfor %}
+                </div>
+                {% endif %}
+                {% endfor %}
                 {% endif %}
 
-            <button type="submit" class="btn_for_wrapper-login">Выбрать время</button>
+                <button type="submit" class="btn btn_submit">Выбрать время</button>
+            </div>
         </form>
     </div>
 </form>
 
 <style>
     @media screen and (max-width: 400px) {
-    .btn.mt-3 {
-        font-size: 0.9rem;
+        .btn.mt-3 {
+            font-size: 0.9rem;
+        }
     }
+
     @media screen and (max-width: 365px) {
-    .btn.mt-3 {
-        font-size: 0.85rem;
+        .btn.mt-3 {
+            font-size: 0.85rem;
+        }
     }
-}
 </style>
 
 

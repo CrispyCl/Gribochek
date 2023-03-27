@@ -22,6 +22,9 @@
                 </div>
             </div>
             <div class="about_user">
+                {% if current_user.role in (3, 4) %}
+                <a class="btn" href="/edit_user/{{user.id}}">Редактировать</a>
+                {% endif %}
                 <a class="btn" href="/profile/{{ user.id }}">Профиль</a>
                 <a class="btn" href="#">Группы</a>
             </div>
