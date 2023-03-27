@@ -8,7 +8,7 @@ from data.groups import Group
 from data.users import User
 from data.weeks import Week
 from static.python.vClassFunctions import get_day, get_audience
-from static.python.variables import vWeek
+from static.python.variables import vWeek, vDay
 
 
 def DateEncoder(date: datetime.date):
@@ -173,3 +173,61 @@ def load_week_by_group_form(db_sess, form: dict):
         st_date += datetime.timedelta(days=1)
     db_sess.commit()
     return True
+
+
+def get_week_audience(db_sess, audience_id: int, date: datetime.date):
+    needed_date = date - datetime.timedelta(days=date.weekday())
+    print(needed_date)
+
+    audience = db_sess.query(Audience).filter(Audience.id == audience_id).first()
+    if audience is None and db_sess.query(Week).filter(Week.week_start_date == needed_date,
+                                  Week.audience_id == audience.id).first() is None:
+        return
+    week = db_sess.query(Week).filter(Week.week_start_date == needed_date,
+                                      Week.audience_id == audience.id).first()
+    if not week:
+        create_week(db_sess, needed_date, audience_id)
+        week = db_sess.query(Week).filter(Week.week_start_date == needed_date,
+                                          Week.audience_id == audience.id).first()
+    vweek = vWeek(week.id, week.week_start_date, week.week_end_date, get_audience(audience.id, db_sess),
+                  [get_day(dd.id, db_sess) for dd in week.days])
+    return vweek
+
+
+def get_week_group(db_sess, group_id: int, date: datetime.date) -> vWeek:
+    group = db_sess.query(Group).filter(Group.id == group_id).first()
+    if not group:
+        return
+
+    audience = db_sess.query(Audience).filter(Audience.id == group.audience_id).first()
+    bweek = get_week_audience(db_sess, audience.id, date)
+    for day_i in bweek.days:
+        for para in range(len(day_i.para_groups)):
+            if day_i.para_groups[para] is not None and day_i.para_groups[para].id != group_id:
+                day_i.para_groups[para] = None
+
+    return bweek
+
+
+def get_week_teacher(db_sess, teacher_id: int, date: datetime.date) -> vWeek:
+    groups = db_sess.query(Group).filter(Group.teacher_id == teacher_id).all()
+    if not groups:
+        return
+
+    needed_date = date - datetime.timedelta(days=date.weekday())
+    audiences = db_sess.query(Audience).filter(Audience.id in [group.audience_id for group in groups]).all()
+    weeks = db_sess.query(Week).filter(Week.week_start_date == needed_date,
+                                       Week.audience_id in [audience.id for audience in audiences]).all()
+    bweek = vWeek(-1, needed_date, needed_date + datetime.timedelta(days=6), -1,
+                  [vDay(-1,
+                        [None] * 6,
+                        -1, needed_date + datetime.timedelta(days=dd), False)
+                   for dd in range(7)])
+
+    for day in range(7):
+        bweek.days[day].is_holiday = any(week.days[day].is_holiday for week in weeks)
+        for para in range(len(bweek.days[day].para_groups)):
+            bweek.days[day].para_groups[para] = list(filter(lambda x: x is not None,
+                                                            [week.days[day].para_groups[para] for week in weeks]))
+
+    return bweek

@@ -16,8 +16,7 @@ from forms.edit_user import EditUserForm
 from forms.group import CreateGroupForm
 from forms.user import RegisterForm
 from static.python.functions import create_main_admin, DateEncoder, DecodeDate, get_pars_list, get_need_days, \
-    load_week_by_group_form
-from static.python.vClassFunctions import get_week_audience
+    load_week_by_group_form, get_week_audience
 from static.python.variables import ST_message, DAYS, PARS_TIMES
 
 current_user.is_authenticated: bool
@@ -36,6 +35,9 @@ def index():
     session['form_group'] = None
     db_sess = db_session.create_session()
     smessage = session['message']
+    audiences = db_sess.query(Audience).all()
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    weeks = list(map(lambda au: get_week_audience(db_sess, au.id, datetime.date.today()), audiences))
     if request.method == 'POST':
         password = request.form['password']
         email = request.form['email']
@@ -47,9 +49,12 @@ def index():
             return redirect('/')
         message = {'status': 0, 'text': 'Неверный логин или пароль'}
         return render_template('index.html',
-                               title='Главная страница', message=dumps(message))
+                               title='Главная страница', message=dumps(message),
+                               weeks=weeks)
     session['message'] = dumps(ST_message)
-    return render_template('index.html', title='Главная страница', message=smessage)
+    print(weeks)
+    return render_template('index.html', title='Главная страница', message=smessage, len=len,
+                           weeks=weeks, dicts=dicts)
 
 
 @app.route('/profile/<int:user_id>', methods=["GET", "POST"])

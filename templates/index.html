@@ -9,15 +9,17 @@
 
 </div>
 <!-- List group -->
-<div class="all_table">
+{% for week in weeks %}
+<div class="all_table" id="{{ loop.index }}">
 
-    <div class="table_header" style="cursor: pointer;">Аудитория "Гриб" <i class="fa fa-caret-down"
+    <div class="table_header" id="t_h{{ loop.index }}" style="cursor: pointer;">Аудитория "{{ week.audience.name }}" <i class="fa fa-caret-down"
             style="margin-left: 30px;"></i></div>
-    <div class="items_of_table">
+    <div class="items_of_table" id="i_t{{ loop.index }}">
 
         <!-- 1 -->
+        {% for day in week.days %}
         <div class="list-group">
-            <div class="day_of_group">Пн 26.02.1021</div>
+            <div class="day_of_group">{{ dicts['DAYS'][loop.index] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
             <div class="table-responsive-sm" style="overflow-y: hidden">
                 <table class="table table-sm">
                     <thead>
@@ -27,171 +29,22 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for par in day.pars %}
                         <tr>
-                            <th scope="row">12:30 - 14:00</th>
-                            <td>@mdo</td>
+                            <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
+                            <td>
+                                {% if par %}{{ par.subject }} - #{{ par.id }}{% endif %}
+                            </td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>@twitter</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-        <!-- 2 -->
-
-        <div class="list-group">
-            <div class="day_of_group">Пн 26.02.1021</div>
-            <div class="table-responsive-sm" style="overflow-y: hidden">
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col">Время</th>
-                            <th scope="col">Группа</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">12:30 - 14:00</th>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- 3 -->
-
-        <div class="list-group">
-            <div class="day_of_group">Пн 26.02.1021</div>
-            <div class="table-responsive-sm" style="overflow-y: hidden">
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col">Время</th>
-                            <th scope="col">Группа</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">12:30 - 14:00</th>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- 4 -->
-
-        <div class="list-group">
-            <div class="day_of_group">Пн 26.02.1021</div>
-            <div class="table-responsive-sm" style="overflow-y: hidden">
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col">Время</th>
-                            <th scope="col">Группа</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">12:30 - 14:00</th>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- 5 -->
-
-        <div class="list-group">
-            <div class="day_of_group">Пн 26.02.1021</div>
-            <div class="table-responsive-sm" style="overflow-y: hidden">
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col">Время</th>
-                            <th scope="col">Группа</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">12:30 - 14:00</th>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- 6 -->
-
-        <div class="list-group">
-            <div class="day_of_group">Пн 26.02.1021</div>
-            <div class="table-responsive-sm" style="overflow-y: hidden">
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col">Время</th>
-                            <th scope="col">Группа</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">12:30 - 14:00</th>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
-
-
+{% endfor %}
 
 
 <style>
@@ -303,19 +156,21 @@
 </style>
 
 <script>
-    const table_header_btn = document.querySelector('.table_header'),
-        items_of_table = document.querySelector('.items_of_table');
+{% for week in weeks %}
+    const table_header_btn_{{ loop.index }} = document.querySelector("#t_h{{ loop.index }}"),
+        items_of_table_{{ loop.index }} = document.querySelector("#i_t{{ loop.index }}");
 
-    table_header_btn.addEventListener('click', () => {
-        if (items_of_table.classList.contains('active')) {
-            items_of_table.classList.remove('active');
-            table_header_btn.classList.remove('active_rotate')
+    table_header_btn_{{ loop.index }}.addEventListener('click', () => {
+        if (items_of_table_{{ loop.index }}.classList.contains('active')) {
+            items_of_table_{{ loop.index }}.classList.remove('active');
+            table_header_btn_{{ loop.index }}.classList.remove('active_rotate')
         }
         else {
-            items_of_table.classList.add('active');
-            table_header_btn.classList.add('active_rotate')
+            items_of_table_{{ loop.index }}.classList.add('active');
+            table_header_btn_{{ loop.index }}.classList.add('active_rotate')
         }
     })
+{% endfor %}
 </script>
 
 {% endblock content %}
