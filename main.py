@@ -241,17 +241,6 @@ def create_audience():
         )
         if form.is_eventable.data:
             audience.is_eventable = form.is_eventable.data
-        # le = 0
-        # auditories_path = []
-        # if form.img.data:
-        #     i = last_id
-        #     for file in form.img.data:
-        #         auditories_path.append(f'img/audiences/au{last_id}im{i}.jpg')
-        #         file.save(f"static/" + auditories_path[-1])
-        #         i += 1
-        #         le += 1
-        # auditory.image_count = le
-        # auditory.images = '✡'.join(auditories_path)
         if form.img.data:
             form.img.data.save(f'static/img/audiences/au{last_id}im.jpg')
         else:
@@ -262,7 +251,7 @@ def create_audience():
         db_sess.commit()
         message = dumps({'status': 1, 'text': 'Аудитория создана'})
         session['message'] = message
-        return redirect('/show/audiences')
+        return redirect(f'/audience_profile/{last_id}')
     session['message'] = dumps(ST_message)
     return render_template('create_audience.html', title='Создание аудитории', form=form,
                            message=smessage)
@@ -590,17 +579,17 @@ def show_groups():
                            groups=groups, audiences=audiences, le=len(groups), dicts=dicts)
 
 
-@app.route('/audience/<int:aud_id>', methods=["GET", "POST"])
-def audience(aud_id):
+@app.route('/audience_profile/<int:aud_id>', methods=["GET", "POST"])
+def audience_profile(aud_id):
     db_sess = db_session.create_session()
     db_sess.query(Audience).get(aud_id)
     audience = db_sess.query(Audience).filter(Audience.id == aud_id).first()
-    session['message'] = dumps(ST_message)
     smessage = session['message']
-    if request.method == 'GET':
-        return render_template('audience.html', title=f'{audience.name}', message=smessage, audience=audience)
-    else:
-        return redirect(f'/audience/{aud_id}')
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    week = get_week_audience(db_sess, aud_id, datetime.date.today())
+    session['message'] = dumps(ST_message)
+    return render_template('audience_profile.html', title=f'{audience.name}', message=smessage, audience=audience,
+                           week=week, dicts=dicts)
 
 
 @app.route('/group_profile/<int:group_id>')

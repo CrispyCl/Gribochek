@@ -1,21 +1,39 @@
 {% extends "base.html" %}
+
 {% block content %}
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/audience.css') }}">
 
+<div class="all_table">
+    <div class="all_about_containers">
+        <div class="container">
+            <div class="row">
+                <div class="col btn-col">
+                    <button class="btn back"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24">
+                        Назад
+                    </button>
+                </div>
+                <div class="col">
+                    <div class="container about">
+                        <div class="row">
+                            <div class="user_img">
+                                <img src="{{ url_for('static', filename=audience.image) }}">
+                                <div class="name_audience">
+                                    <div class="audience"><b>Аудитория</b></div>
+                                    <div class="name">{{ audience.name }}</div>
+                                </div>
 
-<div id="class_inf">
-    <img src="/static/img/class_informat.jpg" alt="Образовательный Центр 'Грибочек'">
-    <div class="text text-center">Образовательный Центр "Грибочек"</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                            <div class="all_table_list">
 
-</div>
-<!-- List group -->
-<h2 align="center">Расписание текущей недели</h2>
-{% for week in weeks %}
-<div class="all_table" id="{{ loop.index }}">
-
-    <div class="table_header" id="t_h{{ loop.index }}" style="cursor: pointer;">Аудитория "{{ week.audience.name }}" <i class="fa fa-caret-down"
+    <div class="table_header_list" style="cursor: pointer;">Расписание текущей недели: <i class="fa fa-caret-down"
             style="margin-left: 30px;"></i></div>
-    <div class="items_of_table" id="i_t{{ loop.index }}">
+    <div class="items_of_table_list">
 
         <!-- 1 -->
         {% for day in week.days %}
@@ -45,22 +63,27 @@
         {% endfor %}
     </div>
 </div>
-{% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+
+        </div>
 
 <style>
     .table-responsive-sm {
         min-width: 290px;
     }
 
-    .all_table {
+    .all_table_list {
         margin: 20px;
         background-color: #316899;
         border-radius: 10px;
         padding-bottom: 20px;
     }
 
-    .table_header {
+    .table_header_list {
         display: flex;
         justify-content: center;
         font-size: 1.5rem;
@@ -70,7 +93,7 @@
     }
 
 
-    .items_of_table {
+    .items_of_table_list {
         display: none;
         align-items: center;
         justify-content: space-around;
@@ -100,16 +123,16 @@
     }
 
 
-    .items_of_table.active {
+    .items_of_table_list.active {
         display: flex;
     }
 
-    .table_header .fa.fa-caret-down {
+    .table_header_list .fa.fa-caret-down {
         transform: rotate(0deg);
         transition: all 0.2s linear;
     }
 
-    .table_header.active_rotate .fa.fa-caret-down {
+    .table_header_list.active_rotate .fa.fa-caret-down {
         transform: rotate(180deg);
         transition: all 0.2s linear;
     }
@@ -132,16 +155,16 @@
         object-fit: cover;
     }
 
-    .text.text-center {
-        position: absolute;
-        text-transform: uppercase;
-        color: white;
-        width: 400px;
-        background: #00000094;
-        padding: 10px;
-        text-align: center;
-        font: bold 24px/34px Helvetica, Sans-Serif;
-    }
+<!--    .text.text-center {-->
+<!--        position: absolute;-->
+<!--        text-transform: uppercase;-->
+<!--        color: white;-->
+<!--        width: 400px;-->
+<!--        background: #00000094;-->
+<!--        padding: 10px;-->
+<!--        text-align: center;-->
+<!--        font: bold 24px/34px Helvetica, Sans-Serif;-->
+<!--    }-->
 
     @media screen and (max-width: 400px) {
         .text.text-center {
@@ -157,21 +180,24 @@
 </style>
 
 <script>
-{% for week in weeks %}
-    const table_header_btn_{{ loop.index }} = document.querySelector("#t_h{{ loop.index }}"),
-        items_of_table_{{ loop.index }} = document.querySelector("#i_t{{ loop.index }}");
-
-    table_header_btn_{{ loop.index }}.addEventListener('click', () => {
-        if (items_of_table_{{ loop.index }}.classList.contains('active')) {
-            items_of_table_{{ loop.index }}.classList.remove('active');
-            table_header_btn_{{ loop.index }}.classList.remove('active_rotate')
-        }
-        else {
-            items_of_table_{{ loop.index }}.classList.add('active');
-            table_header_btn_{{ loop.index }}.classList.add('active_rotate')
-        }
-    })
-{% endfor %}
+    let btnBack = document.querySelector('.btn.back')
+    btnBack.addEventListener('click', () => { window.history.back() })
 </script>
 
-{% endblock content %}
+<script>
+    const table_header_btn = document.querySelector('.table_header_list'),
+        items_of_table = document.querySelector('.items_of_table_list');
+
+    table_header_btn.addEventListener('click', () => {
+        if (items_of_table.classList.contains('active')) {
+            items_of_table.classList.remove('active');
+            table_header_btn.classList.remove('active_rotate')
+        }
+        else {
+            items_of_table.classList.add('active');
+            table_header_btn.classList.add('active_rotate')
+        }
+    })
+</script>
+
+{% endblock %}
