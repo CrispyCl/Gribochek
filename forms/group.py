@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, Length, NumberRange, InputRequired
 
 
 class CreateGroupForm(FlaskForm):
-    subject = StringField('Название дисциплины', validators=[DataRequired(), Length(min=4, max=20)])
+    subject = StringField('Название дисциплины', validators=[DataRequired(), Length(min=4, max=25)])
     teacher_id = SelectField(u'', choices=())
     audience_id = SelectField(u'', choices=())
     course_start_date = DateField('Дата начала', validators=[DataRequired()])

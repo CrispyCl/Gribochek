@@ -1,4 +1,8 @@
-.all_items .container .col {
+.all_items .container {
+    max-width: 50%;
+}
+
+.all_items .container .col.create_col {
     width: 50%;
     background-color: white;
     padding: 10px;
@@ -8,6 +12,7 @@
     margin: 0 auto;
     min-height: 500px;
     justify-content: space-around;
+    margin-bottom: 20px;
 }
 
 .days .days_item {
@@ -114,9 +119,25 @@ b.submit {
     border-right: 2px solid #000;
 }
 
+.btn-col {
+    max-width: 100px;
+}
+
+.btn.back {
+    background-color: #fff;
+    font-size: 1em;
+    letter-spacing: 1px;
+    position: relative;
+    margin-bottom: 38.86px;
+}
+
+.row {
+    justify-content: center;
+}
+
 
 @media screen and (max-width: 992px) {
-    .col {
+    .col.create_col {
         min-width: 500px;
     }
 
@@ -131,7 +152,7 @@ b.submit {
 }
 
 @media screen and (max-width: 500px) {
-    .col {
+    .col.create_col {
         min-width: 360px;
     }
 
@@ -146,7 +167,7 @@ b.submit {
 }
 
 @media screen and (max-width: 360px) {
-    .col {
+    .col.create_col {
         min-width: 300px;
     }
 

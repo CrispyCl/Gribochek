@@ -21,72 +21,77 @@
         <form class="p-3 mt-3">
             <div class="all_items">
                 <div class="container">
-                    <div class="col">
+                    <div class="row">
 
-                        <div class="form-field name">
-                            <div class="item_name">Название дисциплины:</div>
-                            {{ form.subject(class="form-control name_item", type="text", placeholder="Название группы")
-                            }}
-                            {% for error in form.subject.errors %}
-                            <p class="alert alert-danger" role="alert">
-                                {{ error }}
-                            </p>
-                            {% endfor %}
-                        </div>
-                        <div class="form-field teacher">
-                            <div class="item_name" style="margin-top: 5px;">Преподаватель:</div>
-                            <div class="teacher_item_i">
-                                {{ form.teacher_id(class="form-control teacher_item") }}
-                                <i class="fa fa-caret-down"></i>
-                            </div>
-                        </div>
-                        <div class="form-field audience">
-                            <div class="item_name" style="margin-top: 5px;">Аудитория:</div>
-                            <div class="audience_item_i">
-                                {{ form.audience_id(class="form-control audience_item") }}
-                                <i class="fa fa-caret-down"></i>
-                            </div>
-                        </div>
-                        <div class="form-field date">
-                            <div class="item_name text-center" style="margin: 5px 0;"><b>Укажите даты проведения
-                                    курса</b>
-                            </div>
-                            <div class="date_lable">
-                                {{ form.course_start_date.label }}
-                                {{ form.course_end_date.label }}
-                            </div>
-                            <div class="dates">
-                                {{ form.course_start_date(class="form-control date_start") }}
-                                {{ form.course_end_date(class="form-control date_end") }}
-                            </div>
 
+                        <div class="col create_col">
+
+                            <div class="form-field name">
+                                <div class="item_name">Название дисциплины:</div>
+                                {{ form.subject(class="form-control name_item", type="text",
+                                placeholder="Название группы")
+                                }}
+                                {% for error in form.subject.errors %}
+                                <p class="alert alert-danger" role="alert">
+                                    {{ error }}
+                                </p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-field teacher">
+                                <div class="item_name" style="margin-top: 5px;">Преподаватель:</div>
+                                <div class="teacher_item_i">
+                                    {{ form.teacher_id(class="form-control teacher_item") }}
+                                    <i class="fa fa-caret-down"></i>
+                                </div>
+                            </div>
+                            <div class="form-field audience">
+                                <div class="item_name" style="margin-top: 5px;">Аудитория:</div>
+                                <div class="audience_item_i">
+                                    {{ form.audience_id(class="form-control audience_item") }}
+                                    <i class="fa fa-caret-down"></i>
+                                </div>
+                            </div>
+                            <div class="form-field date">
+                                <div class="item_name text-center" style="margin: 5px 0;"><b>Укажите даты проведения
+                                        курса</b>
+                                </div>
+                                <div class="date_lable">
+                                    {{ form.course_start_date.label }}
+                                    {{ form.course_end_date.label }}
+                                </div>
+                                <div class="dates">
+                                    {{ form.course_start_date(class="form-control date_start") }}
+                                    {{ form.course_end_date(class="form-control date_end") }}
+                                </div>
+
+                            </div>
+                            <div class="form-field days">
+                                <div class="item_name text-center" style="margin: 5px 0;"><b>Выберите дни занятий</b>
+                                </div>
+                                <div class="item_name_sm text-center">*Вам необходимо назначить 2 пары в неделю</div>
+                                <div class="day_three">
+                                    {{ form.day0.label }}
+                                    {{ form.day1.label }}
+                                    {{ form.day2.label }}
+                                </div>
+                                <div class="days_three">
+                                    {{ form.day0(class="form-control days_item", min='0', max='2') }}
+                                    {{ form.day1(class="form-control days_item", min='0', max='2') }}
+                                    {{ form.day2(class="form-control days_item", min='0', max='2') }}
+                                </div>
+                                <div class="day_six">
+                                    {{ form.day3.label }}
+                                    {{ form.day4.label }}
+                                    {{ form.day5.label }}
+                                </div>
+                                <div class="days_six">
+                                    {{ form.day3(class="form-control days_item", min='0', max='2') }}
+                                    {{ form.day4(class="form-control days_item", min='0', max='2') }}
+                                    {{ form.day5(class="form-control days_item", min='0', max='2') }}
+                                </div>
+                            </div>
+                            <b class="submit">{{ form.submit(value="Создать аудиторию", class="btn btn_submit") }}</b>
                         </div>
-                        <div class="form-field days">
-                            <div class="item_name text-center" style="margin: 5px 0;"><b>Выберите дни занятий</b>
-                            </div>
-                            <div class="item_name_sm text-center">*Вам необходимо назначить 2 пары в неделю</div>
-                            <div class="day_three">
-                                {{ form.day0.label }}
-                                {{ form.day1.label }}
-                                {{ form.day2.label }}
-                            </div>
-                            <div class="days_three">
-                                {{ form.day0(class="form-control days_item", min='0', max='2') }}
-                                {{ form.day1(class="form-control days_item", min='0', max='2') }}
-                                {{ form.day2(class="form-control days_item", min='0', max='2') }}
-                            </div>
-                            <div class="day_six">
-                                {{ form.day3.label }}
-                                {{ form.day4.label }}
-                                {{ form.day5.label }}
-                            </div>
-                            <div class="days_six">
-                                {{ form.day3(class="form-control days_item", min='0', max='2') }}
-                                {{ form.day4(class="form-control days_item", min='0', max='2') }}
-                                {{ form.day5(class="form-control days_item", min='0', max='2') }}
-                            </div>
-                        </div>
-                        <b class="submit">{{ form.submit(value="Создать аудиторию", class="btn btn_submit") }}</b>
                     </div>
                 </div>
             </div>

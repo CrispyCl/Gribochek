@@ -126,7 +126,6 @@ h6 {
 
 .two_cols {
     display: flex;
-    align-items: center;
     justify-content: space-around;
     margin-top: 20px;
 }
@@ -186,10 +185,47 @@ form {
     margin-top: 30px;
 }
 
-@media screen and (max-width: 900px) {
+.btn-col {
+    max-width: 100px;
+}
+
+.btn.back {
+    background-color: #fff;
+    font-size: 1em;
+    letter-spacing: 1px;
+    position: relative;
+    margin-top: 10px;
+}
+
+@media screen and (max-width: 970px) {
     .two_cols {
         display: flex;
         flex-wrap: wrap;
         flex-direction: column;
+    }
+
+    .btn.back {
+        min-width: 696px;
+        max-width: 696px;
+        max-height: 40px;
+    }
+
+    .btn-col {
+        display: flex;
+        justify-content: center;
+        max-width: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .btn.back {
+        max-width: 516px;
+        min-width: 516px;
+    }
+}
+
+@media screen and (max-width: 530px) {
+    .btn-col {
+        display: none;
     }
 }

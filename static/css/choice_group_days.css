@@ -5,7 +5,7 @@
     align-items: center;
     background-color: #fff;
     max-width: 700px;
-    margin: 0 auto;
+    margin: 0 0 auto 0;
     border: 2px solid #4a98f7;
     border-radius: 10px;
 }

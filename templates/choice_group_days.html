@@ -13,60 +13,67 @@
             </b>
         </div>
         <form class="p-3 mt-3">
-            <div class="all">
-                {% set d_items = namespace(it=0) %}
-                {% if lef_days == 2 %}
-                {% for day in days %}
-                <div class="first">
-                    {% if loop.index in need_days %}
-                    <h3 class="text-center">{{ dicts['DAYS'][loop.index] }}</h3>
+            <div class="btn_and_all">
+                <div class="btn-col">
+                    <div class="btn back"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24">
+                        Назад
+                    </div>
+                </div>
+                <div class="all">
+                    {% set d_items = namespace(it=0) %}
+                    {% if lef_days == 2 %}
+                    {% for day in days %}
+                    <div class="first">
+                        {% if loop.index in need_days %}
+                        <h3 class="text-center">{{ dicts['DAYS'][loop.index] }}</h3>
+                        <div class="form-check checks">
+                            {% for par in day %}
+                            {% if par %}
+                            <div class="radio_and_time"><input type="radio" name="remember{{ d_items.it }}"
+                                    value="{{ (loop.index - 1) }}">
+                                <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
+                            </div>
+
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% set d_items.it = 1 %}
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    {% for day in days %}
+                    {% if day %}
+                    <h3>{{ dicts['DAYS'][days.index(day) + 1] }}</h3>
                     <div class="form-check checks">
                         {% for par in day %}
                         {% if par %}
-                        <div class="radio_and_time"><input type="radio" name="remember{{ d_items.it }}"
-                                value="{{ (loop.index - 1) }}">
+                        <div class="radio_and_time"><input type="radio" name="remember0" value="{{ (loop.index - 1) }}">
                             <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
                         </div>
-
                         {% endif %}
                         {% endfor %}
                     </div>
-                    {% set d_items.it = 1 %}
                     {% endif %}
-                </div>
-                {% endfor %}
-                {% else %}
-                {% for day in days %}
-                {% if day %}
-                <h3>{{ dicts['DAYS'][days.index(day) + 1] }}</h3>
-                <div class="form-check checks">
-                    {% for par in day %}
-                    {% if par %}
-                    <div class="radio_and_time"><input type="radio" name="remember0" value="{{ (loop.index - 1) }}">
-                        <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
+                    {% endfor %}
+                    {% for day in days %}
+                    {% if day %}
+                    <h3>{{ dicts['DAYS'][days.index(day) + 1] }}</h3>
+                    <div class="form-check checks">
+                        {% for par in day %}
+                        {% if par %}
+                        <div class="radio_and_time"><input type="radio" name="remember1" value="{{ (loop.index - 1) }}">
+                            <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                     {% endif %}
                     {% endfor %}
-                </div>
-                {% endif %}
-                {% endfor %}
-                {% for day in days %}
-                {% if day %}
-                <h3>{{ dicts['DAYS'][days.index(day) + 1] }}</h3>
-                <div class="form-check checks">
-                    {% for par in day %}
-                    {% if par %}
-                    <div class="radio_and_time"><input type="radio" name="remember1" value="{{ (loop.index - 1) }}">
-                        <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
-                    </div>
                     {% endif %}
-                    {% endfor %}
-                </div>
-                {% endif %}
-                {% endfor %}
-                {% endif %}
 
-                <button type="submit" class="btn btn_submit">Выбрать время</button>
+                    <button type="submit" class="btn btn_submit">Выбрать время</button>
+                </div>
             </div>
         </form>
     </div>
@@ -84,7 +91,27 @@
             font-size: 0.85rem;
         }
     }
+
+    .btn_and_all {
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn-col {
+        max-width: 100px;
+    }
+
+    .btn.back {
+        background-color: #fff;
+        font-size: 1em;
+        letter-spacing: 1px;
+        position: relative;
+        margin-bottom: 38.86px;
+        margin-top: 20px;
+        margin-right: 10px;
+    }
 </style>
+
 
 
 {% endblock %}

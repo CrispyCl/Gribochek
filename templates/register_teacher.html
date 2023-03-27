@@ -7,8 +7,8 @@
 <form action="" method="post" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     <div class="bac_btn_div">
-        <button class="btn back"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24"> Назад
-        </button>
+        <div class="btn back"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24"> Назад
+        </div>
     </div>
     <div class="wrapper_register">
         <div class="text-center mt-4 name">
@@ -100,7 +100,6 @@
         let file = this.files[0];
         $(this).next().html(file.name);
     });
-    document.querySelector('.btn.back').addEventListener('click', () => { window.history.back() })
 </script>
 
 
