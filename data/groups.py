@@ -13,6 +13,7 @@ class Group(SqlAlchemyBase):
                                    sqlalchemy.ForeignKey("users.id"))
     audience_id = sqlalchemy.Column(sqlalchemy.Integer,
                                     sqlalchemy.ForeignKey("audiences.id"))
+    need_hours = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     week_day0 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
     week_day1 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
     timeday0 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)

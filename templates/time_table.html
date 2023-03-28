@@ -10,7 +10,7 @@
 <a style="color: black" href="/time_table/{{ dates['next_week'] }}">Вперёд</a>
 
 {% if weeks == [] %}
-<h3 class="text-center h3_no" style="margin-top: 10px;">Расписание ещё не составленно</h3>
+<h3 class="text-center h3_no" style="margin-top: 10px;">Нет доступных групп</h3>
 {% endif %}
 {% for week in weeks %}
 {% if current_user.role in (3, 4) %}

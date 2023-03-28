@@ -3,15 +3,12 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_week.css') }}">
 <div class="all_table">
-    <h3 class="text-center h2_index">Расписание на</h3>
-    <h3 class="text-center h2_index">{{ week.week_start_date }}/{{ week.week_end_date }}</h3>
-
     <h3 class="text-center h3_name">Аудитория "{{ audience.name }}"</h3>
+    <a href="/edit_week/{{ week.id }}" style="color: black"><h3 class="text-center h2_index">Неделя</h3>
+    <h3 class="text-center h2_index">{{ week.week_start_date }}/{{ week.week_end_date }}</h3></a>
 
-    {% for day in week.days %}
-    <a href="/edit_day/{{ audience.id }}/{{ day.id }}"><h3>Редактировать</h3></a>
     <div class="list-group">
-        <div class="day_of_group">{{ dicts['DAYS'][loop.index] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
+        <div class="day_of_group">{{ dicts['DAYS'][day.date.weekday() + 1] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
         <div class="table-responsive-sm" style="overflow-y: hidden">
             <table class="table table-sm">
                 <thead>
@@ -27,7 +24,12 @@
                     <tr>
                         <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
                         <td class="text-center">
-                            {% if par %}{{ par.subject }} - #{{ par.id }}{% endif %}
+                            {% if par %}
+                            {{ par.subject }} - #{{ par.id }}
+                            <a href="/delete_par/{{ audience.id }}/{{ day.id }}/{{ loop.index - 1 }}" style="color: red">Удалить</a>
+                            {% else %}
+                            <a href="/add_par/{{ audience.id }}/{{ day.id }}/{{ loop.index - 1 }}" style="color: red">Удалить</a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -35,7 +37,6 @@
             </table>
         </div>
     </div>
-    {% endfor %}
 </div>
 
 

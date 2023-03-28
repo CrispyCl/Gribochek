@@ -1,4 +1,5 @@
 import datetime
+from copy import copy
 
 from flask import Flask, redirect, render_template, request, abort, session
 from PIL import Image
@@ -7,6 +8,7 @@ from json import dumps, loads
 
 from data import db_session
 from data.audiences import Audience
+from data.days import Day
 from data.groups import Group
 from data.users import User
 from data.weeks import Week
@@ -19,6 +21,7 @@ from forms.group import CreateGroupForm
 from forms.user import RegisterForm
 from static.python.functions import create_main_admin, DateEncoder, DecodeDate, get_pars_list, get_need_days, \
     load_week_by_group_form, get_week_audience, get_teacher_par_list
+from static.python.vClassFunctions import get_day
 from static.python.variables import ST_message, DAYS, PARS_TIMES
 
 current_user.is_authenticated: bool
@@ -441,8 +444,8 @@ def edit_week(week_id):
                            week=week, dicts=dicts, audience=audience)
 
 
-@app.route('/edit_day/<int:day_id>')
-def edit_day(day_id):
+@app.route('/edit_day/<int:audience_id>/<int:day_id>')
+def edit_day(audience_id, day_id):
     if not current_user.is_authenticated:
         abort(404)
     if current_user.role not in (3, 4):
@@ -450,14 +453,99 @@ def edit_day(day_id):
     smessage = session['message']
 
     db_sess = db_session.create_session()
-    day1 = db_sess.query(Week).get(day_id)
+    day1 = db_sess.query(Day).get(day_id)
     if not day1:
         abort(404)
 
+    audience = db_sess.query(Audience).get(audience_id)
+    if not audience:
+        abort(404)
+    week = db_sess.query(Week).filter(Week.week_start_date <= day1.date,
+                                      day1.date <= Week.week_end_date,
+                                      Week.audience_id == audience_id).first()
+    if not week:
+        abort(404)
+    day = get_day(day_id, db_sess)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     session['message'] = dumps(ST_message)
     return render_template('edit_day.html', title='Редиктирование дня', message=smessage,
-                           dicts=dicts)
+                           dicts=dicts, day=day, day1=day1, audience=audience, week=week)
+
+
+@app.route('/add_par/<int:audience_id>/<int:day_id>/<int:par_index>', methods=['GET', 'POST'])
+def delete_par(audience_id, day_id, par_index):
+    if not current_user.is_authenticated:
+        abort(404)
+    if current_user.role not in (3, 4):
+        abort(404)
+    smessage = session['message']
+
+    db_sess = db_session.create_session()
+    day1 = db_sess.query(Day).get(day_id)
+    if not day1:
+        abort(404)
+
+    audience = db_sess.query(Audience).get(audience_id)
+    day = get_day(day_id, db_sess)
+    group = day.pars[par_index]
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    if request.method == 'POST':
+        if par_index == 0:
+            day1.p1group = None
+        if par_index == 1:
+            day1.p2group = None
+        if par_index == 2:
+            day1.p3group = None
+        if par_index == 3:
+            day1.p4group = None
+        if par_index == 4:
+            day1.p5group = None
+        if par_index == 5:
+            day1.p6group = None
+        db_sess.commit()
+        return redirect(f'/edit_day/{audience_id}/{day.id}')
+
+    session['message'] = dumps(ST_message)
+    return render_template('delete_par.html', title='Удаление пары', message=smessage, par_index=par_index,
+                           dicts=dicts, day=day, day1=day1, audience=audience, par=group)
+
+
+@app.route('/delete_par/<int:audience_id>/<int:day_id>/<int:par_index>', methods=['GET', 'POST'])
+def delete_par(audience_id, day_id, par_index):
+    if not current_user.is_authenticated:
+        abort(404)
+    if current_user.role not in (3, 4):
+        abort(404)
+    smessage = session['message']
+
+    db_sess = db_session.create_session()
+    day1 = db_sess.query(Day).get(day_id)
+    if not day1:
+        abort(404)
+
+    audience = db_sess.query(Audience).get(audience_id)
+    day = get_day(day_id, db_sess)
+    group = day.pars[par_index]
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    if request.method == 'POST':
+        if par_index == 0:
+            day1.p1group = None
+        if par_index == 1:
+            day1.p2group = None
+        if par_index == 2:
+            day1.p3group = None
+        if par_index == 3:
+            day1.p4group = None
+        if par_index == 4:
+            day1.p5group = None
+        if par_index == 5:
+            day1.p6group = None
+        db_sess.commit()
+        return redirect(f'/edit_day/{audience_id}/{day.id}')
+
+    session['message'] = dumps(ST_message)
+    return render_template('delete_par.html', title='Удаление пары', message=smessage, par_index=par_index,
+                           dicts=dicts, day=day, day1=day1, audience=audience, par=group)
 
 
 @app.route('/create_group', methods=['GET', 'POST'])
