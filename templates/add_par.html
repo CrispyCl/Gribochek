@@ -3,15 +3,17 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_week.css') }}">
 
-<form action="" method="POST">
+<form action="" method="post">
+    {{ form.hidden_tag() }}
 <div class="all_table">
     <h3 class="text-center h3_name">Аудитория "{{ audience.name }}"</h3>
 
     <div class="day_of_group">{{ dicts['DAYS'][day.date.weekday() + 1] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
-    <h5>{{ par.subject }} - #{{ par.id }}</h5>
+
     <h5>Время пары: {{ dicts['PARS_TIMES'][par_index + 1] }}</h5>
-    <h5>Удаление может привести к нехватке часов выробатки группы</h5>
-    <h5><button>Подтвердить удаление</button></h5>
+    <h5>{{ form.group_id.label }}</h5>
+    <h5>{{ form.group_id(class="form-control") }}</h5>
+    <b class="submit">{{ form.submit(value="Добавить пару", class="btn btn_submit") }}</b>
 </div>
 </form>
 

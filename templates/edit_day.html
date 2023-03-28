@@ -28,7 +28,7 @@
                             {{ par.subject }} - #{{ par.id }}
                             <a href="/delete_par/{{ audience.id }}/{{ day.id }}/{{ loop.index - 1 }}" style="color: red">Удалить</a>
                             {% else %}
-                            <a href="/add_par/{{ audience.id }}/{{ day.id }}/{{ loop.index - 1 }}" style="color: red">Удалить</a>
+                            <a href="/add_par/{{ audience.id }}/{{ day.id }}/{{ loop.index - 1 }}" style="color: orange">Добавить пару</a>
                             {% endif %}
                         </td>
                     </tr>

@@ -13,6 +13,7 @@ from data.groups import Group
 from data.users import User
 from data.weeks import Week
 from data.working_days import WorkingDays
+from forms.add_par import AddParForm
 from forms.admin import RegisterAdminForm
 from forms.audience import AudienceForm
 from forms.edit_audience import EditAudienceForm
@@ -47,7 +48,6 @@ def index():
         password = request.form['password']
         email = request.form['email']
         remember = bool(request.form.getlist('remember'))
-        print(remember)
         user = db_sess.query(User).filter(User.email == email).first()
         if user and user.check_password(password):
             login_user(user, remember=remember)
@@ -57,7 +57,6 @@ def index():
                                title='Главная страница', message=dumps(message), len=len,
                                weeks=weeks, dicts=dicts)
     session['message'] = dumps(ST_message)
-    print(weeks)
     return render_template('index.html', title='Главная страница', message=smessage, len=len,
                            weeks=weeks, dicts=dicts)
 
@@ -70,7 +69,6 @@ def to_time_table():
 
 @app.route('/time_table/<date1>')
 def time_table(date1):
-    print(date1)
     try:
         date = DecodeDate(date1)
     except Exception:
@@ -89,7 +87,6 @@ def time_table(date1):
         password = request.form['password']
         email = request.form['email']
         remember = bool(request.form.getlist('remember'))
-        print(remember)
         user = db_sess.query(User).filter(User.email == email).first()
         if user and user.check_password(password):
             login_user(user, remember=remember)
@@ -174,7 +171,6 @@ def register_teacher():
     last_id = users[-1].id + 1
 
     if form.validate_on_submit():
-        print(0)
         if form.password.data != form.password_again.data:
             message = {'status': 0, 'text': 'Пароли не совпадают'}
             return render_template('register_teacher.html', title='Регистрация преподавателя',
@@ -194,7 +190,6 @@ def register_teacher():
             email=form.email.data,
             role=2,
         )
-        print(1)
         if form.img.data:
             form.img.data.save(f"static/img/users/{last_id}.jpg")
         else:
@@ -473,7 +468,7 @@ def edit_day(audience_id, day_id):
 
 
 @app.route('/add_par/<int:audience_id>/<int:day_id>/<int:par_index>', methods=['GET', 'POST'])
-def delete_par(audience_id, day_id, par_index):
+def add_par(audience_id, day_id, par_index):
     if not current_user.is_authenticated:
         abort(404)
     if current_user.role not in (3, 4):
@@ -485,29 +480,41 @@ def delete_par(audience_id, day_id, par_index):
     if not day1:
         abort(404)
 
+    form = AddParForm()
     audience = db_sess.query(Audience).get(audience_id)
     day = get_day(day_id, db_sess)
-    group = day.pars[par_index]
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    if not form.group_id.choices:
+        group_list = list(
+            map(lambda gr: (gr.id, f'{gr.subject} - №{gr.id}'),
+                db_sess.query(Group).filter(Group.course_start_date <= day1.date,
+                              day1.date <= Group.course_end_date,
+                              Group.audience_id == audience_id).all()))
+        group_list.append((None, 'Отменить создание'))
+        form.group_id.choices = group_list
     if request.method == 'POST':
+        group_id = form.group_id.data
+        if not group_id:
+            return redirect(f'/edit_day/{audience_id}/{day.id}')
+
         if par_index == 0:
-            day1.p1group = None
+            day1.p1group = group_id
         if par_index == 1:
-            day1.p2group = None
+            day1.p2group = group_id
         if par_index == 2:
-            day1.p3group = None
+            day1.p3group = group_id
         if par_index == 3:
-            day1.p4group = None
+            day1.p4group = group_id
         if par_index == 4:
-            day1.p5group = None
+            day1.p5group = group_id
         if par_index == 5:
-            day1.p6group = None
+            day1.p6group = group_id
         db_sess.commit()
         return redirect(f'/edit_day/{audience_id}/{day.id}')
 
     session['message'] = dumps(ST_message)
-    return render_template('delete_par.html', title='Удаление пары', message=smessage, par_index=par_index,
-                           dicts=dicts, day=day, day1=day1, audience=audience, par=group)
+    return render_template('add_par.html', title='Удаление пары', message=smessage, par_index=par_index,
+                           dicts=dicts, day=day, day1=day1, audience=audience, form=form)
 
 
 @app.route('/delete_par/<int:audience_id>/<int:day_id>/<int:par_index>', methods=['GET', 'POST'])
@@ -611,7 +618,6 @@ def create_group():
             'day0time': '',
             'day1time': '',
         }
-        print(form_group)
         need = get_need_days(form_group)
         t_par = get_teacher_par_list(db_sess=db_session.create_session(), form=form_group)
         a_par = get_pars_list(db_session.create_session(), form=form_group, need_days=need)
@@ -627,7 +633,6 @@ def create_group():
                 else:
                     arr1.append(pa1)
             arr.append(arr1)
-        print(arr)
         for day in arr:
             if not day:
                 continue
@@ -660,7 +665,6 @@ def choice_group_days():
     smessage = session['message']
     need_days = get_need_days(form=form)
     days = form['timesd']
-    print(days)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     lef_days = 1 if need_days[0] == need_days[1] else 2
     # if request.method == 'GET':
@@ -720,7 +724,6 @@ def accept_create_group():
         if l:
             session['message'] = dumps({'status': 1, 'text': 'Группа создана'})
             return redirect('/show/groups')
-    print(form)
     session['message'] = dumps(ST_message)
     return render_template('accept_create_group.html', title='Подтверждение создания', message=smessage,
                            form=form, last_id=last_id, teacher=teacher, audience=audience, dicts=dicts)
