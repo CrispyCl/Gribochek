@@ -19,7 +19,9 @@ const nav = document.querySelector('.nav'),
 
 let mes = JSON.parse(document.querySelector('.message-content').innerHTML);
 
-document.querySelector('.btn.back').addEventListener('click', () => { window.history.back() })
+if (document.querySelector('.btn.back')){
+    document.querySelector('.btn.back').addEventListener('click', () => { window.history.back() })
+}
 $(function () {
     if (mes['status'] != 404) {
         mes = JSON.parse(mes);

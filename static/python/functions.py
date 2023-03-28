@@ -177,7 +177,6 @@ def load_week_by_group_form(db_sess, form: dict):
 
 def get_week_audience(db_sess, audience_id: int, date: datetime.date):
     needed_date = date - datetime.timedelta(days=date.weekday())
-    print(needed_date)
 
     audience = db_sess.query(Audience).filter(Audience.id == audience_id).first()
     if audience is None and db_sess.query(Week).filter(Week.week_start_date == needed_date,

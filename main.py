@@ -9,6 +9,7 @@ from data import db_session
 from data.audiences import Audience
 from data.groups import Group
 from data.users import User
+from data.working_days import WorkingDays
 from forms.admin import RegisterAdminForm
 from forms.audience import AudienceForm
 from forms.edit_audience import EditAudienceForm
@@ -49,8 +50,8 @@ def index():
             return redirect('/')
         message = {'status': 0, 'text': 'Неверный логин или пароль'}
         return render_template('index.html',
-                               title='Главная страница', message=dumps(message),
-                               weeks=weeks)
+                               title='Главная страница', message=dumps(message), len=len,
+                               weeks=weeks, dicts=dicts)
     session['message'] = dumps(ST_message)
     print(weeks)
     return render_template('index.html', title='Главная страница', message=smessage, len=len,
@@ -156,6 +157,11 @@ def register_teacher():
         user.img = f'img/users/{last_id}.jpg'
         user.set_password(form.password.data)
         db_sess.add(user)
+        wdays = WorkingDays(
+            teacher_id=last_id,
+            days='1✡1✡1✡1✡1✡1',
+        )
+        db_sess.add(wdays)
         db_sess.commit()
         message = dumps({'status': 1, 'text': 'Учитель зарегистрирован'})
         session['message'] = message
@@ -411,6 +417,14 @@ def create_group():
             message = dumps({'status': 0, 'text': 'Суммарное количество пар на группу должно быть 2'})
             return render_template('create_group.html', title='Создание группы', form=form,
                                    message=message)
+        wdays = db_sess.query(WorkingDays).get(teacher_id)
+        wdays = wdays.days.split('✡')
+        days = list(map(bool, [day0, day1, day2, day3, day4, day5]))
+        for i in range(6):
+            if int(wdays[i]) < int(days[i]):
+                message = dumps({'status': 0, 'text': f'Учитель не работает в день {DAYS[i + 1]}'})
+                return render_template('create_group.html', title='Создание группы', form=form,
+                                       message=message)
         form_group = {
             'subject': form.subject.data,
             'teacher_id': teacher_id,

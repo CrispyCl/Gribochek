@@ -28,3 +28,4 @@ class User(SqlAlchemyBase, UserMixin):
 
 groups = orm.relationship("Group", back_populates='teacher')
 working_rates = orm.relationship("WorkingRate", back_populates='teacher')
+working_days = orm.relationship("WorkingDays", back_populates='teacher')
