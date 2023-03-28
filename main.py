@@ -445,6 +445,8 @@ def create_group():
         t_par = get_teacher_par_list(db_sess=db_session.create_session(), form=form_group)
         a_par = get_pars_list(db_session.create_session(), form=form_group, need_days=need)
         a_par = list(filter(lambda x: x, a_par))
+        if len(a_par) == 1:
+            a_par = [a_par[0], a_par[0]]
         arr = []
         for dd1, dd2 in zip(t_par, a_par):
             arr1 = []
@@ -489,7 +491,7 @@ def choice_group_days():
     days = form['timesd']
     print(days)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
-    lef_days = len(list(filter(lambda x: x, days)))
+    lef_days = 1 if need_days[0] == need_days[1] else 2
     # if request.method == 'GET':
     #     for day in days:
     #         if not day:
@@ -533,7 +535,7 @@ def accept_create_group():
     form = loads(session['form_group'])
     form['st_date'] = DecodeDate(form['st_date'])
     form['en_date'] = DecodeDate(form['en_date'])
-    if not form.get('day0time'):
+    if 'day0time' not in form.keys():
         abort(404)
     smessage = session['message']
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}

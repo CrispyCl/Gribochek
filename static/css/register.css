@@ -119,6 +119,7 @@ form {
     flex-direction: row;
     flex-wrap: wrap;
     position: relative;
+    margin-bottom: 20px;
 }
 
 @media screen and (max-width: 400px) {

@@ -5,10 +5,10 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/teachers.css') }}">
 
 <div class="wrapper">
-    <h1>Список преподавателей</h1>
+    <h1 class="text-center">Список преподавателей</h1>
     <div class="container">
         {% if not teachers %}
-            <h3 align="center">Нет преподавателей</h3>
+        <h3 align="center">Нет преподавателей</h3>
         {% else %}
         {% for teacher in teachers %}
         <div class="box">

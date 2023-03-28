@@ -13,6 +13,11 @@
         <a href="/create_group" class="btn btn_add">Добавить группу</a>
         {% endif %}
     </div>
+    {% if le == 0 %}
+    <div class="table text-center" style="margin-top: 20px;">
+        <h3>Групп нет</h3>
+    </div>
+    {% endif %}
     {% for i in range(le) %}
     <div class="tabel">
         {% set group = groups[i] %}

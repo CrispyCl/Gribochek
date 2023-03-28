@@ -1,0 +1,122 @@
+.table-responsive-sm {
+    min-width: 80%;
+}
+
+.all_table_list {
+    margin: 20px;
+    background-color: #316899;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+
+.table_header_list {
+    display: flex;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: white;
+    padding: 10px;
+}
+
+
+.items_of_table_list {
+    display: none;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    position: relative;
+    flex: 1 1 160px;
+}
+
+.list-group {
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    min-width: 600px;
+    max-width: 600px;
+}
+
+.list-group-item.list-group-item-action.first {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+}
+
+.day_of_group {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #000;
+}
+
+
+.items_of_table_list.active {
+    display: flex;
+}
+
+.table_header_list .fa.fa-caret-down {
+    transform: rotate(0deg);
+    transition: all 0.2s linear;
+}
+
+.table_header_list.active_rotate .fa.fa-caret-down {
+    transform: rotate(180deg);
+    transition: all 0.2s linear;
+}
+
+
+
+.h2_index {
+    font-size: xxx-large;
+}
+
+
+
+@media screen and (max-width: 1880px) {
+    .list-group {
+        min-width: 500px;
+        max-width: 500px;
+    }
+}
+
+@media screen and (max-width: 1538px) {
+    .list-group {
+        min-width: 400px;
+        max-width: 400px;
+    }
+}
+
+
+@media screen and (max-width: 839px) {
+
+    .list-group {
+        min-width: 80%;
+        max-width: 80%;
+    }
+}
+
+@media screen and (max-width: 590px) {
+    .two_cols {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .text.text-center {
+        width: auto;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .all_table {
+        margin: 20px 0;
+    }
+
+    .list-group {
+        min-width: 95%;
+        min-width: 95%;
+    }
+
+    .all_table_list {
+        margin: 20px 0;
+    }
+}

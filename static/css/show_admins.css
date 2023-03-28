@@ -22,7 +22,7 @@
     padding: 20px 10px;
     text-align: center;
     border-radius: 10px;
-    border: 2px solid #4a98f7;
+    border: 2px solid #f08080;
     background: #ececec;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
 }
@@ -96,7 +96,6 @@ h5,
 h6 {
     margin-bottom: 0 !important;
 }
-
 
 @media screen and (max-width: 460px) {
     .wrapper h1 {

@@ -29,16 +29,18 @@
     display: flex;
     border: 2px solid #4a98f7;
     background-color: #fff;
-    justify-content: space-between;
     margin-top: 20px;
-    align-items: center;
     border-radius: 10px;
     min-height: 80px;
     font-size: x-large;
     height: 120px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .name_group {
+    text-align: center;
     min-width: 300px;
     max-width: 300px;
 }
@@ -46,4 +48,26 @@
 .day_time b,
 .name_group b {
     font-weight: 600;
+}
+
+@media screen and (max-width: 770px) {
+    .container.group {
+        flex-direction: column;
+        min-height: 200px;
+    }
+
+    .btn.btn_about {
+        margin-bottom: 10px;
+    }
+
+}
+
+@media screen and (max-width: 500px) {
+    .all_group {
+        font-size: x-large;
+    }
+
+    .btn.btn_add {
+        font-size: large;
+    }
 }

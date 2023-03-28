@@ -34,7 +34,7 @@ input[type="file"] {
 }
 
 
-.text-cener.mt-4.name {
+.text-center.name {
     display: flex;
     align-content: center;
     justify-content: center;
@@ -44,10 +44,10 @@ input[type="file"] {
 .wrapper_register {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    max-width: 500px;
-    min-height: 500px;
-    margin-top: 100px;
+    justify-content: space-evenly;
+    max-width: 450px;
+    min-height: 400px;
+    margin-top: 20px;
     padding: 10px 40px 40px 40px;
     border-radius: 25px;
     background-color: #fff;
@@ -136,9 +136,11 @@ input[type="file"] {
 form {
     display: flex;
     justify-content: center;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     position: relative;
+    align-items: center;
+    margin-top: 10px;
 }
 
 @media screen and (max-width: 400px) {

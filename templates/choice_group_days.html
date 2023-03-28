@@ -20,10 +20,9 @@
                     </div>
                 </div>
                 <div class="all">
-                    {% set d_items = namespace(it=0) %}
-                    {% if lef_days == 2 %}
-                    <div class="first">
-                        {% set day = days[0] %}
+                    <div class="cols">
+                        <div class="first" id="1">
+                            {% set day = days[0] %}
                         <h3 class="text-center">{{ dicts['DAYS'][need_days[0]] }}</h3>
                         <div class="form-check checks">
                             {% for par in day %}
@@ -36,6 +35,8 @@
                             {% endif %}
                             {% endfor %}
                         </div>
+                        </div>
+                        <div class="first" id="2">
                         {% set day = days[1] %}
                         <h3 class="text-center">{{ dicts['DAYS'][need_days[1]] }}</h3>
                         <div class="form-check checks">
@@ -49,31 +50,8 @@
                             {% endif %}
                             {% endfor %}
                         </div>
-                    </div>
-                    {% else %}
-                    {% set day = days[0] %}
-                    <h3>{{ dicts['DAYS'][need_days[0]] }}</h3>
-                    <div class="form-check checks">
-                        {% for par in day %}
-                        {% if par %}
-                        <div class="radio_and_time"><input type="radio" name="remember0" value="{{ (loop.index - 1) }}">
-                            <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
                         </div>
-                        {% endif %}
-                        {% endfor %}
                     </div>
-                    <h3>{{ dicts['DAYS'][need_days[1]] }}</h3>
-                    <div class="form-check checks">
-                        {% for par in day %}
-                        {% if par %}
-                        <div class="radio_and_time"><input type="radio" name="remember1" value="{{ (loop.index - 1) }}">
-                            <label>{{ dicts['PARS_TIMES'][loop.index] }}</label>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
                     <button type="submit" class="btn btn_submit">Выбрать время</button>
                 </div>
             </div>
@@ -92,25 +70,6 @@
         .btn.mt-3 {
             font-size: 0.85rem;
         }
-    }
-
-    .btn_and_all {
-        display: flex;
-        justify-content: center;
-    }
-
-    .btn-col {
-        max-width: 100px;
-    }
-
-    .btn.back {
-        background-color: #fff;
-        font-size: 1em;
-        letter-spacing: 1px;
-        position: relative;
-        margin-bottom: 38.86px;
-        margin-top: 20px;
-        margin-right: 10px;
     }
 </style>
 

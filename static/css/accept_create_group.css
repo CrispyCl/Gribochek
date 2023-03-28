@@ -215,6 +215,10 @@ form {
         justify-content: center;
         max-width: none;
     }
+
+    .submit_create {
+        margin-bottom: 20px;
+    }
 }
 
 @media screen and (max-width: 768px) {

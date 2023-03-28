@@ -88,3 +88,9 @@
         margin-left: 0px;
     }
 }
+
+@media screen and (max-width: 460px) {
+    .all_table h1 {
+        font-size: 30px;
+    }
+}

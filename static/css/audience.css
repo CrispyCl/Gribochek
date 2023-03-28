@@ -60,6 +60,10 @@
     max-width: 100px;
 }
 
+.all_table_list .table_header_list .fa.fa-caret-down {
+    margin-left: 30px;
+}
+
 
 @media screen and (max-width: 1400px) {
     .smt {
@@ -74,12 +78,30 @@
     }
 }
 
+@media screen and (max-width: 991px) {
+    .list-group {
+        max-width: 95% !important;
+        min-width: 95% !important;
+    }
+}
+
 @media screen and (max-width: 511px) {
     .profile_main {
         font-size: 20px;
     }
+
+    .all_table_list .table_header_list .fa.fa-caret-down {
+        margin-left: 8px;
+    }
 }
 
+@media screen and (max-width: 500px) {
+    .col.btn-col {
+        display: none;
+    }
+
+
+}
 
 
 @media screen and (max-width: 420px) {
@@ -87,10 +109,8 @@
         width: 100px;
         height: 100px;
     }
-}
 
-@media screen and (max-width: 500px) {
-    .col.btn-col {
-        display: none;
+    .all_table_list {
+        margin: 20px 0 !important;
     }
 }

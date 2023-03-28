@@ -652,24 +652,28 @@ input:-webkit-autofill:active {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 35px;
-    width: 35px;
     background-color: #33ce14;
     color: #fff;
     font-size: 20px;
     border-radius: 50%;
+    max-width: 35px;
+    max-height: 35px;
+    min-width: 35px;
+    min-height: 35px;
 }
 
 .bad_alert_box_content .check {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 35px;
-    width: 35px;
     background-color: red;
     color: #fff;
     font-size: 20px;
     border-radius: 50%;
+    max-width: 35px;
+    max-height: 35px;
+    min-width: 35px;
+    min-height: 35px;
 
 }
 
@@ -747,6 +751,30 @@ input:-webkit-autofill:active {
 @keyframes progress {
     100% {
         right: 100%;
+    }
+}
+
+@media screen and (max-width: 460px) {
+
+    .good_alert_box,
+    .bad_alert_box {
+        padding: 10px 15px 10px 15px;
+    }
+}
+
+@media screen and (max-width: 415px) {
+
+    .good_alert_box_content .check,
+    .bad_alert_box_content .check {
+        display: none;
+    }
+
+    .good_alert_message .text-1 {
+        color: #33ce14;
+    }
+
+    .bad_alert_message .text-1 {
+        color: red;
     }
 }
 

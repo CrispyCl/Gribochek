@@ -29,47 +29,49 @@
                 </div>
             </div>
             <div class="col">
-                            <div class="all_table_list">
+                <div class="all_table_list">
 
-    <div class="table_header_list" style="cursor: pointer;">Расписание текущей недели: <i class="fa fa-caret-down"
-            style="margin-left: 30px;"></i></div>
-    <div class="items_of_table_list">
+                    <div class="table_header_list" style="cursor: pointer;">
+                        <div class="text">Расписание текущей недели: </div><i class="fa fa-caret-down"></i>
+                    </div>
+                    <div class="items_of_table_list">
 
-        <!-- 1 -->
-        {% for day in week.days %}
-        <div class="list-group">
-            <div class="day_of_group">{{ dicts['DAYS'][loop.index] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
-            <div class="table-responsive-sm" style="overflow-y: hidden">
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col">Время</th>
-                            <th scope="col">Группа</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for par in day.pars %}
-                        <tr>
-                            <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
-                            <td>
-                                {% if par %}{{ par.subject }} - #{{ par.id }}{% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
+                        <!-- 1 -->
+                        {% for day in week.days %}
+                        <div class="list-group">
+                            <div class="day_of_group">{{ dicts['DAYS'][loop.index] }} {{ day.date.strftime("%d-%m-%Y")
+                                }}</div>
+                            <div class="table-responsive-sm" style="overflow-y: hidden">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Время</th>
+                                            <th scope="col">Группа</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for par in day.pars %}
+                                        <tr>
+                                            <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
+                                            <td>
+                                                {% if par %}{{ par.subject }} - #{{ par.id }}{% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-
-
         </div>
+    </div>
+</div>
+
+
+</div>
 
 <style>
     .table-responsive-sm {
@@ -90,6 +92,8 @@
         font-weight: 500;
         color: white;
         padding: 10px;
+        flex-direction: row;
+        align-items: center;
     }
 
 
@@ -155,18 +159,19 @@
         object-fit: cover;
     }
 
-<!--    .text.text-center {-->
-<!--        position: absolute;-->
-<!--        text-transform: uppercase;-->
-<!--        color: white;-->
-<!--        width: 400px;-->
-<!--        background: #00000094;-->
-<!--        padding: 10px;-->
-<!--        text-align: center;-->
-<!--        font: bold 24px/34px Helvetica, Sans-Serif;-->
-<!--    }-->
+    < !-- .text.text-center {
+        -->< !-- position: absolute;
+        -->< !-- text-transform: uppercase;
+        -->< !-- color: white;
+        -->< !-- width: 400px;
+        -->< !-- background: #00000094;
+        -->< !-- padding: 10px;
+        -->< !-- text-align: center;
+        -->< !-- font: bold 24px/34px Helvetica, Sans-Serif;
+        -->< !--
+    }
 
-    @media screen and (max-width: 400px) {
+    -->@media screen and (max-width: 400px) {
         .text.text-center {
             width: auto;
         }
