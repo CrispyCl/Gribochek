@@ -101,7 +101,6 @@ def get_teacher_par_list(db_sess, form: dict):
     day0 = [1, 2, 3, 4, 5, 6]
     day1 = [1, 2, 3, 4, 5, 6]
     groups = db_sess.query(Group).filter(Group.teacher_id == teacher_id).all()
-    print(need)
 
     if not groups:
         return [day0, day1]
@@ -180,7 +179,6 @@ def create_week(db_sess, date: datetime.date, audience_id: int):
 
 
 def load_week_by_group_form(db_sess, form: dict):
-    print(form)
     days = sorted(form['days'])
     time = sorted([form['day0time'], form['day1time']])
     st_date = form['st_date']

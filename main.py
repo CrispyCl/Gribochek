@@ -9,6 +9,7 @@ from data import db_session
 from data.audiences import Audience
 from data.groups import Group
 from data.users import User
+from data.weeks import Week
 from data.working_days import WorkingDays
 from forms.admin import RegisterAdminForm
 from forms.audience import AudienceForm
@@ -56,6 +57,48 @@ def index():
     print(weeks)
     return render_template('index.html', title='Главная страница', message=smessage, len=len,
                            weeks=weeks, dicts=dicts)
+
+
+@app.route('/time_table')
+def to_time_table():
+    date = datetime.date.today()
+    return redirect(f'/time_table/{DateEncoder(date)}')
+
+
+@app.route('/time_table/<date1>')
+def time_table(date1):
+    print(date1)
+    try:
+        date = DecodeDate(date1)
+    except Exception:
+        abort(404)
+    st_date = date - datetime.timedelta(days=date.weekday())
+    session['form_group'] = None
+    db_sess = db_session.create_session()
+    smessage = session['message']
+    dates = {'st_date': st_date, 'en_date': st_date + datetime.timedelta(days=6),
+             'back_week': DateEncoder(st_date - datetime.timedelta(days=7)),
+             'next_week': DateEncoder(st_date + datetime.timedelta(days=7))}
+    audiences = db_sess.query(Audience).all()
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    weeks = list(map(lambda au: get_week_audience(db_sess, au.id, date), audiences))
+    if request.method == 'POST':
+        password = request.form['password']
+        email = request.form['email']
+        remember = bool(request.form.getlist('remember'))
+        print(remember)
+        user = db_sess.query(User).filter(User.email == email).first()
+        if user and user.check_password(password):
+            login_user(user, remember=remember)
+            return redirect(f'/time_table/{date1}')
+        message = {'status': 0, 'text': 'Неверный логин или пароль'}
+        return render_template('time_table.html',
+                               title='Расписание', message=dumps(message), len=len,
+                               weeks=weeks, dicts=dicts, st_date=st_date)
+
+    session['message'] = dumps(ST_message)
+    return render_template('time_table.html', title='Расписание', message=smessage, len=len,
+                           weeks=weeks, dicts=dicts, dates=dates)
 
 
 @app.route('/profile/<int:user_id>', methods=["GET", "POST"])
@@ -375,6 +418,46 @@ def edit_audience(aud_id):
     session['message'] = dumps(ST_message)
     return render_template('edit_audience.html', title='Изменение аудитории', form=form,
                            message=smessage)
+
+
+@app.route('/edit_week/<int:week_id>')
+def edit_week(week_id):
+    if not current_user.is_authenticated:
+        abort(404)
+    if current_user.role not in (3, 4):
+        abort(404)
+    smessage = session['message']
+
+    db_sess = db_session.create_session()
+    week1 = db_sess.query(Week).get(week_id)
+    if not week1:
+        abort(404)
+
+    audience = db_sess.query(Audience).get(week1.audience_id)
+    week = get_week_audience(db_sess, audience.id, week1.week_start_date)
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    session['message'] = dumps(ST_message)
+    return render_template('edit_week.html', title='Редиктирование недели', message=smessage,
+                           week=week, dicts=dicts, audience=audience)
+
+
+@app.route('/edit_day/<int:day_id>')
+def edit_day(day_id):
+    if not current_user.is_authenticated:
+        abort(404)
+    if current_user.role not in (3, 4):
+        abort(404)
+    smessage = session['message']
+
+    db_sess = db_session.create_session()
+    day1 = db_sess.query(Week).get(day_id)
+    if not day1:
+        abort(404)
+
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    session['message'] = dumps(ST_message)
+    return render_template('edit_day.html', title='Редиктирование дня', message=smessage,
+                           dicts=dicts)
 
 
 @app.route('/create_group', methods=['GET', 'POST'])

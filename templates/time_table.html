@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+<!-- List group -->
+<h2 class="text-center h2_index">Расписание на</h2>
+<h2 class="text-center h2_index">{{ dates['st_date'] }}/{{ dates['en_date'] }}</h2>
+<a style="color: black" href="/time_table/{{ dates['back_week'] }}">Назад</a>
+<a style="color: black" href="/time_table/{{ dates['next_week'] }}">Вперёд</a>
+
+{% if weeks == [] %}
+<h3 class="text-center h3_no" style="margin-top: 10px;">Расписание ещё не составленно</h3>
+{% endif %}
+{% for week in weeks %}
+{% if current_user.role in (3, 4) %}
+<a style="color: black; background-color: orange" href="/edit_week/{{ week.id }}"><h3>Редактировать</h3></a>
+{% endif %}
+<div class="all_table" id="{{ loop.index }}">
+
+    <div class="table_header" id="t_h{{ loop.index }}" style="cursor: pointer;">Аудитория "{{ week.audience.name }}" <i
+            class="fa fa-caret-down" style="margin-left: 30px;"></i></div>
+    <div class="items_of_table" id="i_t{{ loop.index }}">
+
+        <!-- 1 -->
+        {% for day in week.days %}
+        <div class="list-group">
+            <div class="day_of_group">{{ dicts['DAYS'][loop.index] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
+            <div class="table-responsive-sm" style="overflow-y: hidden">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="col">Время</th>
+                            <th scope="col">Группа</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for par in day.pars %}
+                        <tr>
+                            <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
+                            <td>
+                                {% if par %}{{ par.subject }} - #{{ par.id }}{% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+
+
+<script>
+{% for week in weeks %}
+    const table_header_btn_{{ loop.index }} = document.querySelector("#t_h{{ loop.index }}"),
+        items_of_table_{{ loop.index }} = document.querySelector("#i_t{{ loop.index }}");
+
+    table_header_btn_{{ loop.index }}.addEventListener('click', () => {
+        if (items_of_table_{{ loop.index }}.classList.contains('active')) {
+            items_of_table_{{ loop.index }}.classList.remove('active');
+            table_header_btn_{{ loop.index }}.classList.remove('active_rotate')
+        }
+        else {
+            items_of_table_{{ loop.index }}.classList.add('active');
+            table_header_btn_{{ loop.index }}.classList.add('active_rotate')
+        }
+    })
+{% endfor %}
+</script>
+
+{% endblock content %}

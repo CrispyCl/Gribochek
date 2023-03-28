@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit_week.css') }}">
+<div class="all_table">
+    <h3 class="text-center h2_index">Расписание на</h3>
+    <h3 class="text-center h2_index">{{ week.week_start_date }}/{{ week.week_end_date }}</h3>
+
+    <h3 class="text-center h3_name">Аудитория "{{ audience.name }}"</h3>
+
+    {% for day in week.days %}
+    <div class="list-group">
+        <div class="day_of_group">{{ dicts['DAYS'][loop.index] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
+        <div class="table-responsive-sm" style="overflow-y: hidden">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <div class="thcols">
+                            <th scope="col">Время</th>
+                            <th scope="col" class="text-center">Группа</th>
+                        </div>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for par in day.pars %}
+                    <tr>
+                        <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
+                        <td class="text-center">
+                            {% if par %}{{ par.subject }} - #{{ par.id }}{% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock content %}

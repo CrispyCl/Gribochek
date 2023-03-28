@@ -63,7 +63,18 @@
                                     {{ form.course_start_date(class="form-control date_start") }}
                                     {{ form.course_end_date(class="form-control date_end") }}
                                 </div>
-
+                                <div class="date_lable">
+                                    {% for error in form.course_start_date.errors %}
+                                    <p class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </p>
+                                    {% endfor %}
+                                    {% for error in form.course_end_date.errors %}
+                                    <p class="alert alert-danger" role="alert">
+                                        {{ error }}
+                                    </p>
+                                    {% endfor %}
+                                </div>
                             </div>
                             <div class="form-field days">
                                 <div class="item_name text-center" style="margin: 5px 0;"><b>Выберите дни занятий</b>
