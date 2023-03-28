@@ -17,7 +17,7 @@ from forms.edit_user import EditUserForm
 from forms.group import CreateGroupForm
 from forms.user import RegisterForm
 from static.python.functions import create_main_admin, DateEncoder, DecodeDate, get_pars_list, get_need_days, \
-    load_week_by_group_form, get_week_audience
+    load_week_by_group_form, get_week_audience, get_teacher_par_list
 from static.python.variables import ST_message, DAYS, PARS_TIMES
 
 current_user.is_authenticated: bool
@@ -393,7 +393,7 @@ def create_group():
         form.teacher_id.choices = teachers_list
     if not form.audience_id.choices:
         audience_list = list(map(lambda au: (au.id, au.name),
-                             db_sess.query(Audience).filter(Audience.is_eventable != True).all()))
+                             db_sess.query(Audience).filter(Audience.is_eventable == False).all()))
         form.audience_id.choices = audience_list
 
     if request.method == 'GET':
@@ -440,6 +440,32 @@ def create_group():
             'day0time': '',
             'day1time': '',
         }
+        print(form_group)
+        need = get_need_days(form_group)
+        t_par = get_teacher_par_list(db_sess=db_session.create_session(), form=form_group)
+        a_par = get_pars_list(db_session.create_session(), form=form_group, need_days=need)
+        a_par = list(filter(lambda x: x, a_par))
+        arr = []
+        for dd1, dd2 in zip(t_par, a_par):
+            arr1 = []
+            for pa1, pa2 in zip(dd1, dd2):
+                if not pa1 or not pa2:
+                    arr1.append(None)
+                else:
+                    arr1.append(pa1)
+            arr.append(arr1)
+        print(arr)
+        for day in arr:
+            if not day:
+                continue
+            if not any(day):
+                session['message'] = dumps({'status': 0, 'text': 'Рассписание составить невозможно'})
+                return redirect('/create_group')
+            if need[0] == need[1] and len(list(filter(lambda p: p, day))) < 2:
+                session['message'] = dumps({'status': 0, 'text': 'Рассписание составить невозможно'})
+                return redirect('/create_group')
+        form_group['timesd'] = arr
+
         session['form_group'] = dumps(form_group)
         # frm = loads(session['form_group'])
         # frm['st_date'] = DecodeDate(frm['st_date'])
@@ -460,19 +486,20 @@ def choice_group_days():
     form['en_date'] = DecodeDate(form['en_date'])
     smessage = session['message']
     need_days = get_need_days(form=form)
-    days = get_pars_list(db_session.create_session(), form=form, need_days=need_days)
+    days = form['timesd']
+    print(days)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     lef_days = len(list(filter(lambda x: x, days)))
-    if request.method == 'GET':
-        for day in days:
-            if not day:
-                continue
-            if not any(day):
-                session['message'] = dumps({'status': 0, 'text': 'Рассписание составить невозможно'})
-                return redirect('/create_group')
-            if lef_days == 1 and len(list(filter(lambda p: p, day))) < 2:
-                session['message'] = dumps({'status': 0, 'text': 'Рассписание составить невозможно'})
-                return redirect('/create_group')
+    # if request.method == 'GET':
+    #     for day in days:
+    #         if not day:
+    #             continue
+    #         if not any(day):
+    #             session['message'] = dumps({'status': 0, 'text': 'Рассписание составить невозможно'})
+    #             return redirect('/create_group')
+    #         if lef_days == 1 and len(list(filter(lambda p: p, day))) < 2:
+    #             session['message'] = dumps({'status': 0, 'text': 'Рассписание составить невозможно'})
+    #             return redirect('/create_group')
     if request.method == 'POST':
         remember1 = request.form.getlist(f'remember0')
         remember2 = request.form.getlist(f'remember1')
@@ -488,8 +515,8 @@ def choice_group_days():
                                    days=days, form=form, dicts=dicts, need_days=need_days, lef_days=lef_days)
         form['st_date'] = DateEncoder(form['st_date'])
         form['en_date'] = DateEncoder(form['en_date'])
-        form['day0time'] = min(remember1, remember2)
-        form['day1time'] = max(remember1, remember2)
+        form['day0time'] = remember1
+        form['day1time'] = remember2
         form['days'] = need_days
 
         session['form_group'] = dumps(form)
