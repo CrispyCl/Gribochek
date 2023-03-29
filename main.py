@@ -185,6 +185,7 @@ def register_teacher():
     db_sess = db_session.create_session()
     users = db_sess.query(User).all()
     last_id = users[-1].id + 1
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     if not form.groups.choices:
         form.groups.choices = [(None, 'Выбрать позже')]
 
@@ -193,13 +194,26 @@ def register_teacher():
             message = {'status': 0, 'text': 'Пароли не совпадают'}
             return render_template('register_teacher.html', title='Регистрация преподавателя',
                                    form=form,
-                                   message=dumps(message))
+                                   message=dumps(message),
+                           dicts=dicts)
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
             message = {'status': 0, 'text': 'Такой пользователь уже есть'}
             return render_template('register_teacher.html', title='Регистрация преподавателя',
                                    form=form,
-                                   message=dumps(message))
+                                   message=dumps(message),
+                           dicts=dicts)
+        w_days = request.form.getlist('working_days')
+        working_days = ['0', '0', '0', '0', '0', '0']
+        for s in w_days:
+            i = int(s) - 1
+            working_days[i] = '1'
+        if len(list(filter(lambda d: d != '0', working_days))) < 2:
+            message = {'status': 0, 'text': 'Учитель должен работать минимум 2 дня'}
+            return render_template('register_teacher.html', title='Регистрация преподавателя',
+                                   form=form,
+                                   message=dumps(message),
+                           dicts=dicts)
         user = User(
             id=last_id,
             name=form.name.data,
@@ -218,14 +232,15 @@ def register_teacher():
         db_sess.add(user)
         wdays = WorkingDays(
             teacher_id=last_id,
-            days='1✡1✡1✡1✡1✡1',
+            days='✡'.join(working_days),
         )
         db_sess.add(wdays)
         db_sess.commit()
         message = dumps({'status': 1, 'text': 'Учитель зарегистрирован'})
         session['message'] = message
         return redirect('/show/teachers')
-    return render_template('register_teacher.html', title='Регистрация преподавателя', form=form, message=dumps(ST_message))
+    return render_template('register_teacher.html', title='Регистрация преподавателя', form=form, message=dumps(ST_message),
+                           dicts=dicts)
 
 
 @app.route('/register/student', methods=['GET', 'POST'])

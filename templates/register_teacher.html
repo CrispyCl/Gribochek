@@ -68,6 +68,28 @@
                 </p>
                 {% endfor %}
             </div>
+            <h2>Выберите рабочии дни преподователя</h2>
+            <h5>*в будующем вы не сможете их изменить</h5>
+            <div class="form-check checks">
+                <input type="checkbox" name="working_days"
+                       value="1">
+                <label>{{ dicts['DAYS'][1] }}</label>
+                <input type="checkbox" name="working_days"
+                       value="2">
+                <label>{{ dicts['DAYS'][2] }}</label>
+                <input type="checkbox" name="working_days"
+                       value="3">
+                <label>{{ dicts['DAYS'][3] }}</label>
+                <input type="checkbox" name="working_days"
+                       value="4">
+                <label>{{ dicts['DAYS'][4] }}</label>
+                <input type="checkbox" name="working_days"
+                       value="5">
+                <label>{{ dicts['DAYS'][5] }}</label>
+                <input type="checkbox" name="working_days"
+                       value="6">
+                <label>{{ dicts['DAYS'][6] }}</label>
+            </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
                 <b style="width: -webkit-fill-available;">{{ form.password(class="form-control", type="password",
