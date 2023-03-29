@@ -16,6 +16,7 @@ from data.working_days import WorkingDays
 from forms.add_par import AddParForm
 from forms.admin import RegisterAdminForm
 from forms.audience import AudienceForm
+from forms.data_search import DataSearchForm
 from forms.edit_audience import EditAudienceForm
 from forms.edit_user import EditUserForm
 from forms.group import CreateGroupForm
@@ -67,12 +68,13 @@ def to_time_table():
     return redirect(f'/time_table/{DateEncoder(date)}')
 
 
-@app.route('/time_table/<date1>')
+@app.route('/time_table/<date1>', methods=['GET', 'POST'])
 def time_table(date1):
     try:
         date = DecodeDate(date1)
     except Exception:
         abort(404)
+    form = DataSearchForm()
     st_date = date - datetime.timedelta(days=date.weekday())
     session['form_group'] = None
     db_sess = db_session.create_session()
@@ -83,21 +85,12 @@ def time_table(date1):
     audiences = db_sess.query(Audience).all()
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     weeks = list(map(lambda au: get_week_audience(db_sess, au.id, date), audiences))
-    if request.method == 'POST':
-        password = request.form['password']
-        email = request.form['email']
-        remember = bool(request.form.getlist('remember'))
-        user = db_sess.query(User).filter(User.email == email).first()
-        if user and user.check_password(password):
-            login_user(user, remember=remember)
-            return redirect(f'/time_table/{date1}')
-        message = {'status': 0, 'text': 'Неверный логин или пароль'}
-        return render_template('time_table.html',
-                               title='Расписание', message=dumps(message), len=len,
-                               weeks=weeks, dicts=dicts, st_date=st_date)
+    if form.validate_on_submit():
+        date = form.need_date.data
+        return redirect(f'/time_table/{DateEncoder(date)}')
 
     session['message'] = dumps(ST_message)
-    return render_template('time_table.html', title='Расписание', message=smessage, len=len,
+    return render_template('time_table.html', title='Расписание', message=smessage, len=len, form=form,
                            weeks=weeks, dicts=dicts, dates=dates)
 
 

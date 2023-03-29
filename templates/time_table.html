@@ -11,6 +11,14 @@
 
 {% if weeks == [] %}
 <h3 class="text-center h3_no" style="margin-top: 10px;">Нет доступных групп</h3>
+{% else %}
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <div class="dates">
+            {{ form.need_date(class="form-control date") }}
+        </div>
+        <b class="submit">{{ form.submit(value="Найти", class="btn btn_submit") }}</b>
+    </form>
 {% endif %}
 {% for week in weeks %}
 {% if current_user.role in (3, 4) %}
@@ -71,4 +79,9 @@
 {% endfor %}
 </script>
 
+<style>
+    .btn_login_2, .login_btn{
+        display: none !important;
+    }
+</style>
 {% endblock content %}
