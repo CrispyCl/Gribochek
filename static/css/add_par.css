@@ -1,10 +1,14 @@
 .day_time {}
 
 .day_of_group {
-    display: flex;
-    font-size: xx-large;
-    margin-right: 20px;
-    justify-content: center;
+    
+display: flex;
+    
+font-size: xx-large;
+    
+margin-right: 20px;
+    
+justify-content: center;
 }
 
 .chose {display: flex;align-items: center;justify-content: center;}
@@ -21,24 +25,38 @@ display: flex;
 }
 
 .submit {
-    
-display: flex;
-    
-justify-content: center;
+    /* display: flex; */
+    justify-content: center;
 }
 
 .submit .btn.btn_submit {
-    
-background-color: #333;
-    
-color: #fff;
-    
-padding: 10px 15px;
-    
-margin-top: 10px;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 15px;
 }
 
 .sm_bold {
-    font-weight: 500;
-    margin: 0 10px;
+    
+font-weight: 500;
+    
+margin: 0 10px;
+}
+
+.custom_btn {
+    border-radius: 10px;
+    background-color: #333;
+    padding: 10px;
+    color: #fff;
+}
+
+.btn.back {
+    margin-right: 10px;
+    background-color: #fff;
+}
+
+.btns {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

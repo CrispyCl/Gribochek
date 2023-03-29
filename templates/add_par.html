@@ -12,7 +12,12 @@
         <div class="day_of_group"><p class="sm_bold">Время пары:</p> {{ dicts['PARS_TIMES'][par_index + 1] }}</div>
     </div>
     <div class="chose"><h4 class="group_id_label">{{ form.group_id.label }}</h4> {{ form.group_id(class="form-control") }}</div>
-    <b class="submit">{{ form.submit(value="Добавить пару", class="btn btn_submit") }}</b>
+    <div class="btns">
+        <a href="/edit_day/{{ audience.id }}/{{ day.id }}" class="btn back"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24">
+            Назад
+        </a>
+        <b class="submit">{{ form.submit(value="Добавить пару", class="btn btn_submit") }}</b>
+    </div>
 </div>
 </form>
 

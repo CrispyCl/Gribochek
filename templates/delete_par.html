@@ -7,11 +7,16 @@
 <div class="all_table">
     <h3 class="text-center h3_name">Аудитория "{{ audience.name }}"</h3>
 
-    <h5 class="text-center">{{ par.subject }} - #{{ par.id }}</h5>
+    <div class="day_of_group text-center"><p class="sm_bold">{{ par.subject }} - #{{ par.id }}</p></div>
     <div class="day_of_group text-center"><p class="sm_bold">{{ dicts['DAYS'][day.date.weekday() + 1] }}</p> {{ day.date.strftime("%d-%m-%Y") }}</div>
-    <h5 class="text-center" id="q"><p class="sm_bold">Время пары:</p> {{ dicts['PARS_TIMES'][par_index + 1] }}</h5>
-    <h5 class="text-center">Удаление может привести к нехватке часов выробатки группы</h5>
-    <h5 class="text-center"><button>Подтвердить удаление</button></h5>
+    <div class="day_of_group text-center" id="q"><p class="sm_bold">Время пары:</p> {{ dicts['PARS_TIMES'][par_index + 1] }}</div>
+    <h5 class="text-center">*удаление может привести к нехватке выработки часов группы</h5>
+    <div class="btns">
+        <a href="/edit_day/{{ audience.id }}/{{ day.id }}" class="btn back"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24">
+            Назад
+        </a>
+        <h5 class="text-center"><button class="custom_btn">Подтвердить удаление</button></h5>
+    </div>
 </div>
 </form>
 

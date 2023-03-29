@@ -5,10 +5,26 @@
 }
 
 .sm_bold {
-    
     font-weight: 500;
-        
     margin: 0 10px;
 }
 
 #q {display: flex;justify-content: center;}
+
+.custom_btn {
+    border-radius: 10px;
+    background-color: #333;
+    padding: 10px;
+    color: #fff;
+}
+
+.btn.back {
+    margin-right: 10px;
+    background-color: #fff;
+}
+
+.btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
