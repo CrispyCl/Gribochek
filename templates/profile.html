@@ -64,6 +64,16 @@
                 </div>
             </div>
         </div>
+        {% if user.role == 2 %}
+        <h3>Рабочие дни преподователя:</h3>
+
+        <h4>
+            {{ dicts['DAYS'][working_days[0]] }}
+            {% for wday in working_days[1:] %}
+            {{ dicts['DAYS'][wday] }}
+            {% endfor %}
+        </h4>
+        {% endif %}
         <div class="col">
             <div class="container about" style="margin-top: 20px;">
                 <div class="row">

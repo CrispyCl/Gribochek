@@ -110,7 +110,15 @@ def profile(user_id):
         abort(404)
     smessage = session['message']
     session['message'] = dumps(ST_message)
-    return render_template('profile.html', title='Профиль', message=smessage, user=user)
+    working_days = []
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    if user.role == 2:
+        days1 = db_sess.query(WorkingDays).get(user.id).days.split('✡')
+        for i in range(6):
+            if days1[i] == '1':
+                working_days.append(i + 1)
+    return render_template('profile.html', title='Профиль', message=smessage, user=user, working_days=working_days,
+                           dicts=dicts)
 
 
 @app.route('/user_groups/<int:user_id>')
