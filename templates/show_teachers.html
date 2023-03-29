@@ -13,13 +13,17 @@
         {% for teacher in teachers %}
         <div class="box">
             <img src="{{ url_for('static',  filename=teacher.img) }}">
-            <h3>{{teacher.surname}} {{teacher.name}} {{teacher.otchestvo}}</h3>
-            <p class="teacher_email"><i class='bx bx-envelope'></i>{{teacher.email}}</p>
-            <a class="btn" href="/profile/{{teacher.id}}">Профиль</a>
-            <a class="btn" href="/user_groups/{{ teacher.id }}">Группы</a>
-            {% if current_user.role in (3, 4) %}
-            <a class="btn" href="/edit_user/{{teacher.id}}">Редактировать</a>
-            {% endif %}
+            <div class="name">
+                <h3>{{teacher.surname}} {{teacher.name}} {{teacher.otchestvo}}</h3>
+                <p class="teacher_email"><i class='bx bx-envelope'></i>{{teacher.email}}</p>
+            </div>
+            <div class="btns">
+                <a class="btn" href="/profile/{{teacher.id}}">Профиль</a>
+                <a class="btn" href="/user_groups/{{ teacher.id }}">Группы</a>
+                {% if current_user.role in (3, 4) %}
+                <a class="btn" href="/edit_user/{{teacher.id}}">Редактировать</a>
+                {% endif %}
+            </div>
         </div>
         {% endfor %}
         {% endif %}

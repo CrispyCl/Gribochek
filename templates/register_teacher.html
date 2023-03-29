@@ -47,9 +47,9 @@
                 </p>
                 {% endfor %}
             </div>
-            <div class="form-field d-flex align-items-center">
+            <div class="form-field d-flex align-items-center" id="baton">
                 <span><b>О</b></span>
-                <b style="width: -webkit-fill-available;">{{ form.otchestvo(class="form-control", type="text",
+                <b style="width: -webkit-fill-available; ">{{ form.otchestvo(class="form-control", type="text",
                     placeholder="Отчество") }}</b>
                 {% for error in form.otchestvo.errors %}
                 <p class="alert alert-danger" role="alert">
@@ -68,27 +68,31 @@
                 </p>
                 {% endfor %}
             </div>
-            <h2>Выберите рабочие дни преподователя</h2>
-            <h5>*в будующем вы не сможете их изменить</h5>
-            <div class="form-check checks">
-                <input type="checkbox" name="working_days"
-                       value="1" checked>
-                <label>{{ dicts['DAYS'][1] }}</label>
-                <input type="checkbox" name="working_days"
-                       value="2" checked>
-                <label>{{ dicts['DAYS'][2] }}</label>
-                <input type="checkbox" name="working_days"
-                       value="3" checked>
-                <label>{{ dicts['DAYS'][3] }}</label>
-                <input type="checkbox" name="working_days"
-                       value="4" checked>
-                <label>{{ dicts['DAYS'][4] }}</label>
-                <input type="checkbox" name="working_days"
-                       value="5" checked>
-                <label>{{ dicts['DAYS'][5] }}</label>
-                <input type="checkbox" name="working_days"
-                       value="6" checked>
-                <label>{{ dicts['DAYS'][6] }}</label>
+            <div class="all_choose_day">
+            <div class="choose_day text-center">
+                <b>Выберите рабочии дни</b>
+            </div>
+            <div class="choose_day_sm text-center"></div>
+                <div class="form-check checks">
+                    <input type="checkbox" name="working_days"
+                        value="1" checked="checked">
+                    <label>{{ dicts['DAYS'][1] }}</label>
+                    <input type="checkbox" name="working_days"
+                        value="2" checked="checked">
+                    <label>{{ dicts['DAYS'][2] }}</label>
+                    <input type="checkbox" name="working_days"
+                        value="3" checked="checked">
+                    <label>{{ dicts['DAYS'][3] }}</label>
+                    <input type="checkbox" name="working_days"
+                        value="4" checked="checked">
+                    <label>{{ dicts['DAYS'][4] }}</label>
+                    <input type="checkbox" name="working_days"
+                        value="5" checked="checked">
+                    <label>{{ dicts['DAYS'][5] }}</label>
+                    <input type="checkbox" name="working_days"
+                        value="6" checked="checked">
+                    <label>{{ dicts['DAYS'][6] }}</label>
+                </div>
             </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>

@@ -31,14 +31,14 @@
                     <thead>
                         <tr>
                             <th scope="col">Время</th>
-                            <th scope="col">Группа</th>
+                            <th scope="col" class="text-center">Группа</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for par in day.pars %}
                         <tr>
                             <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
-                            <td>
+                            <td class="text-center">
                                 {% if par %}{{ par.subject }} - #{{ par.id }}{% endif %}
                             </td>
                         </tr>

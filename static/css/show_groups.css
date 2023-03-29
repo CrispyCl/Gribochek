@@ -50,10 +50,20 @@
     font-weight: 600;
 }
 
+.voskl {
+    color: #fff;
+    display: flex;
+    font-size: xxx-large;
+    background-color: red;
+    border-radius: 50%;
+    width: 72px;
+    justify-content: center;
+}
+
 @media screen and (max-width: 770px) {
     .container.group {
         flex-direction: column;
-        min-height: 200px;
+        min-height: 290px;
     }
 
     .btn.btn_about {

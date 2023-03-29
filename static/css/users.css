@@ -62,7 +62,17 @@
     margin-left: 20px;
 }
 
-@media screen and (max-width: 875px) {
+@media screen and (max-width: 930px) {
+    .all_table .user .about_user {
+        display: flex;     
+        flex-direction: column;
+    }
+    .all_table .user .about_user .btn {
+        margin: 5px 0;
+    }
+}
+
+@media screen and (max-width: 680px) {
     .table {
         display: flex;
         flex-direction: column;
@@ -79,18 +89,33 @@
     }
 
     .table .inter_user {
-
         margin: 0 auto;
+        display: flex;
         min-width: 270px;
-    }
+        flex-direction: column;
+}
 
     #123 {
         margin-left: 0px;
     }
+
+    .all_table .user .about_user {
+        display: block;
+    }
+    .all_table .user .about_user .btn {
+        margin: none;
+    }
 }
 
-@media screen and (max-width: 460px) {
+@media screen and (max-width: 522px) {
     .all_table h1 {
         font-size: 30px;
+    }
+    .all_table .user .about_user {
+        display: flex;     
+        flex-direction: column;
+    }
+    .all_table .user .about_user .btn {
+        margin: 5px 0;
     }
 }

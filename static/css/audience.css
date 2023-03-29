@@ -64,6 +64,39 @@
     margin-left: 30px;
 }
 
+.name_surname_email {
+    margin: 0 auto;
+}
+
+.col.btn-col.btn_edit {
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    min-width: 100%;
+}
+
+.col.btn-col.btn_edit a {
+    color: #000;
+    display: block;
+    height: 100%;
+    /* width: 70%; */
+}
+
+.btn.btn_edit {
+    margin: 1px;
+    background-color: #333;
+    color: #fff;
+    font-size: 1em;
+    letter-spacing: 1px;
+    position: relative;
+    outline: none;
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-size: x-large;
+    font-weight: 600;
+}
+
 
 @media screen and (max-width: 1400px) {
     .smt {
@@ -82,6 +115,13 @@
     .list-group {
         max-width: 95% !important;
         min-width: 95% !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .name {
+        margin-left: 10px;
+        max-width: 200px;
     }
 }
 

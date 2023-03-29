@@ -9,9 +9,13 @@
     <h3 class="text-center h3_name">Аудитория "{{ audience.name }}"</h3>
 
     {% for day in week.days %}
-    <a href="/edit_day/{{ audience.id }}/{{ day.id }}"><h3>Редактировать</h3></a>
     <div class="list-group">
-        <div class="day_of_group">{{ dicts['DAYS'][loop.index] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
+        <div class="day_of_group">
+            <div class="text-center">
+                {{ dicts['DAYS'][loop.index] }} {{ day.date.strftime("%d-%m-%Y") }}
+            </div>
+            <a href="/edit_day/{{ audience.id }}/{{ day.id }}">Редактировать</a>
+        </div>
         <div class="table-responsive-sm" style="overflow-y: hidden">
             <table class="table table-sm">
                 <thead>

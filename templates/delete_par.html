@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/edit_week.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/delete_par.css') }}">
 
 <form action="" method="POST">
 <div class="all_table">
     <h3 class="text-center h3_name">Аудитория "{{ audience.name }}"</h3>
 
-    <div class="day_of_group">{{ dicts['DAYS'][day.date.weekday() + 1] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
-    <h5>{{ par.subject }} - #{{ par.id }}</h5>
-    <h5>Время пары: {{ dicts['PARS_TIMES'][par_index + 1] }}</h5>
-    <h5>Удаление может привести к нехватке часов выробатки группы</h5>
-    <h5><button>Подтвердить удаление</button></h5>
+    <h5 class="text-center">{{ par.subject }} - #{{ par.id }}</h5>
+    <div class="day_of_group text-center"><p class="sm_bold">{{ dicts['DAYS'][day.date.weekday() + 1] }}</p> {{ day.date.strftime("%d-%m-%Y") }}</div>
+    <h5 class="text-center" id="q"><p class="sm_bold">Время пары:</p> {{ dicts['PARS_TIMES'][par_index + 1] }}</h5>
+    <h5 class="text-center">Удаление может привести к нехватке часов выробатки группы</h5>
+    <h5 class="text-center"><button>Подтвердить удаление</button></h5>
 </div>
 </form>
 

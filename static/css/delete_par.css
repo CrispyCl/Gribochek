@@ -1,0 +1,14 @@
+.day_of_group {
+    font-size: xx-large;
+    display: flex;
+    justify-content: center;
+}
+
+.sm_bold {
+    
+    font-weight: 500;
+        
+    margin: 0 10px;
+}
+
+#q {display: flex;justify-content: center;}

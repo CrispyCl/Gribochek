@@ -1,18 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/edit_week.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add_par.css') }}">
 
 <form action="" method="post">
     {{ form.hidden_tag() }}
 <div class="all_table">
     <h3 class="text-center h3_name">Аудитория "{{ audience.name }}"</h3>
-
-    <div class="day_of_group">{{ dicts['DAYS'][day.date.weekday() + 1] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
-
-    <h5>Время пары: {{ dicts['PARS_TIMES'][par_index + 1] }}</h5>
-    <h5>{{ form.group_id.label }}</h5>
-    <h5>{{ form.group_id(class="form-control") }}</h5>
+    <div class="day_time text-center">
+        <div class="day_of_group"><p class="sm_bold">{{ dicts['DAYS'][day.date.weekday() + 1] }}</p> {{ day.date.strftime("%d-%m-%Y") }}</div>
+        <div class="day_of_group"><p class="sm_bold">Время пары:</p> {{ dicts['PARS_TIMES'][par_index + 1] }}</div>
+    </div>
+    <div class="chose"><h4 class="group_id_label">{{ form.group_id.label }}</h4> {{ form.group_id(class="form-control") }}</div>
     <b class="submit">{{ form.submit(value="Добавить пару", class="btn btn_submit") }}</b>
 </div>
 </form>

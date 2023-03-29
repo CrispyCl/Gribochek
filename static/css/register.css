@@ -122,6 +122,24 @@ form {
     margin-bottom: 20px;
 }
 
+
+.choose_day {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.form-check.checks {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px
+}
+
+#baton {
+    margin-bottom: 10px !important;
+}
+
+
 @media screen and (max-width: 400px) {
     .btn.mt-3 {
         font-size: 0.9rem;

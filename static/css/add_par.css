@@ -1,0 +1,44 @@
+.day_time {}
+
+.day_of_group {
+    display: flex;
+    font-size: xx-large;
+    margin-right: 20px;
+    justify-content: center;
+}
+
+.chose {display: flex;align-items: center;justify-content: center;}
+
+#group_id {
+    
+max-width: 15%;
+    
+display: flex;
+}
+
+.group_id_label {
+    margin-right: 10px;
+}
+
+.submit {
+    
+display: flex;
+    
+justify-content: center;
+}
+
+.submit .btn.btn_submit {
+    
+background-color: #333;
+    
+color: #fff;
+    
+padding: 10px 15px;
+    
+margin-top: 10px;
+}
+
+.sm_bold {
+    font-weight: 500;
+    margin: 0 10px;
+}

@@ -69,6 +69,26 @@
     font-size: xxx-large;
 }
 
+.time_and_erorr {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.time_list {
+    display: flex;
+    justify-content: space-around;
+}
+
+.time_erorr {
+    
+display: flex;
+    
+justify-content: center;
+    
+color: #ed1b0c;
+}
+
 
 
 @media screen and (max-width: 1880px) {

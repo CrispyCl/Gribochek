@@ -1,17 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/time_table.css') }}">
 
 <!-- List group -->
 
 {% if weeks == [] %}
 <h3 class="text-center h3_no" style="margin-top: 10px;">Нет доступных групп</h3>
 {% else %}
-    <h2 class="text-center h2_index">Расписание на</h2>
-    <h2 class="text-center h2_index">{{ dates['st_date'] }}/{{ dates['en_date'] }}</h2>
-    <a style="color: black" href="/time_table/{{ dates['back_week'] }}">Назад</a>
-    <a style="color: black" href="/time_table/{{ dates['next_week'] }}">Вперёд</a>
+<h2 class="text-center h2_index">Расписание на</h2>
+<h2 class="text-center h2_index">{{ dates['st_date'] }}/{{ dates['en_date'] }}</h2>
+<div class="time_table_header">
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <div class="dates">
@@ -19,15 +18,24 @@
         </div>
         <b class="submit">{{ form.submit(value="Найти", class="btn btn_submit") }}</b>
     </form>
+    <div class="next_prev_btns">
+        <a href="/time_table/{{ dates['back_week'] }}">Назад</a>
+        <a href="/time_table/{{ dates['next_week'] }}">Вперёд</a>
+    </div>
+</div>
 {% endif %}
 {% for week in weeks %}
-{% if current_user.role in (3, 4) %}
-<a style="color: black; background-color: orange" href="/edit_week/{{ week.id }}"><h3>Редактировать</h3></a>
-{% endif %}
-<div class="all_table" id="{{ loop.index }}">
 
-    <div class="table_header" id="t_h{{ loop.index }}" style="cursor: pointer;">Аудитория "{{ week.audience.name }}" <i
-            class="fa fa-caret-down" style="margin-left: 30px;"></i></div>
+<div class="all_table" id="{{ loop.index }}">
+    <div class="head_table_header">
+        <div class="table_header" id="t_h{{ loop.index }}" style="cursor: pointer;">Аудитория "{{ week.audience.name }}" <i
+                class="fa fa-caret-down" style="margin-left: 30px;"></i></div>
+            {% if current_user.role in (3, 4) %}
+            <div class="edit_btns">
+                <a href="/edit_week/{{ week.id }}"><h3>Редактировать</h3></a>
+            </div>
+        </div>
+            {% endif %}
     <div class="items_of_table" id="i_t{{ loop.index }}">
 
         <!-- 1 -->

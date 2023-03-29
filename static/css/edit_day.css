@@ -47,13 +47,9 @@
 }
 
 .day_of_group {
-    margin-top: 5px;
-    width: 80%;
     font-size: 1.3rem;
     font-weight: 500;
     color: #000;
-    display: flex;
-    justify-content: space-between;
 }
 
 
