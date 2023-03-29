@@ -11,6 +11,7 @@ from data.audiences import Audience
 from data.days import Day
 from data.group_follows import GroupFollow
 from data.groups import Group
+from data.mer_params import MerParams
 from data.users import User
 from data.weeks import Week
 from data.working_days import WorkingDays
@@ -21,6 +22,7 @@ from forms.data_search import DataSearchForm
 from forms.edit_audience import EditAudienceForm
 from forms.edit_user import EditUserForm
 from forms.group import CreateGroupForm
+from forms.mer_create import MerCreateFORM
 from forms.user import RegisterForm
 from static.python.functions import create_main_admin, DateEncoder, DecodeDate, get_pars_list, get_need_days, \
     load_week_by_group_form, get_week_audience, get_teacher_par_list, get_group_hours
@@ -43,7 +45,7 @@ def index():
     session['form_group'] = None
     db_sess = db_session.create_session()
     smessage = session['message']
-    audiences = db_sess.query(Audience).all()
+    audiences = db_sess.query(Audience).filter(Audience.is_eventable == False).all()
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     weeks = list(map(lambda au: get_week_audience(db_sess, au.id, datetime.date.today()), audiences))
     if request.method == 'POST':
@@ -83,7 +85,7 @@ def time_table(date1):
     dates = {'st_date': st_date, 'en_date': st_date + datetime.timedelta(days=6),
              'back_week': DateEncoder(st_date - datetime.timedelta(days=7)),
              'next_week': DateEncoder(st_date + datetime.timedelta(days=7))}
-    audiences = db_sess.query(Audience).all()
+    audiences = db_sess.query(Audience).filter(Audience.is_eventable == False).all()
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     weeks = list(map(lambda au: get_week_audience(db_sess, au.id, date), audiences))
     if form.validate_on_submit():
@@ -501,7 +503,7 @@ def edit_week(week_id):
     week = get_week_audience(db_sess, audience.id, week1.week_start_date)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     session['message'] = dumps(ST_message)
-    return render_template('edit_week.html', title='Редиктирование недели', message=smessage,
+    return render_template('edit_week.html', title='Редактирование недели', message=smessage,
                            week=week, dicts=dicts, audience=audience)
 
 
@@ -715,10 +717,10 @@ def create_group():
             if not day:
                 continue
             if not any(day):
-                session['message'] = dumps({'status': 0, 'text': 'Рассписание составить невозможно'})
+                session['message'] = dumps({'status': 0, 'text': 'Расписание составить невозможно'})
                 return redirect('/create_group')
             if need[0] == need[1] and len(list(filter(lambda p: p, day))) < 2:
-                session['message'] = dumps({'status': 0, 'text': 'Рассписание составить невозможно'})
+                session['message'] = dumps({'status': 0, 'text': 'Расписание составить невозможно'})
                 return redirect('/create_group')
         form_group['timesd'] = arr
 
@@ -886,6 +888,57 @@ def show_groups():
                            groups=groups, audiences=audiences, le=len(groups), dicts=dicts, follows=follows)
 
 
+@app.route('/show/mer', methods=['GET', 'POST'])
+def show_mer():
+    db_sess = db_session.create_session()
+    mers = db_sess.query(MerParams).all()
+    smessage = session['message']
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+
+    session['message'] = dumps(ST_message)
+    return render_template('show_mer.html', title='Мероприятия', message=smessage, dicts=dicts,
+                           mers=mers)
+
+
+@app.route('/create_mer', methods=['GET', 'POST'])
+@login_required
+def create_mer():
+    if current_user.role not in (3, 4):
+        abort(404)
+    smessage = session['message']
+    db_sess = db_session.create_session()
+    form = MerCreateFORM()
+    if not form.time.choices:
+        form.time.choices = [(1, '8:30-10:00'), (2, '11:40-13:10'), (3, '13:20-14:50'), (4, '15:00-16:30'),
+                             (5, '16:40-18:10'), (6, '18:15-19:45')]
+    if form.validate_on_submit():
+        if db_sess.query(MerParams).filter(MerParams.date == form.date.data,
+                                           MerParams.par == form.time.data).first():
+            message = {'status': 0, 'text': 'Время занято другим мероприятием'}
+            return render_template('create_mer.html', title='Создание мероприятия', message=dumps(message),
+                                   form=form)
+        mer_group = Group(
+            subject='МЕРОПРИЯТИЕ',
+            is_mer=True,
+        )
+        db_sess.add(mer_group)
+        db_sess.commit()
+        mer = MerParams(
+            mer_id=mer_group.id,
+            name=form.name.data,
+            par=form.time.data,
+            date=form.date.data
+        )
+        db_sess.add(mer)
+        db_sess.commit()
+        message = {'status': 1, 'text': 'Мероприятие создано'}
+        return redirect('/show/mer')
+
+    session['message'] = dumps(ST_message)
+    return render_template('create_mer.html', title='Создание мероприятия', message=smessage,
+                           form=form)
+
+
 @app.route('/audience_profile/<int:aud_id>', methods=["GET", "POST"])
 def audience_profile(aud_id):
     db_sess = db_session.create_session()
@@ -907,7 +960,7 @@ def group_profile(group_id):
         abort(404)
     if group.is_mer:
         abort(404)
-    audience = db_sess.query(Audience).get(group.audience_id)
+        audience = db_sess.query(Audience).get(group.audience_id)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     week = get_week_audience(db_sess, audience.id, datetime.date.today())
     HOURS = {'need': group.need_hours, 'get': get_group_hours(db_sess, group.course_start_date,

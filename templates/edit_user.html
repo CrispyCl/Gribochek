@@ -127,7 +127,7 @@
                 </p>
                 {% endfor %}
             </div>
-            <div class="form-field d-flex align-items-center">
+            <div class="form-field d-flex align-items-center" {% if user.role != 1 %} style="display: none !important;" {% endif %}>
                 <span><b>Г</b></span>
                 <b style="width: -webkit-fill-available;">{{ form.groups(class="form-control",
                     placeholder="Выберите группы", required='required') }}</b>

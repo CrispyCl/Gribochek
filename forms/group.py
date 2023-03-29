@@ -9,7 +9,7 @@ def my_date_check(form, field):
     d1 = datetime.date.today() - datetime.timedelta(days=7)
     d2 = datetime.date(2023, 6, 1)
     if not (d1 <= field.data <= d2):
-        raise ValidationError(f'Date must be by {d1.strftime("%Y-%m-%d")} to {d2.strftime("%Y-%m-%d")}')
+        raise ValidationError(f'Дата должны быть от {d1.strftime("%Y-%m-%d")} до {d2.strftime("%Y-%m-%d")}')
 
 
 class CreateGroupForm(FlaskForm):

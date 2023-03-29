@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
+<!-- List group -->
+{% if current_user.role in (3, 4) %}
+<a href="/create_mer"><h2 style="color: orange;">Создать мероприятие</h2></a>
+{% endif %}
+{% if not mers %}
+<h3 class="text-center h3_no" style="margin-top: 10px;">Нет доступных мероприятий</h3>
+{% endif %}
+{% for mer in mers %}
+{% if current_user.role in (3, 4) %}
+<a style="color: black; background-color: orange" href="/delete_mer/{{ mer.id }}"><h3>Удалить</h3></a>
+{% endif %}
+<div class="МЕРОПРИЯТИЕ">
+    <h3>{{ mer.date.strftime("%d-%m-%Y") }}</h3>
+    <h3>{{ dicts['PARS_TIMES'][mer.par] }}</h3>
+    <h3>{{ mer.name }}</h3>
+</div>
+{% endfor %}
+
+
+<style>
+    .btn_login_2, .login_btn{
+        display: none !important;
+    }
+</style>
+{% endblock content %}
