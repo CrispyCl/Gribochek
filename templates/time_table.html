@@ -4,14 +4,14 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 
 <!-- List group -->
-<h2 class="text-center h2_index">Расписание на</h2>
-<h2 class="text-center h2_index">{{ dates['st_date'] }}/{{ dates['en_date'] }}</h2>
-<a style="color: black" href="/time_table/{{ dates['back_week'] }}">Назад</a>
-<a style="color: black" href="/time_table/{{ dates['next_week'] }}">Вперёд</a>
 
 {% if weeks == [] %}
 <h3 class="text-center h3_no" style="margin-top: 10px;">Нет доступных групп</h3>
 {% else %}
+    <h2 class="text-center h2_index">Расписание на</h2>
+    <h2 class="text-center h2_index">{{ dates['st_date'] }}/{{ dates['en_date'] }}</h2>
+    <a style="color: black" href="/time_table/{{ dates['back_week'] }}">Назад</a>
+    <a style="color: black" href="/time_table/{{ dates['next_week'] }}">Вперёд</a>
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <div class="dates">

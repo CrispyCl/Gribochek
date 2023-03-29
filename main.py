@@ -9,6 +9,7 @@ from json import dumps, loads
 from data import db_session
 from data.audiences import Audience
 from data.days import Day
+from data.group_follows import GroupFollow
 from data.groups import Group
 from data.users import User
 from data.weeks import Week
@@ -105,11 +106,33 @@ def profile(user_id):
         abort(404)
     if user.role == 3 and current_user.role != 4:
         abort(404)
-    if current_user.role == 1 and current_user.id != user_id:
+    if current_user.role == 1 and current_user.id != user_id and user.role == 1:
         abort(404)
     smessage = session['message']
     session['message'] = dumps(ST_message)
     return render_template('profile.html', title='Профиль', message=smessage, user=user)
+
+
+@app.route('/user_groups/<int:user_id>')
+@login_required
+def user_groups(user_id):
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).get(user_id)
+    if not user:
+        abort(404)
+    if user.role not in (1, 2):
+        abort(404)
+    follows = db_sess.query(GroupFollow).filter(GroupFollow.user_id == user_id).all()
+    groups = list(map(lambda f: db_sess.query(Group).get(f.group_id),
+                      follows))
+    groups = list(filter(lambda gr: gr, groups))
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    smessage = session['message']
+
+    session['message'] = dumps(ST_message)
+    print(groups)
+    return render_template('/user_groups.html', title='Группы пользователя', message=smessage, groups=groups, le=len(groups),
+                           dicts=dicts, user=user)
 
 
 @app.route('/register/admin', methods=['GET', 'POST'])
@@ -162,6 +185,8 @@ def register_teacher():
     db_sess = db_session.create_session()
     users = db_sess.query(User).all()
     last_id = users[-1].id + 1
+    if not form.groups.choices:
+        form.groups.choices = [(None, 'Выбрать позже')]
 
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -214,12 +239,12 @@ def register_student():
     users = db_sess.query(User).all()
     last_id = 1 if not users else users[-1].id + 1
     smessage = session['message']
-
-    if request.method == 'GET':
-        pass
-        # groups = db_sess.query(Group.name).all()
-        # groups = [(1, 'Первая группа'), (2, 'Вторая группа')]
-        # form.group.choices = groups
+    if not form.groups.choices:
+        group_list = list(
+            map(lambda gr: (gr.id, f'{gr.subject} - №{gr.id}'),
+                db_sess.query(Group).filter(datetime.date.today() <= Group.course_end_date).all()))
+        group_list.append((None, 'Выбрать позже'))
+        form.groups.choices = group_list
 
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -251,12 +276,22 @@ def register_student():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
+        group = GroupFollow(
+            user_id=last_id,
+            group_id=form.groups.data
+        )
+        db_sess.add(group)
+        db_sess.commit()
         message = dumps({'status': 1, 'text': 'Ученик зарегистрирован'})
         session['message'] = message
         return redirect('/show/users')
     session['message'] = dumps(ST_message)
     return render_template('register_student.html', title='Регистрация студента', form=form, message=smessage)
 
+
+@app.route('/add_to_group/<int:user_id>')
+def add_to_group(user_id):
+    pass
 
 @app.route('/create_audience', methods=['GET', 'POST'])
 def create_audience():
@@ -780,13 +815,16 @@ def show_groups():
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     db_sess = db_session.create_session()
     groups = db_sess.query(Group).all()
+    if current_user.role in (1, 2):
+        follows = list(map(lambda gr: gr.id,
+                          db_sess.query(GroupFollow).filter(GroupFollow.user_id == current_user.id).all()))
     audiences = []
     for i in range(len(groups)):
         audience = db_sess.query(Audience).filter(Audience.id == groups[i].audience_id).first()
         audiences.append(audience)
     session['message'] = dumps(ST_message)
     return render_template('show_groups.html', title='Список групп', message=smessage,
-                           groups=groups, audiences=audiences, le=len(groups), dicts=dicts)
+                           groups=groups, audiences=audiences, le=len(groups), dicts=dicts, follows=follows)
 
 
 @app.route('/audience_profile/<int:aud_id>', methods=["GET", "POST"])

@@ -8,20 +8,19 @@
 
 <div class="all">
     <div class="tabel_header">
-        <div class="all_group">Все группы:</div>
-        {% if current_user.role in (3, 4) %}
-        <a href="/create_group" class="btn btn_add">Добавить группу</a>
-        {% endif %}
+        <div class="all_group">Группы пользователя {{ user.email }}:</div>
     </div>
     {% if le == 0 %}
     <div class="table text-center" style="margin-top: 20px;">
-        <h3>Групп нет</h3>
+        <h3>Пользователь не добавлен к группам</h3>
     </div>
     {% endif %}
-    {% for i in range(le) %}
+    {% if current_user.role in (3, 4) %}
+    <a href="/add_to_group/{{ user.id }}" class="btn btn_add">Добавить в группу</a>
+    {% endif %}
+    {% for group in groups %}
     <div class="tabel">
-        {% set group = groups[i] %}
-        <div class="container group" {% if group.id in follows %} style="border-color: #f7904a;" {% endif %}>
+        <div class="container group" style="border-color: #f7904a;">
             <div class="name_group"><b>{{ group.subject }} - #{{ group.id }}</b></div>
             <div class="group_time">
                 <div class="day_time"><b style="margin-right: 10px;">{{ dicts['DAYS'][group.week_day0] }}</b> {{

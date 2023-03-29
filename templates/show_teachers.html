@@ -16,7 +16,7 @@
             <h3>{{teacher.surname}} {{teacher.name}} {{teacher.otchestvo}}</h3>
             <p class="teacher_email"><i class='bx bx-envelope'></i>{{teacher.email}}</p>
             <a class="btn" href="/profile/{{teacher.id}}">Профиль</a>
-            <a class="btn" href="#">Группы</a>
+            <a class="btn" href="/user_groups/{{ teacher.id }}">Группы</a>
             {% if current_user.role in (3, 4) %}
             <a class="btn" href="/edit_user/{{teacher.id}}">Редактировать</a>
             {% endif %}

@@ -52,7 +52,7 @@
 					<li><a href="/show/groups">Группы</a></li>
 					{% endif %}
 					{% if current_user.is_authenticated and current_user.role == 1 %}
-					<li><a href="/teachers">Преподователи</a></li>
+					<li><a href="/show/teachers">Преподователи</a></li>
 					{% endif %}
 					{% if current_user.role in [2, 3, 4] %}
 					<div class="uch_div">
