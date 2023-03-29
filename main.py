@@ -23,7 +23,7 @@ from forms.edit_user import EditUserForm
 from forms.group import CreateGroupForm
 from forms.user import RegisterForm
 from static.python.functions import create_main_admin, DateEncoder, DecodeDate, get_pars_list, get_need_days, \
-    load_week_by_group_form, get_week_audience, get_teacher_par_list
+    load_week_by_group_form, get_week_audience, get_teacher_par_list, get_group_hours
 from static.python.vClassFunctions import get_day
 from static.python.variables import ST_message, DAYS, PARS_TIMES
 
@@ -489,9 +489,17 @@ def edit_day(audience_id, day_id):
     if not week:
         abort(404)
     day = get_day(day_id, db_sess)
+    pars_le = []
+    groups = db_sess.query(Group).filter(Group.course_start_date <= day1.date,
+                                         day1.date <= Group.course_end_date,
+                                         Group.audience_id == audience_id).all()
+    print(groups)
+    pars_le = len(list(filter(lambda gr: list(map(lambda dg: dg.id if dg else None, day.pars)).count(gr.id) < 4,
+                         groups)))
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     session['message'] = dumps(ST_message)
-    return render_template('edit_day.html', title='Редиктирование дня', message=smessage,
+    print(pars_le, day.pars)
+    return render_template('edit_day.html', title='Редиктирование дня', message=smessage, pars_le=pars_le,
                            dicts=dicts, day=day, day1=day1, audience=audience, week=week)
 
 
@@ -513,11 +521,15 @@ def add_par(audience_id, day_id, par_index):
     day = get_day(day_id, db_sess)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     if not form.group_id.choices:
+        groups = db_sess.query(Group).filter(Group.course_start_date <= day1.date,
+                                             day1.date <= Group.course_end_date,
+                                             Group.audience_id == audience_id).all()
+        groups = list(filter(lambda gr: list(map(lambda dg: dg.id if dg else None, day.pars)).count(gr.id) < 4,
+                             groups))
+        print(day.pars, groups)
         group_list = list(
             map(lambda gr: (gr.id, f'{gr.subject} - №{gr.id}'),
-                db_sess.query(Group).filter(Group.course_start_date <= day1.date,
-                              day1.date <= Group.course_end_date,
-                              Group.audience_id == audience_id).all()))
+                groups))
         group_list.append((None, 'Отменить создание'))
         form.group_id.choices = group_list
     if request.method == 'POST':
@@ -602,8 +614,6 @@ def create_group():
                              db_sess.query(Audience).filter(Audience.is_eventable == False).all()))
         form.audience_id.choices = audience_list
 
-    if request.method == 'GET':
-        pass
     if form.validate_on_submit():
         teacher_id = int(form.teacher_id.data)
         audience_id = int(form.audience_id.data)
@@ -750,6 +760,10 @@ def accept_create_group():
     if request.method == 'POST':
         l = load_week_by_group_form(db_sess, form)
         if l:
+            la1 = get_group_hours(db_sess, form['st_date'], form['en_date'], last_id)
+            group = db_sess.query(Group).get(last_id)
+            group.need_hours = la1
+            db_sess.commit()
             session['message'] = dumps({'status': 1, 'text': 'Группа создана'})
             return redirect('/show/groups')
     session['message'] = dumps(ST_message)
@@ -815,9 +829,8 @@ def show_groups():
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     db_sess = db_session.create_session()
     groups = db_sess.query(Group).all()
-    if current_user.role in (1, 2):
-        follows = list(map(lambda gr: gr.id,
-                          db_sess.query(GroupFollow).filter(GroupFollow.user_id == current_user.id).all()))
+    follows = list(map(lambda gr: gr.id,
+                        db_sess.query(GroupFollow).filter(GroupFollow.user_id == current_user.id).all()))
     audiences = []
     for i in range(len(groups)):
         audience = db_sess.query(Audience).filter(Audience.id == groups[i].audience_id).first()
@@ -849,9 +862,11 @@ def group_profile(group_id):
     audience = db_sess.query(Audience).get(group.audience_id)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     week = get_week_audience(db_sess, audience.id, datetime.date.today())
+    HOURS = {'need': group.need_hours, 'get': get_group_hours(db_sess, group.course_start_date,
+                                                              group.course_end_date, group.id)}
 
     return render_template('group_profile.html', title='Страница группы', message=dumps(ST_message),
-                           group=group, audience=audience, dicts=dicts, week=week)
+                           group=group, audience=audience, dicts=dicts, week=week, HOURS=HOURS)
 
 
 @app.route('/user_delete/<int:user_id>', methods=['GET', 'POST'])

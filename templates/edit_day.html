@@ -20,14 +20,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for par in day.pars %}
+                    {% for i in range(6) %}
+                    {% set par = day.pars[i] %}
                     <tr>
                         <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
                         <td class="text-center">
                             {% if par %}
                             {{ par.subject }} - #{{ par.id }}
                             <a href="/delete_par/{{ audience.id }}/{{ day.id }}/{{ loop.index - 1 }}" style="color: red">Удалить</a>
-                            {% else %}
+                            {% elif pars_le %}
                             <a href="/add_par/{{ audience.id }}/{{ day.id }}/{{ loop.index - 1 }}" style="color: orange">Добавить пару</a>
                             {% endif %}
                         </td>

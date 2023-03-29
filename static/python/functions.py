@@ -312,8 +312,24 @@ def get_week_teacher(db_sess, teacher_id: int, date: datetime.date) -> vWeek:
 
     return bweek
 
-# form = {'subject': 'Спортивное Ориентирование', 'teacher_id': 2, 'audience_id': 1, 'st_date': '2023-02-27', 'en_date': '2023-04-07', 'day0': False, 'day1': False, 'day2': False, 'day3': False, 'day4': False, 'day5': True, 'day0time': '', 'day1time': ''}
+
+def get_group_hours(db_sess, st_date: datetime.date, en_date: datetime.date, group_id):
+    week = get_week_group(db_sess, group_id, st_date)
+    le = 0
+    while st_date <= en_date:
+        if st_date.weekday() == 0:
+            week = get_week_group(db_sess, group_id, st_date)
+        if st_date.weekday() == 6:
+            st_date += datetime.timedelta(days=1)
+            continue
+        day = week.days[st_date.weekday()]
+        le += len(list(filter(lambda gr: gr, day.pars)))
+
+        st_date += datetime.timedelta(days=1)
+    return le
+
+
 # db_session.global_init("../../db/GriBD.db")
-# print(form)
-# t_days = get_teacher_par_list(db_session.create_session(), form)
-# print(t_days)
+# le = get_group_hours(db_session.create_session(), st_date=DecodeDate('2023-03-25'), en_date=DecodeDate('2023-04-08'),
+#                      group_id=1)
+# print(le)
