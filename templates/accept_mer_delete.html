@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/audience.css') }}">
+
+<form action="" method="post">
+<div class="all_table">
+    <div class="all_about_containers">
+        <div class="container">
+            <div class="row">
+                <div class="col btn-col">
+                    <a href="/show/mer"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24">
+                        Назад
+                    </a>
+                </div>
+                <div class="col">
+                    <div class="container about">
+                        <div class="row">
+                            <div class="user_img">
+                                <div class="name_audience">
+                                    <div class="audience"><b>Подтверждение удаления мероприятия</b></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-left: 30px">
+                        <h5><b>Название:</b> {{ mer.name }}</h5>
+                        <h5><b>Дата:</b> {{ mer.date.strftime("%d-%m-%Y") }}</h5>
+                        <h5><b>Время:</b> {{ dicts['PARS_TIMES'][mer.par] }}</h5>
+                        </div>
+                    </div>
+                    <div class="col btn-col">
+                    <button class="btn back">
+                        Удалить
+                    </button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
+
+{% endblock %}

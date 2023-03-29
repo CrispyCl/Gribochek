@@ -12,7 +12,7 @@
 {% endif %}
 {% for mer in mers %}
 {% if current_user.role in (3, 4) %}
-<a style="color: black; background-color: orange" href="/delete_mer/{{ mer.id }}"><h3>Удалить</h3></a>
+<a style="color: black; background-color: orange" href="/delete_mer/{{ mer.mer_id }}"><h3>Удалить</h3></a>
 {% endif %}
 <div class="МЕРОПРИЯТИЕ">
     <h3>{{ mer.date.strftime("%d-%m-%Y") }}</h3>

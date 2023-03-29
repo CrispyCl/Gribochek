@@ -31,6 +31,14 @@
                     {{ form.date.label }}
                     {{ form.date(class="form-control") }}
                 </div>
+                <div class="form-check checks">
+                    {% for group in groups %}
+                    <input type="checkbox" name="groups"
+                           value="{{ group.id }}">
+                    <label>{{ group.subject }} - #{{ group.id }}</label>
+                    <br>
+                    {% endfor %}
+                </div>
             </div>
             <b>{{ form.submit(value="Создать мероприятие", class="btn mt-3", style="font-weight: bold;") }}</b>
         </form>

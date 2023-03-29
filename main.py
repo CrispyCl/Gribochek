@@ -911,12 +911,15 @@ def create_mer():
     if not form.time.choices:
         form.time.choices = [(1, '8:30-10:00'), (2, '11:40-13:10'), (3, '13:20-14:50'), (4, '15:00-16:30'),
                              (5, '16:40-18:10'), (6, '18:15-19:45')]
+    groups = db_sess.query(Group).filter(Group.is_mer == False).all()
+    if not groups:
+        session['message'] = dumps({'status': 0, 'text': 'Нет доступных групп'})
     if form.validate_on_submit():
         if db_sess.query(MerParams).filter(MerParams.date == form.date.data,
                                            MerParams.par == form.time.data).first():
             message = {'status': 0, 'text': 'Время занято другим мероприятием'}
             return render_template('create_mer.html', title='Создание мероприятия', message=dumps(message),
-                                   form=form)
+                                   form=form, groups=groups)
         mer_group = Group(
             subject='МЕРОПРИЯТИЕ',
             is_mer=True,
@@ -936,7 +939,31 @@ def create_mer():
 
     session['message'] = dumps(ST_message)
     return render_template('create_mer.html', title='Создание мероприятия', message=smessage,
-                           form=form)
+                           form=form, groups=groups)
+
+
+@app.route('/delete_mer/<int:mer_id>', methods=['GET', 'POST'])
+def delete_mer(mer_id):
+    if current_user.role not in (3, 4):
+        abort(404)
+    db_sess = db_session.create_session()
+    mer_gr = db_sess.query(Group).get(mer_id)
+    if not mer_gr:
+        abort(404)
+    mer = db_sess.query(MerParams).get(mer_id)
+    if not mer:
+        abort(404)
+    smessage = session['message']
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    if request.method == 'POST':
+        db_sess.query(MerParams).filter(MerParams.mer_id == mer_id).delete()
+        db_sess.query(Group).filter(Group.id == mer_id).delete()
+        db_sess.commit()
+        return redirect('/show/mer')
+
+    session['message'] = dumps(ST_message)
+    return render_template('accept_mer_delete.html', title='Удаление мероприятия', message=smessage, dicts=dicts,
+                           mer=mer)
 
 
 @app.route('/audience_profile/<int:aud_id>', methods=["GET", "POST"])
