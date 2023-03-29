@@ -265,7 +265,8 @@ def register_student():
     if not form.groups.choices:
         group_list = list(
             map(lambda gr: (gr.id, f'{gr.subject} - №{gr.id}'),
-                db_sess.query(Group).filter(datetime.date.today() <= Group.course_end_date).all()))
+                db_sess.query(Group).filter(datetime.date.today() <= Group.course_end_date,
+                                            Group.is_mer == False).all()))
         group_list.append((None, 'Выбрать позже'))
         form.groups.choices = group_list
 
@@ -515,7 +516,8 @@ def edit_day(audience_id, day_id):
     pars_le = []
     groups = db_sess.query(Group).filter(Group.course_start_date <= day1.date,
                                          day1.date <= Group.course_end_date,
-                                         Group.audience_id == audience_id).all()
+                                         Group.audience_id == audience_id,
+                                         Group.is_mer == False).all()
     print(groups)
     pars_le = len(list(filter(lambda gr: list(map(lambda dg: dg.id if dg else None, day.pars)).count(gr.id) < 4,
                          groups)))
@@ -546,7 +548,8 @@ def add_par(audience_id, day_id, par_index):
     if not form.group_id.choices:
         groups = db_sess.query(Group).filter(Group.course_start_date <= day1.date,
                                              day1.date <= Group.course_end_date,
-                                             Group.audience_id == audience_id).all()
+                                             Group.audience_id == audience_id,
+                                             Group.is_mer == False).all()
         groups = list(filter(lambda gr: list(map(lambda dg: dg.id if dg else None, day.pars)).count(gr.id) < 4,
                              groups))
         print(day.pars, groups)
@@ -776,7 +779,7 @@ def accept_create_group():
     smessage = session['message']
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     db_sess = db_session.create_session()
-    groups = db_sess.query(Group).all()
+    groups = db_sess.query(Group).filter(Group.is_mer == False).all()
     last_id = 1 if not groups else groups[-1].id + 1
     teacher = db_sess.query(User).get(form['teacher_id'])
     audience = db_sess.query(Audience).get(form['audience_id'])
@@ -786,6 +789,12 @@ def accept_create_group():
             la1 = get_group_hours(db_sess, form['st_date'], form['en_date'], last_id)
             group = db_sess.query(Group).get(last_id)
             group.need_hours = la1
+            db_sess.commit()
+            follow = GroupFollow(
+                group_id=last_id,
+                user_id=teacher.id
+            )
+            db_sess.add(follow)
             db_sess.commit()
             session['message'] = dumps({'status': 1, 'text': 'Группа создана'})
             return redirect('/show/groups')
@@ -851,7 +860,7 @@ def show_groups():
     smessage = session['message']
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     db_sess = db_session.create_session()
-    groups = db_sess.query(Group).all()
+    groups = db_sess.query(Group).filter(Group.is_mer == False).all()
     follows = list(map(lambda gr: gr.id,
                         db_sess.query(GroupFollow).filter(GroupFollow.user_id == current_user.id).all()))
     audiences = []
@@ -881,6 +890,8 @@ def group_profile(group_id):
     db_sess = db_session.create_session()
     group = db_sess.query(Group).get(group_id)
     if not group:
+        abort(404)
+    if group.is_mer:
         abort(404)
     audience = db_sess.query(Audience).get(group.audience_id)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}

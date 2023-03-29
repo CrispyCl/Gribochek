@@ -14,11 +14,13 @@ class Group(SqlAlchemyBase):
     audience_id = sqlalchemy.Column(sqlalchemy.Integer,
                                     sqlalchemy.ForeignKey("audiences.id"))
     need_hours = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
-    week_day0 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
-    week_day1 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
-    timeday0 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
-    timeday1 = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
+    week_day0 = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    week_day1 = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    timeday0 = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    timeday1 = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     course_start_date = sqlalchemy.Column(sqlalchemy.DATE, nullable=True)
     course_end_date = sqlalchemy.Column(sqlalchemy.DATE, nullable=True)
+
+    is_mer = sqlalchemy.Column(sqlalchemy.BOOLEAN, nullable=False, default=False)
 
     teacher = orm.relationship('User')

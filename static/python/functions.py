@@ -100,7 +100,8 @@ def get_teacher_par_list(db_sess, form: dict):
     need = get_need_days(form)
     day0 = [1, 2, 3, 4, 5, 6]
     day1 = [1, 2, 3, 4, 5, 6]
-    groups = db_sess.query(Group).filter(Group.teacher_id == teacher_id).all()
+    groups = db_sess.query(Group).filter(Group.teacher_id == teacher_id,
+                                         Group.is_mer == False).all()
 
     if not groups:
         return [day0, day1]
@@ -274,7 +275,8 @@ def get_week_audience(db_sess, audience_id: int, date: datetime.date):
 
 
 def get_week_group(db_sess, group_id: int, date: datetime.date) -> vWeek:
-    group = db_sess.query(Group).filter(Group.id == group_id).first()
+    group = db_sess.query(Group).filter(Group.id == group_id,
+                                        Group.is_mer == False).first()
     if not group:
         return
 
@@ -291,7 +293,8 @@ def get_week_group(db_sess, group_id: int, date: datetime.date) -> vWeek:
 
 
 def get_week_teacher(db_sess, teacher_id: int, date: datetime.date) -> vWeek:
-    groups = db_sess.query(Group).filter(Group.teacher_id == teacher_id).all()
+    groups = db_sess.query(Group).filter(Group.teacher_id == teacher_id,
+                                         Group.is_mer == False).all()
     if not groups:
         return
 
