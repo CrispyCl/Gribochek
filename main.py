@@ -371,6 +371,16 @@ def edit_user(user_id):
     if current_user.role == user.role and current_user.id != user.id:
         abort(404)
     form = EditUserForm()
+    if not form.groups.choices:
+        if user.role == 1:
+            group_list = list(
+                map(lambda gr: (gr.id, f'{gr.subject} - №{gr.id}'),
+                    db_sess.query(Group).filter(datetime.date.today() <= Group.course_end_date,
+                                                Group.is_mer == False).all()))
+            group_list.append((-1, 'Выбрать позже'))
+            form.groups.choices = group_list
+        else:
+            form.groups.choices = [(-1, 'Выбрать позже')]
     smessage = session['message']
     if request.method == 'GET':
         if current_user.id == user.id or user.role == 3:
@@ -422,6 +432,10 @@ def edit_user(user_id):
             else:
                 if form.new_password.data:
                     user.set_password(form.new_password.data)
+                if form.groups.data != -1:
+                    follow = db_sess.query(GroupFollow).filter(GroupFollow.user_id == user.id).first()
+                    follow.group_id = form.groups.data
+                    db_sess.commit()
                 user.name = form.name.data
                 user.surname = form.surname.data
                 user.otchestvo = form.otchestvo.data

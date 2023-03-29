@@ -128,6 +128,16 @@
                 {% endfor %}
             </div>
             <div class="form-field d-flex align-items-center">
+                <span><b>Г</b></span>
+                <b style="width: -webkit-fill-available;">{{ form.groups(class="form-control",
+                    placeholder="Выберите группы", required='required') }}</b>
+                {% for error in form.groups.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </div>
+            <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
                 <b style="width: -webkit-fill-available;">{{ form.new_password(class="form-control", type="password",
                     placeholder="Новый пароль") }}</b>

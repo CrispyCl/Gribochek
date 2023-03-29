@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, EmailField, FileField
+from wtforms import PasswordField, StringField, SubmitField, EmailField, FileField, SelectField
 
 
 class EditUserForm(FlaskForm):
@@ -12,6 +12,7 @@ class EditUserForm(FlaskForm):
     name = StringField('Имя')
     surname = StringField('Фамилия')
     otchestvo = StringField('Отчество')
+    groups = SelectField(u'', choices=())
     # group = SelectMultipleField(u'', choices=(), validate_choice=False)
 
     # For all
