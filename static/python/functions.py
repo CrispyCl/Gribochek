@@ -6,11 +6,13 @@ from PIL import Image
 from data import db_session
 from data.audiences import Audience
 from data.days import Day
+from data.group_follows import GroupFollow
 from data.groups import Group
 from data.users import User
 from data.weeks import Week
-from static.python.vClassFunctions import get_day, get_audience
+from static.python.vClassFunctions import get_day, get_audience, get_group
 from static.python.variables import vWeek, vDay
+from itertools import product
 
 
 def DateEncoder(date: datetime.date):
@@ -297,21 +299,63 @@ def get_week_teacher(db_sess, teacher_id: int, date: datetime.date) -> vWeek:
                                          Group.is_mer == False).all()
     if not groups:
         return
-
     needed_date = date - datetime.timedelta(days=date.weekday())
-    audiences = db_sess.query(Audience).filter(Audience.id in [group.audience_id for group in groups]).all()
+    groups_ids = [group.audience_id for group in groups]
+    audiences = db_sess.query(Audience).filter(Audience.id.in_(groups_ids)).all()
     weeks = db_sess.query(Week).filter(Week.week_start_date == needed_date,
-                                       Week.audience_id in [audience.id for audience in audiences]).all()
+                                       Week.audience_id.in_([audience.id for audience in audiences])).all()
     bweek = vWeek(-1, needed_date, needed_date + datetime.timedelta(days=6), -1,
                   [vDay(-1,
                         [None] * 6,
                         -1, needed_date + datetime.timedelta(days=dd), False)
-                   for dd in range(7)])
-
-    for day in range(7):
+                   for dd in range(6)])
+    for day in range(6):
         bweek.days[day].is_holiday = any(week.days[day].is_holiday for week in weeks)
-        for para in range(len(bweek.days[day].pars)):
-            bweek.days[day].pars[para] = list(filter(lambda x: x is not None, [week.days[day].para_groups[para] for week in weeks]))
+        vals = [list(filter(lambda x: x is not None, [week.days[day].p1group for week in weeks])),
+                list(filter(lambda x: x is not None, [week.days[day].p2group for week in weeks])),
+                list(filter(lambda x: x is not None, [week.days[day].p3group for week in weeks])),
+                list(filter(lambda x: x is not None, [week.days[day].p4group for week in weeks])),
+                list(filter(lambda x: x is not None, [week.days[day].p5group for week in weeks])),
+                list(filter(lambda x: x is not None, [week.days[day].p6group for week in weeks]))]
+
+
+
+        for para_i in range(6):
+            if vals[para_i]:
+                bweek.days[day].pars[para_i] = get_group(vals[para_i][0], db_sess)
+
+    return bweek
+
+
+def get_week_user(db_sess, user_id: int, date: datetime.date) -> vWeek:
+    groups_ids = db_sess.query(GroupFollow.group_id).filter(GroupFollow.user_id == user_id).all()
+    if not groups_ids:
+        return
+    groups_ids = list(map(lambda n: n[0], groups_ids))
+    groups = db_sess.query(Group).filter(Group.id.in_(groups_ids)).all()
+    audiences_ids = [group.audience_id for group in groups]
+    needed_date = date - datetime.timedelta(days=date.weekday())
+    audiences = db_sess.query(Audience).filter(Audience.id.in_(audiences_ids)).all()
+    weeks = db_sess.query(Week).filter(Week.week_start_date == needed_date,
+                                       Week.audience_id.in_([audience.id for audience in audiences])).all()
+    bweek = vWeek(-1, needed_date, needed_date + datetime.timedelta(days=6), -1,
+                  [vDay(-1,
+                        [None] * 6,
+                        -1, needed_date + datetime.timedelta(days=dd), False)
+                   for dd in range(6)])
+    for day in range(6):
+        bweek.days[day].is_holiday = any(week.days[day].is_holiday for week in weeks)
+        vals = [list(filter(lambda x: x is not None and x in groups_ids, [week.days[day].p1group for week in weeks])),
+                list(filter(lambda x: x is not None and x in groups_ids, [week.days[day].p2group for week in weeks])),
+                list(filter(lambda x: x is not None and x in groups_ids, [week.days[day].p3group for week in weeks])),
+                list(filter(lambda x: x is not None and x in groups_ids, [week.days[day].p4group for week in weeks])),
+                list(filter(lambda x: x is not None and x in groups_ids, [week.days[day].p5group for week in weeks])),
+                list(filter(lambda x: x is not None and x in groups_ids, [week.days[day].p6group for week in weeks]))]
+
+
+        for para_i in range(6):
+            if vals[para_i]:
+                bweek.days[day].pars[para_i] = get_group(vals[para_i][0], db_sess)
 
     return bweek
 
@@ -332,7 +376,21 @@ def get_group_hours(db_sess, st_date: datetime.date, en_date: datetime.date, gro
     return le
 
 
-# db_session.global_init("../../db/GriBD.db")
-# le = get_group_hours(db_session.create_session(), st_date=DecodeDate('2023-03-25'), en_date=DecodeDate('2023-04-08'),
-#                      group_id=1)
-# print(le)
+def groups_contadict(db_sess, groups: [Group]):
+    for couple in filter(lambda x: x[0].audience_id != x[1].audience_id, product(groups, repeat=2)):
+        least_date = min(couple[0].course_start_date, couple[1].course_start_date)
+        last_date = min(couple[0].course_end_date, couple[1].course_end_date)
+        for i in range(datetime.timedelta(least_date - last_date).days):
+            i_date = least_date + datetime.timedelta(days=i)
+            group_1_day = db_sess.query(Day).filter(Day.date == i_date,
+                                                    Day.week.audience_id == couple[0].audience_id).first()
+            group_2_day = db_sess.query(Day).filter(Day.date == i_date,
+                                                    Day.week.audience_id == couple[1].audience_id).first()
+            if group_1_day.p1group == group_2_day.p1group or \
+               group_1_day.p2group == group_2_day.p2group or \
+                group_1_day.p3group == group_2_day.p3group or \
+                group_1_day.p4group == group_2_day.p4group or \
+                group_1_day.p5group == group_2_day.p5group or \
+                group_1_day.p6group == group_2_day.p6group:
+                return
+    return True

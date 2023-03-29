@@ -25,7 +25,7 @@ from forms.group import CreateGroupForm
 from forms.mer_create import MerCreateFORM
 from forms.user import RegisterForm
 from static.python.functions import create_main_admin, DateEncoder, DecodeDate, get_pars_list, get_need_days, \
-    load_week_by_group_form, get_week_audience, get_teacher_par_list, get_group_hours
+    load_week_by_group_form, get_week_audience, get_teacher_par_list, get_group_hours, get_week_user, get_week_teacher
 from static.python.vClassFunctions import get_day
 from static.python.variables import ST_message, DAYS, PARS_TIMES
 
@@ -114,13 +114,17 @@ def profile(user_id):
     session['message'] = dumps(ST_message)
     working_days = []
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+    week = []
+    if user.role == 1:
+        week = get_week_user(db_sess, user.id, datetime.date.today())
     if user.role == 2:
         days1 = db_sess.query(WorkingDays).get(user.id).days.split('✡')
         for i in range(6):
             if days1[i] == '1':
                 working_days.append(i + 1)
+        week = get_week_teacher(db_sess, user.id, datetime.date.today())
     return render_template('profile.html', title='Профиль', message=smessage, user=user, working_days=working_days,
-                           dicts=dicts)
+                           dicts=dicts, week=week)
 
 
 @app.route('/user_groups/<int:user_id>')
@@ -880,11 +884,15 @@ def show_groups():
     follows = list(map(lambda gr: gr.id,
                         db_sess.query(GroupFollow).filter(GroupFollow.user_id == current_user.id).all()))
     audiences = []
+    HOURS = []
     for i in range(len(groups)):
+        HO1 = {'need': groups[i].need_hours, 'get': get_group_hours(db_sess, groups[i].course_start_date,
+                                                                  groups[i].course_end_date, groups[i].id)}
+        HOURS.append(HO1)
         audience = db_sess.query(Audience).filter(Audience.id == groups[i].audience_id).first()
         audiences.append(audience)
     session['message'] = dumps(ST_message)
-    return render_template('show_groups.html', title='Список групп', message=smessage,
+    return render_template('show_groups.html', title='Список групп', message=smessage, HOURS=HOURS,
                            groups=groups, audiences=audiences, le=len(groups), dicts=dicts, follows=follows)
 
 
@@ -914,6 +922,7 @@ def create_mer():
     groups = db_sess.query(Group).filter(Group.is_mer == False).all()
     if not groups:
         session['message'] = dumps({'status': 0, 'text': 'Нет доступных групп'})
+        return redirect('/show/mer')
     if form.validate_on_submit():
         if db_sess.query(MerParams).filter(MerParams.date == form.date.data,
                                            MerParams.par == form.time.data).first():
@@ -987,7 +996,7 @@ def group_profile(group_id):
         abort(404)
     if group.is_mer:
         abort(404)
-        audience = db_sess.query(Audience).get(group.audience_id)
+    audience = db_sess.query(Audience).get(group.audience_id)
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     week = get_week_audience(db_sess, audience.id, datetime.date.today())
     HOURS = {'need': group.need_hours, 'get': get_group_hours(db_sess, group.course_start_date,

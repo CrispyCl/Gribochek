@@ -59,7 +59,9 @@
         <h2>Нужно часов: {{ HOURS['need'] }}</h2>
         <h2>Пройдут часов: {{ HOURS['get'] }}</h2>
     </div>
+    {% if HOURS['need'] < HOURS['get'] %}
     <div class="time_erorr">Требуется изменения в расписании</div>
+    {% endif %}
 </div>
 <!-- List group -->
 <div class="all_table_list">

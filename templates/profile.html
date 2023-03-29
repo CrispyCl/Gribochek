@@ -78,89 +78,44 @@
             <div class="container about" style="margin-top: 20px;">
                 <div class="row">
                     <div class="smt"></div>
-                    <div class="profile_main text-center">
-                        Здесь будет расписание, а пока кря
+                   <div class="col">
+                <div class="all_table_list">
+
+                    <div class="table_header_list" style="cursor: pointer;">
+                        <div class="text">Расписание текущей недели: </div><i class="fa fa-caret-down"></i>
                     </div>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
-                    <p>ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga
-                        ga ga ga ga
-                        ga
-                        ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga ga</p>
+                    <div class="items_of_table_list">
+
+                        <!-- 1 -->
+                        {% for day in week.days %}
+                        <div class="list-group">
+                            <div class="day_of_group">{{ dicts['DAYS'][loop.index] }} {{ day.date.strftime("%d-%m-%Y")
+                                }}</div>
+                            <div class="table-responsive-sm" style="overflow-y: hidden">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Время</th>
+                                            <th scope="col">Группа</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for par in day.pars %}
+                                        <tr>
+                                            <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
+                                            <td>
+                                                {% if par %}{{ par.subject }} - #{{ par.id }}{% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
                 </div>
             </div>
         </div>
@@ -168,6 +123,121 @@
     </div>
 </div>
 
+<style>
+    .table-responsive-sm {
+        min-width: 290px;
+    }
+
+    .all_table_list {
+        margin: 20px;
+        background-color: #316899;
+        border-radius: 10px;
+        padding-bottom: 20px;
+    }
+
+    .table_header_list {
+        display: flex;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: white;
+        padding: 10px;
+        flex-direction: row;
+        align-items: center;
+    }
+
+
+    .items_of_table_list {
+        display: none;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        position: relative;
+        flex: 1 1 160px;
+    }
+
+    .list-group {
+        max-width: 336px;
+        align-items: center;
+        background-color: #fff;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        min-width: 336px;
+    }
+
+    .list-group-item.list-group-item-action.first {
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+    }
+
+    .day_of_group {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: #000;
+    }
+
+
+    .items_of_table_list.active {
+        display: flex;
+    }
+
+    .table_header_list .fa.fa-caret-down {
+        transform: rotate(0deg);
+        transition: all 0.2s linear;
+    }
+
+    .table_header_list.active_rotate .fa.fa-caret-down {
+        transform: rotate(180deg);
+        transition: all 0.2s linear;
+    }
+
+    #class_inf {
+        height: 200px;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+    }
+
+    #class_inf img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+   @media screen and (max-width: 400px) {
+        .text.text-center {
+            width: auto;
+        }
+    }
+
+    @media screen and (max-width: 390px) {
+        .all_table {
+            margin: 20px 0;
+        }
+    }
+</style>
+
+
+<script>
+    const table_header_btn = document.querySelector('.table_header_list'),
+        items_of_table = document.querySelector('.items_of_table_list');
+
+    table_header_btn.addEventListener('click', () => {
+        if (items_of_table.classList.contains('active')) {
+            items_of_table.classList.remove('active');
+            table_header_btn.classList.remove('active_rotate')
+        }
+        else {
+            items_of_table.classList.add('active');
+            table_header_btn.classList.add('active_rotate')
+        }
+    })
+</script>
 
 
         {% endblock %}

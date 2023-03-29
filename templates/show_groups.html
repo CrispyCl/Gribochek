@@ -19,8 +19,9 @@
     </div>
     {% endif %}
     {% for i in range(le) %}
-    <div class="tabel">
+    <div class="table">
         {% set group = groups[i] %}
+        {% set hour = HOURS[i] %}
         <div class="container group" {% if group.id in follows %} style="border-color: #f7904a;" {% endif %}>
             <div class="name_group"><b>{{ group.subject }} - #{{ group.id }}</b></div>
             <div class="group_time">
@@ -33,7 +34,11 @@
                     }}
                 </div>
             </div>
-            <div class="voskl">!</div>
+            {% if hour['need'] > hour['get'] %}
+            <div class="voskl" title="Требуются изменения в расписании">!</div>
+            {% else %}
+            <div class="voskl" style="background-color: white;">!</div>
+            {% endif %}
             <a href="/group_profile/{{ group.id }}" class="btn btn_about">Подробнее</a>
         </div>
     </div>
