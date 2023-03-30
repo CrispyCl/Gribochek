@@ -94,7 +94,7 @@
                             <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
                             <td style="{% if par.id == group.id %}color: orange;{% endif %}">
                                 {% if mer.par == loop.index %}
-                                <a href="#" style="color: red">Мероприятие</a>
+                                <a href="/mer_profile/{{ mer.id }}" style="color: red">Мероприятие</a>
                                 {% else %}
                                 {% if par %}{{ par.subject }} - #{{ par.id }}{% endif %}
                                 {% endif %}

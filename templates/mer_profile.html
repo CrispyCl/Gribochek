@@ -2,31 +2,56 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mer_profile.css') }}">
 
-{% if current_user.role in (3, 4) %}
-<a style="color: black; background-color: orange" href="/delete_mer/{{ mer.mer_id }}"><h3>Удалить</h3></a>
-{% endif %}
-<div class="МЕРОПРИЯТИЕ">
-    <h3>{{ mer.date.strftime("%d-%m-%Y") }}</h3>
-    <h3>{{ dicts['PARS_TIMES'][mer.par] }}</h3>
-    <h3>{{ mer.name }}</h3>
-</div>
-<div>
-    <h2>Группы:</h2>
-    {% for group in groups %}
-    <div>
-        <b>{{ group.subject }} - #{{ group.id }}</b>
-        <div class="day_time"><b style="margin-right: 10px;">{{ dicts['DAYS'][group.week_day0] }}</b> {{
-                    dicts['PARS_TIMES'][group.timeday0]
-                    }}
-                </div>
-        <div class="day_time"><b style="margin-right: 10px;">{{ dicts['DAYS'][group.week_day1] }}</b> {{
-                    dicts['PARS_TIMES'][group.timeday1]
-                    }}
-                </div>
-        <a href="/group_profile/{{ group.id }}" class="btn btn_about">Подробнее</a>
+
+
+<div class="all_all">
+    <div class="mer">
+        <div class="all_mer">
+            <div class="mer_label">
+                <h3>Название мероприятия:</h3>
+                <h3>Дата мероприятия: </h3>
+                <h3>Время мероприятия: </h3>
+            </div>
+            <div class="mer_forms">
+                <h3>{{ mer.name }}</h3>
+                <h3>{{ mer.date.strftime("%d-%m-%Y") }}</h3>
+                <h3>{{ dicts['PARS_TIMES'][mer.par] }}</h3>
+            </div>
+        </div>
     </div>
-    {% endfor %}
+    {% if current_user.role in (3, 4) %}
+    <div class="del">
+        <a class="del_btn" href="/delete_mer/{{ mer.mer_id }}">Удалить</a>
+    </div>
+    {% endif %}
 </div>
+
+
+<div class="all">
+    <h1 class="groups text-center">Группы:</h1>
+    <div class="all_group">
+        {% for group in groups %}
+        <div class="group">
+            <div class="name">
+                {{ group.subject }} - #{{ group.id }}
+            </div>
+            <div class="day">
+                <b style="margin-right: 10px;">{{ dicts['DAYS'][group.week_day0] }}</b>
+                {{ dicts['PARS_TIMES'][group.timeday0] }}
+            </div>
+            <div class="time">
+                <b style="margin-right: 10px;">{{ dicts['DAYS'][group.week_day1] }}</b>
+                {{ dicts['PARS_TIMES'][group.timeday1] }}
+            </div>
+            <div class="about">
+                <a class="about_btn" href="/group_profile/{{ group.id }}" class="btn btn_about">Подробнее</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
 
 {% endblock %}

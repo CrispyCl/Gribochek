@@ -1,0 +1,77 @@
+.all_all {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 20px 0px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.mer {
+    margin-left: 30px;
+}
+
+.all_mer {
+    display: flex;
+}
+
+.all {}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px 50px;
+    border-radius: 10px;
+}
+
+.all_group {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.name {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.day {}
+
+.time {}
+
+.about {
+    margin: 15px 0;
+}
+
+.about_btn {
+    padding: 10px;
+    background-color: #333;
+    border-radius: 10px;
+}
+
+.del {}
+
+.del_btn {
+    background-color: red;
+    margin: 0 30px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.mer_label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 49px;
+}
+
+.mer_forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

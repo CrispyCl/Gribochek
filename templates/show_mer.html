@@ -29,20 +29,20 @@
     </div>
         {% if current_user.is_authenticated %}
     <div class="about">
-        <a href="/delete_mer/{{ mer.mer_id }}">Подробнее</a>
+        <a href="/mer_profile/{{ mer.mer_id }}">Подробнее</a>
     </div>
         {% endif %}
         {% if current_user.role in (3, 4) %}
-    <div class="del">
-            <a href="/delete_mer/{{ mer.mer_id }}">Удалить</a>
-    </div>
+        <a href="/delete_mer/{{ mer.mer_id }}">Удалить</a>
         {% endif %}
+    </div>
 </div>
 {% endfor %}
 
 
 <style>
-    .btn_login_2, .login_btn{
+    .btn_login_2,
+    .login_btn {
         display: none !important;
     }
 </style>

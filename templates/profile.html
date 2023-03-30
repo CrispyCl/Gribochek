@@ -52,6 +52,14 @@
                                         <button class="btn btn_edit">Редактировать</button>
                                     </a>
                                 </div>
+                                {% if user.role == 2 %}
+                                <div class="col btn-col btn_edit">
+                                    <a href="/teacher_delete/{{ user.id }}">
+                                        <button class="btn btn_edit"
+                                            style="background-color: red !important;">Удалить</button>
+                                    </a>
+                                </div>
+                                {% endif %}
                                 {% endif %}
                                 <div class="col btn-col btn_edit">
                                     <a href="/user_groups/{{ user.id }}">
