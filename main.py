@@ -944,6 +944,10 @@ def create_mer():
             message = {'status': 0, 'text': 'Время занято другим мероприятием'}
             return render_template('create_mer.html', title='Создание мероприятия', message=dumps(message),
                                    form=form, groups=groups)
+        if len(request.form.getlist('groups')) < 2:
+            message = {'status': 0, 'text': 'Мероприятие должно включать минимум 2 группы'}
+            return render_template('create_mer.html', title='Создание мероприятия', message=dumps(message),
+                                   form=form, groups=groups)
         mer_group = Group(
             subject='МЕРОПРИЯТИЕ',
             is_mer=True,
