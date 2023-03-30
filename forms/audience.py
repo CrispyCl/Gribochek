@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, Length
 
 
 class AudienceForm(FlaskForm):
-    name = StringField('Название аудитории', validators=[DataRequired(), Length(min=5, max=40)])
+    name = StringField('Название аудитории', validators=[DataRequired(), Length(min=5, max=36)])
     # about = TextAreaField('Описание', validators=[DataRequired()])
     # img = MultipleFileField('Фото аудитории')
     img = FileField('Фото аудитории')

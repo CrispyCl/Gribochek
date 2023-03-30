@@ -11,6 +11,7 @@ from data.audiences import Audience
 from data.days import Day
 from data.group_follows import GroupFollow
 from data.groups import Group
+from data.mer_follow import MerFollow
 from data.mer_params import MerParams
 from data.users import User
 from data.weeks import Week
@@ -323,6 +324,7 @@ def register_student():
 def add_to_group(user_id):
     pass
 
+
 @app.route('/create_audience', methods=['GET', 'POST'])
 def create_audience():
     if not current_user.is_authenticated:
@@ -335,6 +337,11 @@ def create_audience():
         db_sess = db_session.create_session()
         if db_sess.query(Audience).filter(Audience.name == form.name.data).first():
             message = {'status': 0, 'text': 'Такая аудитория уже есть'}
+            return render_template('create_audience.html', title='Создание аудитории',
+                                   form=form,
+                                   message=dumps(message))
+        if len(form['name'].data) > 36 or any(len(word) > 18 for word in form['name'].data.split()):
+            message = {'status': 0, 'text': 'Недопустимое название аудитории'}
             return render_template('create_audience.html', title='Создание аудитории',
                                    form=form,
                                    message=dumps(message))
@@ -473,6 +480,11 @@ def edit_audience(aud_id):
                 audience.name != form.name.data:
             message = {'status': 0, 'text': 'Такая аудитория уже есть'}
             return render_template('edit_audience.html', title='Изменение аудитории',
+                                   form=form,
+                                   message=dumps(message))
+        if len(form['name'].data) > 36 or any(len(word) > 18 for word in form['name'].data.split()):
+            message = {'status': 0, 'text': 'Недопустимое название аудитории'}
+            return render_template('create_audience.html', title='Создание аудитории',
                                    form=form,
                                    message=dumps(message))
         if form.name.data:
@@ -943,7 +955,39 @@ def create_mer():
         )
         db_sess.add(mer)
         db_sess.commit()
+        date = form.date.data
+        for group_id in request.form.getlist('groups'):
+            group_id = int(group_id)
+            follow = MerFollow(
+                group_id=group_id,
+                mer_id=mer_group.id
+            )
+            db_sess.add(follow)
+            db_sess.commit()
+            group = db_sess.query(Group).get(group_id)
+            week = get_week_audience(db_sess, group.audience_id, date)
+            time = int(form.time.data)
+            par = week.days[date.weekday()].pars[time - 1]
+            if group_id == par.id:
+                day = db_sess.query(Day).filter(Day.date == date,
+                                                Day.week_id == week.id).first()
+                if time == 1:
+                    day.p1group = mer_group.id
+                if time == 2:
+                    day.p2group = mer_group.id
+                if time == 3:
+                    day.p3group = mer_group.id
+                if time == 4:
+                    day.p4group = mer_group.id
+                if time == 5:
+                    day.p5group = mer_group.id
+                if time == 6:
+                    day.p6group = mer_group.id
+                db_sess.merge(day)
+                db_sess.commit()
+
         message = {'status': 1, 'text': 'Мероприятие создано'}
+        session['message'] = dumps(message)
         return redirect('/show/mer')
 
     session['message'] = dumps(ST_message)

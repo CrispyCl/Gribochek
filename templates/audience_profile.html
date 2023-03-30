@@ -25,12 +25,13 @@
                             </div>
                             <div class="col-xs-6 name_surname_email">
 
-                                
+                                {% if current_user.role in (3, 4) %}
                                 <div class="col btn-col btn_edit">
-                                    <a href="#">
+                                    <a href="/edit_audience/{{ audience.id }}">
                                         <button class="btn btn_edit">Редактировать</button>
                                     </a>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

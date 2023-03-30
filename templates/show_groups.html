@@ -34,7 +34,7 @@
                     }}
                 </div>
             </div>
-            {% if hour['need'] > hour['get'] %}
+            {% if hour['need'] > hour['get'] and current_user.role in (3, 4) %}
             <div class="voskl" title="Требуются изменения в расписании">!</div>
             {% else %}
             <div class="voskl" style="background-color: white;">!</div>
