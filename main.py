@@ -6,7 +6,7 @@ from PIL import Image
 from flask_login import LoginManager, current_user, login_required, logout_user, login_user
 from json import dumps, loads
 
-from data import db_session
+from data import db_session, week_api
 from data.audiences import Audience
 from data.days import Day
 from data.group_follows import GroupFollow
@@ -1085,7 +1085,54 @@ def logout():
     return redirect("/")
 
 
+@app.route('/real_teacher_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def real_teacher_delete(id):
+    db_sess = db_session.create_session()
+    teacher = db_sess.query(User).filter(User.id == id,
+                                         User.role == 2
+                                         ).first()
+    if teacher and current_user.role in (3, 4):
+        groups = db_sess.query(Group).filter(Group.teacher_id == teacher.id).all()
+        db_sess.delete(teacher)
+        if groups:
+            for group in groups:
+                days = db_sess.query(Day).filter((Day.p1group == group.id) |
+                                                 (Day.p2group == group.id) |
+                                                 (Day.p3group == group.id) |
+                                                 (Day.p4group == group.id) |
+                                                 (Day.p5group == group.id) |
+                                                 (Day.p6group == group.id)).all()
+                for day in days:
+                    if day.p1group == group.id:
+                        day.p1group = None
+                    if day.p2group == group.id:
+                        day.p2group = None
+                    if day.p3group == group.id:
+                        day.p3group = None
+                    if day.p4group == group.id:
+                        day.p4group = None
+                    if day.p5group == group.id:
+                        day.p5group = None
+                    if day.p6group == group.id:
+                        day.p6group = None
+                db_sess.delete(group)
+        group_follows = db_sess.query(GroupFollow).filter(GroupFollow.user_id == teacher.id).all()
+        if group_follows:
+            for i in group_follows:
+                db_sess.delete(i)
+        workdays = db_sess.query(WorkingDays).filter(WorkingDays.teacher_id == teacher.id).all()
+        if workdays:
+            for i in workdays:
+                db_sess.delete(i)
+        db_sess.commit()
+    else:
+        abort(404)
+    return redirect('/')
+
+
 if __name__ == '__main__':
     db_session.global_init("db/GriBD.db")
+    app.register_blueprint(week_api.blueprint)
     create_main_admin(db_session.create_session())
     app.run(port=8080, host='127.0.0.1')
