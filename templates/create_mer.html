@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/create_audience.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/create_mer.css') }}">
 
 <form action="" method="post">
     {{ form.hidden_tag() }}
@@ -16,27 +16,30 @@
     <div class="wrapper_register">
         <form class="p-3 mt-3">
             <div class="items">
+                <div class="item_name" style="margin-top: 15px;">Название:</div>
                 <div class="form-field d-flex align-items-center">
                     <b style="width: -webkit-fill-available;">{{ form.name(class="form-control", type="text",
                         placeholder="Название мероприятия") }}</b>
                 </div>
-                <div class="form-field teacher">
-                    <div class="item_name" style="margin-top: 5px;">Время:</div>
-                    <div class="teacher_item_i">
+                <div class="item_name" style="margin-top: 5px;">Время:</div>
+                <div class="form-field teacher_time">
                         {{ form.time(class="form-control teacher_item") }}
-                        <i class="fa fa-caret-down"></i>
-                    </div>
+                        <i class="fa fa-caret-down" style="margin-right: 10px;"></i>
                 </div>
-                <div>
-                    {{ form.date.label }}
+                <div class="item_name">
+                    {{ form.date.label }}:
+                </div>
+                <div class="form-field teacher_time">
                     {{ form.date(class="form-control") }}
                 </div>
+                <div class="item_name">Выберите группы:</div>
                 <div class="form-check checks">
                     {% for group in groups %}
-                    <input type="checkbox" name="groups"
+                    <div class="check">
+                        <input type="checkbox" name="groups"
                            value="{{ group.id }}">
                     <label>{{ group.subject }} - #{{ group.id }}</label>
-                    <br>
+                    </div>
                     {% endfor %}
                 </div>
             </div>

@@ -1,0 +1,52 @@
+.create {
+
+display: flex;
+
+justify-content: center;
+
+margin: 30px 0;
+}
+
+.create_mer {
+    
+background-color: #333;
+    
+padding: 10px 30px;
+    
+border-radius: 10px;
+    
+font-size: x-large;
+}
+
+.all {display: flex;justify-content: space-around;align-items: center;background-color: #fff;margin: 0 30px;border-radius: 10px;padding: 15px;}
+
+.name {display: flex;flex-direction: column;align-items: center;}
+
+.day {display: flex;flex-direction: column;align-items: center;}
+
+.time {display: flex;flex-direction: column;align-items: center;}
+
+.del {
+    background-color: red;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.name_name {
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.about {
+    background-color: #333;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 660px) {
+    .all {
+        flex-direction: column;
+    }
+}

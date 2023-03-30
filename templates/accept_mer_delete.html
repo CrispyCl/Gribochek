@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/audience.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/delete_mer.css') }}">
 
 <form action="" method="post">
 <div class="all_table">
@@ -10,7 +10,7 @@
         <div class="container">
             <div class="row">
                 <div class="col btn-col">
-                    <a href="/show/mer"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24">
+                    <a class="btn back" href="/show/mer"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24">
                         Назад
                     </a>
                 </div>
@@ -23,16 +23,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="margin-left: 30px">
-                        <h5><b>Название:</b> {{ mer.name }}</h5>
-                        <h5><b>Дата:</b> {{ mer.date.strftime("%d-%m-%Y") }}</h5>
-                        <h5><b>Время:</b> {{ dicts['PARS_TIMES'][mer.par] }}</h5>
+                        <div class="all_inner">
+                            <div class="itme">
+                                <h5><b>Название:</b> {{ mer.name }}</h5>
+                                <h5><b>Дата:</b> {{ mer.date.strftime("%d-%m-%Y") }}</h5>
+                                <h5><b>Время:</b> {{ dicts['PARS_TIMES'][mer.par] }}</h5>
+                            </div>
+                            <div class="del">
+                                <button class="btn back">
+                                    Удалить
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="col btn-col">
-                    <button class="btn back">
-                        Удалить
-                    </button>
                 </div>
                 </div>
             </div>

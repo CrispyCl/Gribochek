@@ -1,25 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/show_mer.css') }}">
 
 <!-- List group -->
 {% if current_user.role in (3, 4) %}
-<a href="/create_mer"><h2 style="color: orange;">Создать мероприятие</h2></a>
+<div class="create">
+    <a class="create_mer" href="/create_mer">Создать мероприятие</a>
+</div>
 {% endif %}
 {% if not mers %}
 <h3 class="text-center h3_no" style="margin-top: 10px;">Нет доступных мероприятий</h3>
 {% endif %}
 {% for mer in mers %}
-{% if current_user.role in (3, 4) %}
-<a style="color: black; background-color: orange" href="/delete_mer/{{ mer.mer_id }}"><h3>Удалить</h3></a>
-{% endif %}
-<div class="МЕРОПРИЯТИЕ">
-    <h3>{{ mer.date.strftime("%d-%m-%Y") }}</h3>
-    <h3>{{ dicts['PARS_TIMES'][mer.par] }}</h3>
-    <h3>{{ mer.name }}</h3>
+
+<div class="all">
+    <div class="name">
+        <div class="name_name">Название мероприятия</div>
+        <div>{{ mer.name }}</div>
+    </div>
+    <div class="day">
+        <div class="name_name">Дата мероприятия</div>
+        <div>{{ mer.date.strftime("%d-%m-%Y") }}</div>
+    </div>
+    <div class="time">
+        <div class="name_name">Время проведения</div>
+        <div>{{ dicts['PARS_TIMES'][mer.par] }}</div>
+    </div>
+        {% if current_user.is_authenticated %}
+    <div class="about">
+        <a href="/delete_mer/{{ mer.mer_id }}">Подробнее</a>
+    </div>
+        {% endif %}
+        {% if current_user.role in (3, 4) %}
+    <div class="del">
+            <a href="/delete_mer/{{ mer.mer_id }}">Удалить</a>
+    </div>
+        {% endif %}
 </div>
-<a style="color: red;" href="/mer_profile/{{ mer.mer_id }}">Подробнее</a>
 {% endfor %}
 
 

@@ -29,12 +29,16 @@
 }
 
 .list-group {
+    min-height: 423px;
+    max-width: 336px;
     align-items: center;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px;
-    min-width: 600px;
-    max-width: 600px;
+    min-width: 336px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .list-group-item.list-group-item-action.first {
@@ -96,6 +100,19 @@
     font-size: xxx-large;
 }
 
+.mer_btn {
+    display: flex;
+    justify-content: center;
+}
+
+.show_mer {
+    background-color: #333;
+    padding: 10px 30px;
+    margin: 15px 0;
+    border-radius: 10px;
+    font-size: x-large;
+}
+
 
 
 @media screen and (max-width: 1840px) {
@@ -113,7 +130,7 @@
 }
 
 
-@media screen and (max-width: 839px) {
+@media screen and (max-width: 840px) {
     .h2_index {
         font-size: xx-large;
     }

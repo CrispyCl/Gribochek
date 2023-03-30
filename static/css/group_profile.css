@@ -29,12 +29,16 @@
 }
 
 .list-group {
+    min-height: 423px;
+    max-width: 336px;
     align-items: center;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px;
-    min-width: 600px;
-    max-width: 600px;
+    min-width: 336px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .list-group-item.list-group-item-action.first {
@@ -81,12 +85,12 @@
 }
 
 .time_erorr {
-    
-display: flex;
-    
-justify-content: center;
-    
-color: #ed1b0c;
+
+    display: flex;
+
+    justify-content: center;
+
+    color: #ed1b0c;
 }
 
 

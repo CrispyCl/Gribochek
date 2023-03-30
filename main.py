@@ -1034,6 +1034,8 @@ def audience_profile(aud_id):
 
 @app.route('/group_profile/<int:group_id>')
 def group_profile(group_id):
+    if not current_user.is_authenticated:
+        abort(404)
     db_sess = db_session.create_session()
     group = db_sess.query(Group).get(group_id)
     if not group:
@@ -1059,19 +1061,6 @@ def group_profile(group_id):
                            group=group, audience=audience, dicts=dicts, week=week, HOURS=HOURS, mers=mers)
 
 
-@app.route('/user_delete/<int:user_id>', methods=['GET', 'POST'])
-@login_required
-def user_delete(user_id):
-    db_sess = db_session.create_session()
-    user = db_sess.query(User).filter(User.id == user_id,).first()
-    if user:
-        db_sess.delete(user)
-        db_sess.commit()
-    else:
-        abort(404)
-    return redirect('/')
-
-
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = db_session.create_session()
@@ -1085,9 +1074,35 @@ def logout():
     return redirect("/")
 
 
+@app.route('/teacher_delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def teacher_delete(id):
+    if current_user.role not in (3, 4):
+        abort(404)
+    db_sess = db_session.create_session()
+    teacher = db_sess.query(User).filter(User.id == id,
+                                      User.role == 2
+                                      ).first()
+    smessage = session['message']
+    if teacher and current_user.role in (3, 4):
+        groups = db_sess.query(Group).filter(Group.teacher_id == teacher.id).all()
+        session['message'] = dumps(ST_message)
+        if groups:
+            return render_template('accept_teacher_delete.html', title="Удаление преподавателя", teacher=teacher, groups=groups,
+                                   message=smessage)
+        else:
+            return render_template('accept_teacher_delete.html', title="Удаление преподавателя", teacher=teacher, groups=[],
+                                   message=smessage)
+    else:
+        abort(404)
+    return redirect('/')
+
+
 @app.route('/real_teacher_delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def real_teacher_delete(id):
+    if current_user.role not in (3, 4):
+        abort(404)
     db_sess = db_session.create_session()
     teacher = db_sess.query(User).filter(User.id == id,
                                          User.role == 2

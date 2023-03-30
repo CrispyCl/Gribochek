@@ -116,12 +116,16 @@
     }
 
     .list-group {
+        min-height: 423px;
         max-width: 336px;
         align-items: center;
         background-color: #fff;
         border-radius: 10px;
         margin-bottom: 10px;
         min-width: 336px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
     .list-group-item.list-group-item-action.first {
@@ -168,7 +172,7 @@
         object-fit: cover;
     }
 
-   @media screen and (max-width: 400px) {
+    @media screen and (max-width: 400px) {
         .text.text-center {
             width: auto;
         }

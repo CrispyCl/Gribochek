@@ -1,31 +1,29 @@
 .edit_btns {
 
-display: flex;
+    display: flex;
 
-justify-content: flex-end;
+    justify-content: flex-end;
 }
 
 .edit_btns a {
 
-background-color: #333;
+    background-color: #333;
 
-padding: 10px;
+    padding: 10px;
 
-border-radius: 10px;
+    border-radius: 10px;
 }
 
-.edit_btns a h3 {
-    
-}
+.edit_btns a h3 {}
 
-.time_table_header  {
+.time_table_header {
     display: flex;
     flex-direction: column;
     margin: 0 auto;
     max-width: 50%;
 }
 
-.time_table_header form .dates{
+.time_table_header form .dates {
     min-width: 450px;
 }
 
@@ -34,13 +32,13 @@ border-radius: 10px;
     justify-content: center;
 }
 
- .btn.btn_submit {
+.btn.btn_submit {
 
-background-color: #333;
+    background-color: #333;
 
-color: #fff;
+    color: #fff;
 
-margin-left: 20px;
+    margin-left: 20px;
 }
 
 .next_prev_btns {
@@ -96,12 +94,16 @@ margin-left: 20px;
 }
 
 .list-group {
+    min-height: 423px;
+    max-width: 336px;
     align-items: center;
     background-color: #fff;
     border-radius: 10px;
     margin-bottom: 10px;
-    min-width: 600px;
-    max-width: 600px;
+    min-width: 336px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .list-group-item.list-group-item-action.first {
