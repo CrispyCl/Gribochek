@@ -981,6 +981,20 @@ def create_mer():
                            form=form, groups=groups)
 
 
+@app.route('/mer_profile/<int:mer_id>')
+def mer_profile(mer_id):
+    db_sess = db_session.create_session()
+    mer = db_sess.query(MerParams).get(mer_id)
+    groups = list(map(lambda mr: db_sess.query(Group).filter(Group.id == mr.group_id).first(),
+                      db_sess.query(MerFollow).filter(MerFollow.mer_id == mer.mer_id).all()))
+    smessage = session['message']
+    dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
+
+    session['message'] = dumps(ST_message)
+    return render_template('mer_profile.html', title='Страница мероприятия', message=smessage,
+                           mer=mer, groups=groups, dicts=dicts)
+
+
 @app.route('/delete_mer/<int:mer_id>', methods=['GET', 'POST'])
 def delete_mer(mer_id):
     if current_user.role not in (3, 4):
