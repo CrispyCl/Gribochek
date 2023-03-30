@@ -13,8 +13,7 @@
 <h3 class="text-center h3_no" style="margin-top: 10px;">Нет доступных мероприятий</h3>
 {% endif %}
 {% for mer in mers %}
-
-<div class="all">
+<div class="all" style="margin: 20px">
     <div class="name">
         <div class="name_name">Название мероприятия</div>
         <div>{{ mer.name }}</div>
@@ -33,10 +32,11 @@
     </div>
         {% endif %}
         {% if current_user.role in (3, 4) %}
+    <div class="del">
         <a href="/delete_mer/{{ mer.mer_id }}">Удалить</a>
+    </div>
         {% endif %}
     </div>
-</div>
 {% endfor %}
 
 
