@@ -72,6 +72,12 @@
 
         <!-- 1 -->
         {% for day in week.days %}
+        {% set day_loop_index = loop.index %}
+        {% if day.date in mers.keys() %}
+        {% set mer = mers[day.date] %}
+        {% else %}
+        {% set mer = None %}
+        {% endif %}
         <div class="list-group">
             <div class="day_of_group">{{ dicts['DAYS'][loop.index] }} {{ day.date.strftime("%d-%m-%Y") }}</div>
             <div class="table-responsive-sm" style="overflow-y: hidden">
@@ -87,7 +93,11 @@
                         <tr>
                             <th scope="row">{{ dicts['PARS_TIMES'][loop.index] }}</th>
                             <td style="{% if par.id == group.id %}color: orange;{% endif %}">
+                                {% if mer.par == loop.index %}
+                                <a href="#" style="color: red">Мероприятие</a>
+                                {% else %}
                                 {% if par %}{{ par.subject }} - #{{ par.id }}{% endif %}
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}

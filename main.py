@@ -811,15 +811,18 @@ def accept_create_group():
     smessage = session['message']
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     db_sess = db_session.create_session()
-    groups = db_sess.query(Group).filter(Group.is_mer == False).all()
+    groups = db_sess.query(Group).all()
     last_id = 1 if not groups else groups[-1].id + 1
     teacher = db_sess.query(User).get(form['teacher_id'])
     audience = db_sess.query(Audience).get(form['audience_id'])
     if request.method == 'POST':
-        l = load_week_by_group_form(db_sess, form)
+        print(form)
+        l = load_week_by_group_form(db_sess, form, last_id)
+        db_sess.commit()
         if l:
             la1 = get_group_hours(db_sess, form['st_date'], form['en_date'], last_id)
             group = db_sess.query(Group).get(last_id)
+            print(group.id)
             group.need_hours = la1
             db_sess.commit()
             follow = GroupFollow(
@@ -968,23 +971,6 @@ def create_mer():
             week = get_week_audience(db_sess, group.audience_id, date)
             time = int(form.time.data)
             par = week.days[date.weekday()].pars[time - 1]
-            if group_id == par.id:
-                day = db_sess.query(Day).filter(Day.date == date,
-                                                Day.week_id == week.id).first()
-                if time == 1:
-                    day.p1group = mer_group.id
-                if time == 2:
-                    day.p2group = mer_group.id
-                if time == 3:
-                    day.p3group = mer_group.id
-                if time == 4:
-                    day.p4group = mer_group.id
-                if time == 5:
-                    day.p5group = mer_group.id
-                if time == 6:
-                    day.p6group = mer_group.id
-                db_sess.merge(day)
-                db_sess.commit()
 
         message = {'status': 1, 'text': 'Мероприятие создано'}
         session['message'] = dumps(message)
@@ -1045,9 +1031,18 @@ def group_profile(group_id):
     week = get_week_audience(db_sess, audience.id, datetime.date.today())
     HOURS = {'need': group.need_hours, 'get': get_group_hours(db_sess, group.course_start_date,
                                                               group.course_end_date, group.id)}
+    mers = {}
+    for follow in db_sess.query(MerFollow).filter(MerFollow.group_id == group.id).all():
+        need_date = datetime.date.today() - datetime.timedelta(days=datetime.date.today().weekday())
+        params = db_sess.query(MerParams).filter(MerParams.mer_id == follow.mer_id,
+                                                 need_date <= MerParams.date,
+                                                 MerParams.date <= need_date + datetime.timedelta(days=6)).first()
+        if not params:
+            continue
+        mers[params.date] = {'id': params.mer_id, 'name': params.name, 'par': params.par, 'date': params.date}
 
     return render_template('group_profile.html', title='Страница группы', message=dumps(ST_message),
-                           group=group, audience=audience, dicts=dicts, week=week, HOURS=HOURS)
+                           group=group, audience=audience, dicts=dicts, week=week, HOURS=HOURS, mers=mers)
 
 
 @app.route('/user_delete/<int:user_id>', methods=['GET', 'POST'])

@@ -8,6 +8,8 @@ from data.audiences import Audience
 from data.days import Day
 from data.group_follows import GroupFollow
 from data.groups import Group
+from data.mer_follow import MerFollow
+from data.mer_params import MerParams
 from data.users import User
 from data.weeks import Week
 from static.python.vClassFunctions import get_day, get_audience, get_group
@@ -168,7 +170,7 @@ def get_teacher_par_list(db_sess, form: dict):
 def create_week(db_sess, date: datetime.date, audience_id: int):
     needed_date = date - datetime.timedelta(days=date.weekday())
     if db_sess.query(Week).filter(Week.week_start_date == needed_date,
-                                  Week.audience_id == audience_id).all():
+                                  Week.audience_id == audience_id).first():
         return
     week = Week(
         week_start_date=needed_date,
@@ -181,7 +183,7 @@ def create_week(db_sess, date: datetime.date, audience_id: int):
     db_sess.commit()
 
 
-def load_week_by_group_form(db_sess, form: dict):
+def load_week_by_group_form(db_sess, form: dict, last_id):
     days = sorted(form['days'])
     time = sorted([form['day0time'], form['day1time']])
     st_date = form['st_date']
@@ -190,6 +192,7 @@ def load_week_by_group_form(db_sess, form: dict):
     en_date: datetime.date
     audience_id = form['audience_id']
     group = Group(
+        id=last_id,
         subject=form['subject'],
         teacher_id=form['teacher_id'],
         audience_id=audience_id,
@@ -283,14 +286,13 @@ def get_week_group(db_sess, group_id: int, date: datetime.date) -> vWeek:
         return
 
     audience = db_sess.query(Audience).filter(Audience.id == group.audience_id).first()
-    vweek = deepcopy(get_week_audience(db_sess, audience.id, date))
+    vweek = get_week_audience(db_sess, audience.id, date)
     for day_i in vweek.days:
-        for para in range(len(day_i.pars)):
+        for para in range(6):
             if not day_i.pars[para]:
                 continue
             if day_i.pars[para].id != group_id:
                 day_i.pars[para] = None
-
     return vweek
 
 
@@ -352,7 +354,6 @@ def get_week_user(db_sess, user_id: int, date: datetime.date) -> vWeek:
                 list(filter(lambda x: x is not None and x in groups_ids, [week.days[day].p5group for week in weeks])),
                 list(filter(lambda x: x is not None and x in groups_ids, [week.days[day].p6group for week in weeks]))]
 
-
         for para_i in range(6):
             if vals[para_i]:
                 bweek.days[day].pars[para_i] = get_group(vals[para_i][0], db_sess)
@@ -363,6 +364,9 @@ def get_week_user(db_sess, user_id: int, date: datetime.date) -> vWeek:
 def get_group_hours(db_sess, st_date: datetime.date, en_date: datetime.date, group_id):
     week = get_week_group(db_sess, group_id, st_date)
     le = 0
+    follow = list(map(lambda mr: mr.mer_id,
+                      db_sess.query(MerFollow).filter(MerFollow.group_id == group_id).all()))
+    print(follow)
     while st_date <= en_date:
         if st_date.weekday() == 0:
             week = get_week_group(db_sess, group_id, st_date)
@@ -370,7 +374,12 @@ def get_group_hours(db_sess, st_date: datetime.date, en_date: datetime.date, gro
             st_date += datetime.timedelta(days=1)
             continue
         day = week.days[st_date.weekday()]
-        le += len(list(filter(lambda gr: gr, day.pars)))
+        mer = db_sess.query(MerParams).filter(MerParams.mer_id.in_(follow),
+                                              MerParams.date == st_date).all()
+        print(mer)
+
+        le += len(list(filter(lambda pr: pr, filter(lambda pr: pr, day.pars))))
+        le -= len(mer)
 
         st_date += datetime.timedelta(days=1)
     return le

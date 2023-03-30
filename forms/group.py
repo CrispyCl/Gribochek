@@ -13,7 +13,7 @@ def my_date_check(form, field):
 
 
 class CreateGroupForm(FlaskForm):
-    subject = StringField('Название дисциплины', validators=[DataRequired(), Length(min=4, max=25)])
+    subject = StringField('Название дисциплины', validators=[DataRequired(), Length(min=3, max=25)])
     teacher_id = SelectField(u'', choices=())
     audience_id = SelectField(u'', choices=())
     course_start_date = DateField('Дата начала', validators=[DataRequired(), my_date_check])
