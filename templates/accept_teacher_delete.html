@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/audience.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/accept_del_teacher.css') }}">
 
 <div class="all_table">
     <div class="all_about_containers">
@@ -22,20 +22,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div style="margin-left: 30px">
-                        <h5><b>ФИО:</b>{{ teacher.surname }} {{ teacher.name }} {{ teacher.otchestvo }} </h5>
-                        <h5><b>Группы:</b></h5>
-                            {% for group in groups %}
-                        <h5><b>{{ group.subject }}</b></h5>
-                            {% endfor %}
+                        <div class="all_about" style="margin-left: 30px">
+                            <div class="name_sur_group">
+                                <h5><b>ФИО:</b>{{ teacher.surname }} {{ teacher.name }} {{ teacher.otchestvo }} </h5>
+                                <h5><b>Группы: {% if groups == [] %}</b><b>Нет группы</b></h5>
+                                {% else %}
+
+                                {% for group in groups %}
+                                <h5><b>{{ group.subject }}</b></h5>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="del">
+                                <a class="btn del" href="/real_teacher_delete/{{ teacher.id }}" style="color: #fff">
+                                        Удалить преподавателя
+                                    </a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col btn-col">
-                    <button class="btn back"><a href="/real_teacher_delete/{{ teacher.id }}">
-                        Удалить преподавателя
-                    </a>
-                    </button>
-                </div>
                 </div>
             </div>
         </div>

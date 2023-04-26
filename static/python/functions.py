@@ -366,7 +366,6 @@ def get_group_hours(db_sess, st_date: datetime.date, en_date: datetime.date, gro
     le = 0
     follow = list(map(lambda mr: mr.mer_id,
                       db_sess.query(MerFollow).filter(MerFollow.group_id == group_id).all()))
-    print(follow)
     while st_date <= en_date:
         if st_date.weekday() == 0:
             week = get_week_group(db_sess, group_id, st_date)
@@ -376,7 +375,6 @@ def get_group_hours(db_sess, st_date: datetime.date, en_date: datetime.date, gro
         day = week.days[st_date.weekday()]
         mer = db_sess.query(MerParams).filter(MerParams.mer_id.in_(follow),
                                               MerParams.date == st_date).all()
-        print(mer)
 
         le += len(list(filter(lambda pr: pr, filter(lambda pr: pr, day.pars))))
         le -= len(mer)

@@ -1,0 +1,172 @@
+.all_table {
+    margin-top: 20px;
+}
+
+.user_img img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10%;
+    object-fit: cover;
+}
+
+.user_img {
+    display: flex;
+    align-items: center;
+}
+
+
+.name_audience,
+.profile_main {
+    align-self: center;
+    display: flex;
+    flex: 1;
+    font-size: 25px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.audience {
+    margin-bottom: 20px;
+}
+
+.smt {
+    width: 150px;
+    height: 1px
+}
+
+
+.container.about {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.btn.back {
+    background-color: #fff;
+    font-size: 1em;
+    letter-spacing: 1px;
+    position: relative;
+    margin-bottom: 38.86px;
+}
+
+.all_about_containers {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.col.btn-col {
+    max-width: 100px;
+}
+
+.all_table_list .table_header_list .fa.fa-caret-down {
+    margin-left: 30px;
+}
+
+.name_surname_email {
+    margin: 0 auto;
+}
+
+.col.btn-col.btn_edit {
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    min-width: 100%;
+}
+
+.col.btn-col.btn_edit a {
+    color: #000;
+    display: block;
+    height: 100%;
+    /* width: 70%; */
+}
+
+.btn.btn_edit {
+    margin: 1px;
+    background-color: #333;
+    color: #fff;
+    font-size: 1em;
+    letter-spacing: 1px;
+    position: relative;
+    outline: none;
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-size: x-large;
+    font-weight: 600;
+}
+
+.all_about {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.name_sur_group {}
+
+.del {}
+
+.del.btn {
+    background-color: red;
+    padding: 10px;
+    font-size: 20px;
+}
+
+
+@media screen and (max-width: 1400px) {
+    .smt {
+        width: 0;
+        height: 0;
+
+    }
+
+    .profile_main {
+        align-self: 0;
+        flex: none;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .list-group {
+        max-width: 95% !important;
+        min-width: 95% !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .name {
+        margin-left: 10px;
+        max-width: 200px;
+    }
+}
+
+@media screen and (max-width: 511px) {
+    .profile_main {
+        font-size: 20px;
+    }
+
+    .all_table_list .table_header_list .fa.fa-caret-down {
+        margin-left: 8px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .col.btn-col {
+        display: none;
+    }
+
+
+}
+
+
+@media screen and (max-width: 420px) {
+    .user_img img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .all_table_list {
+        margin: 20px 0 !important;
+    }
+}

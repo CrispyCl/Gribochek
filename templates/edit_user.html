@@ -2,16 +2,32 @@
 
 {% block content %}
 
+
 <form action="" method="post" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
+    <div class="bac_btn_div">
+        <div class="btn back"> <img src="/static/svg/left-arrow-svgrepo-com.svg" width="24" height="24"> Назад
+        </div>
+    </div>
     <div class="wrapper_register">
         <div class="text-center mt-4 name">
             <b>
-                <h2><b style="font-weight: 700; font-size: 1em; letter-spacing: 2px; color: #000;">Редактирование</b></h2>
+                <h2><b style="font-weight: 700; font-size: 1em; letter-spacing: 2px; color: #000;">Редактирование</b>
+                </h2>
             </b>
         </div>
         <form class="p-3 mt-3">
-        {% if current_user.id == user.id %}
+            {% if current_user.id == user.id %}
+            <div class="form-field d-flex align-items-center" style="display: none !important;">
+                <span><b>Г</b></span>
+                <b style="width: -webkit-fill-available;">{{ form.groups(class="form-control",
+                    placeholder="Выберите группы", required='required') }}</b>
+                {% for error in form.groups.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fa-solid fa-envelope"></span>
                 <b style="width: -webkit-fill-available;">{{ form.email(class="form-control", type="email",
@@ -47,7 +63,8 @@
                 <div style="width: -webkit-fill-available;">
                     <label class="custom-file-upload"><span class="fa fa-cloud-upload"></span>
                         {{ form.img(class="form-control", type="file", accept=".jpg,") }}
-                        <span>Выберите новое фото</span></label></div>
+                        <span>Выберите новое фото</span></label>
+                </div>
                 {% for error in form.img.errors %}
                 <p class="alert alert-danger" role="alert">
                     {{ error }}
@@ -65,7 +82,17 @@
                 {% endfor %}
             </div>
 
-        {% elif user.role == 3 %}
+            {% elif user.role == 3 %}
+            <div class="form-field d-flex align-items-center" style="display: none !important;">
+                <span><b>Г</b></span>
+                <b style="width: -webkit-fill-available;">{{ form.groups(class="form-control",
+                    placeholder="Выберите группы", required='required') }}</b>
+                {% for error in form.groups.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fa-solid fa-envelope"></span>
                 <b style="width: -webkit-fill-available;">{{ form.email(class="form-control", type="email",
@@ -96,7 +123,7 @@
                 </p>
                 {% endfor %}
             </div>
-        {% else %}
+            {% else %}
             <div class="form-field d-flex align-items-center">
                 <span><b>Ф</b></span>
                 <b style="width: -webkit-fill-available;">{{ form.surname(class="form-control", type="text",
@@ -127,7 +154,8 @@
                 </p>
                 {% endfor %}
             </div>
-            <div class="form-field d-flex align-items-center" {% if user.role != 1 %} style="display: none !important;" {% endif %}>
+            <div class="form-field d-flex align-items-center" {% if user.role != 1 %} style="display: none !important;"
+                {% endif %}>
                 <span><b>Г</b></span>
                 <b style="width: -webkit-fill-available;">{{ form.groups(class="form-control",
                     placeholder="Выберите группы", required='required') }}</b>
@@ -158,7 +186,7 @@
                 {% endfor %}
             </div>
 
-        {% endif %}
+            {% endif %}
             <b>{{ form.submit(value="Сохранить изменения", class="btn mt-3", style="font-weight: bold;") }}</b>
         </form>
     </div>
@@ -194,13 +222,7 @@
         border: 2px solid #666;
         font-size: 1.2em;
     }
-</style>
 
-
-
-
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
     input#myInput {
         visibility: hidden;
@@ -215,7 +237,7 @@
     }
 
 
-    .text-cener.mt-4.name {
+    .text-center.name {
         display: flex;
         align-content: center;
         justify-content: center;
@@ -223,9 +245,12 @@
     }
 
     .wrapper_register {
-        max-width: 500px;
-        min-height: 500px;
-        margin: 100px auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        max-width: 450px;
+        min-height: 400px;
+        margin: 30px 0;
         padding: 10px 40px 40px 40px;
         border-radius: 25px;
         background-color: #fff;
@@ -273,14 +298,69 @@
         box-shadow: none;
         width: 100%;
         height: 50px;
-        background-color: #223243;
+        background-color: #333;
         color: #fff;
         border-radius: 10px;
         letter-spacing: 1.3px;
     }
 
-    .wrapper_register .btn:hover {
-        background-color: #00dfc4;
+
+    .eventable {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+    }
+
+    .is {
+        display: flex;
+    }
+
+    .is input {
+        height: 20px;
+        width: 20px;
+        margin-right: 5px;
+    }
+
+    .is_lable {
+        font-size: 20px;
+    }
+
+    .bac_btn_div {
+        margin: 30px 20px 0 0;
+    }
+
+    .btn.back {
+        background-color: #fff;
+        font-size: 1em;
+        letter-spacing: 1px;
+        position: relative;
+    }
+
+    form {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    @media screen and (max-width: 400px) {
+        .btn.mt-3 {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media screen and (max-width: 365px) {
+        .btn.mt-3 {
+            font-size: 0.85rem;
+        }
+    }
+
+
+    @media screen and (max-width: 620px) {
+        .bac_btn_div {
+            display: none;
+        }
     }
 </style>
 

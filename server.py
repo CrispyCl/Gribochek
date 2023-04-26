@@ -143,11 +143,12 @@ def user_groups(user_id):
     groups = list(filter(lambda gr: gr, groups))
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     smessage = session['message']
+    follows = list(map(lambda gr: gr.id,
+                       db_sess.query(GroupFollow).filter(GroupFollow.user_id == current_user.id).all()))
 
     session['message'] = dumps(ST_message)
-    print(groups)
     return render_template('/user_groups.html', title='Группы пользователя', message=smessage, groups=groups, le=len(groups),
-                           dicts=dicts, user=user)
+                           dicts=dicts, user=user, follows=follows)
 
 
 @app.route('/register/admin', methods=['GET', 'POST'])
@@ -375,6 +376,8 @@ def edit_user(user_id):
         abort(404)
     if current_user.role in (1, 2) and current_user.id != user_id:
         abort(404)
+    if current_user.id == user_id and current_user.role == 3:
+        abort(404)
     db_sess = db_session.create_session()
     user = db_sess.query(User).get(user_id)
     if not user:
@@ -445,9 +448,9 @@ def edit_user(user_id):
             else:
                 if form.new_password.data:
                     user.set_password(form.new_password.data)
-                if form.groups.data != -1:
+                if int(form.groups.data) != -1:
                     follow = db_sess.query(GroupFollow).filter(GroupFollow.user_id == user.id).first()
-                    follow.group_id = form.groups.data
+                    follow.group_id = int(form.groups.data)
                     db_sess.commit()
                 user.name = form.name.data
                 user.surname = form.surname.data
@@ -550,12 +553,10 @@ def edit_day(audience_id, day_id):
                                          day1.date <= Group.course_end_date,
                                          Group.audience_id == audience_id,
                                          Group.is_mer == False).all()
-    print(groups)
     pars_le = len(list(filter(lambda gr: list(map(lambda dg: dg.id if dg else None, day.pars)).count(gr.id) < 4,
                          groups)))
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     session['message'] = dumps(ST_message)
-    print(pars_le, day.pars)
     return render_template('edit_day.html', title='Редиктирование дня', message=smessage, pars_le=pars_le,
                            dicts=dicts, day=day, day1=day1, audience=audience, week=week)
 
@@ -584,7 +585,6 @@ def add_par(audience_id, day_id, par_index):
                                              Group.is_mer == False).all()
         groups = list(filter(lambda gr: list(map(lambda dg: dg.id if dg else None, day.pars)).count(gr.id) < 4,
                              groups))
-        print(day.pars, groups)
         group_list = list(
             map(lambda gr: (gr.id, f'{gr.subject} - №{gr.id}'),
                 groups))
@@ -816,13 +816,11 @@ def accept_create_group():
     teacher = db_sess.query(User).get(form['teacher_id'])
     audience = db_sess.query(Audience).get(form['audience_id'])
     if request.method == 'POST':
-        print(form)
         l = load_week_by_group_form(db_sess, form, last_id)
         db_sess.commit()
         if l:
             la1 = get_group_hours(db_sess, form['st_date'], form['en_date'], last_id)
             group = db_sess.query(Group).get(last_id)
-            print(group.id)
             group.need_hours = la1
             db_sess.commit()
             follow = GroupFollow(
@@ -989,7 +987,7 @@ def create_mer():
 def mer_profile(mer_id):
     db_sess = db_session.create_session()
     mer = db_sess.query(MerParams).get(mer_id)
-    groups = list(map(lambda mr: db_sess.query(Group).filter(Group.id == mr.group_id).first(),
+    groups = set(map(lambda mr: db_sess.query(Group).filter(Group.id == mr.group_id).first(),
                       db_sess.query(MerFollow).filter(MerFollow.mer_id == mer.mer_id).all()))
     smessage = session['message']
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
@@ -1135,11 +1133,11 @@ def real_teacher_delete(id):
                         day.p5group = None
                     if day.p6group == group.id:
                         day.p6group = None
+                group_follows = db_sess.query(GroupFollow).filter(GroupFollow.group_id == group.id).all()
+                if group_follows:
+                    for i in group_follows:
+                        db_sess.delete(i)
                 db_sess.delete(group)
-        group_follows = db_sess.query(GroupFollow).filter(GroupFollow.user_id == teacher.id).all()
-        if group_follows:
-            for i in group_follows:
-                db_sess.delete(i)
         workdays = db_sess.query(WorkingDays).filter(WorkingDays.teacher_id == teacher.id).all()
         if workdays:
             for i in workdays:

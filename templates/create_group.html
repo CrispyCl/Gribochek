@@ -29,7 +29,7 @@
                             <div class="form-field name">
                                 <div class="item_name">Название дисциплины:</div>
                                 {{ form.subject(class="form-control name_item", type="text",
-                                placeholder="Название группы")
+                                placeholder="Название группы", spellcheck="true")
                                 }}
                                 {% for error in form.subject.errors %}
                                 <p class="alert alert-danger" role="alert">

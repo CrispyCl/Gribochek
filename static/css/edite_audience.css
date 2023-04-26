@@ -136,10 +136,8 @@ input[type="file"] {
 form {
     display: flex;
     justify-content: center;
-    flex-direction: column;
     flex-wrap: wrap;
     position: relative;
-    align-items: center;
     margin-top: 10px;
 }
 
