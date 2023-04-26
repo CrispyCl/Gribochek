@@ -26,7 +26,7 @@
                         </h3>
                         <p class="teacher_email"><i class='bx bx-envelope'></i>{{ teacher.email }}</p>
                         <a class="btn" href="/profile/{{ teacher.id }}">Профиль</a>
-                        <a class="btn" href="#">Группы</a>
+                        <a class="btn" href="/user_groups/{{ teacher.id }}">Группы</a>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,9 @@
         <h2>Пройдут часов: {{ HOURS['get'] }}</h2>
     </div>
     {% if HOURS['need'] > HOURS['get'] %}
-    <div class="time_erorr">Требуется изменения в расписании</div>
+    {% if current_user.role in (3, 4) %}
+    <div class="time_erorr" style="font-size: 1.6em; font-weight: 600;">Требуется изменения в расписании</div>
+    {% endif %}
     {% endif %}
 </div>
 <!-- List group -->

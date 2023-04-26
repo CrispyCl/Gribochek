@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/create_audience.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edite_audience.css') }}">
 
 <form action="" method="post" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
@@ -13,7 +13,8 @@
     <div class="wrapper_register">
         <div class="text-center mt-4 name">
             <b>
-                <h2><b style="font-weight: 700; font-size: 1em; letter-spacing: 2px; color: #000;">Изменение аудитории</b>
+                <h2><b style="font-weight: 700; font-size: 1em; letter-spacing: 2px; color: #000;">Изменение
+                        аудитории</b>
                 </h2>
             </b>
         </div>
@@ -21,7 +22,7 @@
             <div class="items">
                 <div class="form-field d-flex align-items-center">
                     <b style="width: -webkit-fill-available;">{{ form.name(class="form-control", type="text",
-                        placeholder="Название аудитории") }}</b>
+                        placeholder="Название аудитории", spellcheck="true") }}</b>
                 </div>
                 <div class="d-flex align-items-center">
                     <div style="width: -webkit-fill-available;">

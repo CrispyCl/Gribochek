@@ -20,7 +20,7 @@
     {% endif %}
     {% for group in groups %}
     <div class="tabel">
-        <div class="container group" style="border-color: #f7904a;">
+        <div class="container group" {% if group.id in follows %} style="border-color: #f7904a;" {% endif %}>
             <div class="name_group"><b>{{ group.subject }} - #{{ group.id }}</b></div>
             <div class="group_time">
                 <div class="day_time"><b style="margin-right: 10px;">{{ dicts['DAYS'][group.week_day0] }}</b> {{

@@ -52,6 +52,7 @@
                                         <button class="btn btn_edit">Редактировать</button>
                                     </a>
                                 </div>
+                                {% if current_user.role in (3, 4) %}
                                 {% if user.role == 2 %}
                                 <div class="col btn-col btn_edit">
                                     <a href="/teacher_delete/{{ user.id }}">
@@ -59,6 +60,7 @@
                                             style="background-color: red !important;">Удалить</button>
                                     </a>
                                 </div>
+                                {% endif %}
                                 {% endif %}
                                 {% endif %}
                                 <div class="col btn-col btn_edit">
@@ -85,6 +87,7 @@
             </div>
         </div>
         <div class="container" style="margin-top: 20px;">
+            {% if week %}
             <div class="all_table_list">
 
                 <div class="table_header_list" style="cursor: pointer;">
@@ -121,6 +124,7 @@
                     {% endfor %}
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>
