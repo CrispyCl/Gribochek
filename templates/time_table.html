@@ -11,7 +11,7 @@
 <h2 class="text-center h2_index">Расписание на</h2>
 <h2 class="text-center h2_index">{{ dates['st_date'] }}/{{ dates['en_date'] }}</h2>
 <div class="time_table_header">
-    <form action="" method="post">
+    <form action="" method="post" id="time_form">
         {{ form.hidden_tag() }}
         <div class="dates">
             {{ form.need_date(class="form-control date") }}

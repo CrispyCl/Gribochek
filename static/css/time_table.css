@@ -213,3 +213,20 @@
         min-width: 95%;
     }
 }
+
+@media screen and (max-width: 550px) {
+    #time_form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .time_table_header form .dates {
+        min-width: 300px;
+    }
+
+    .btn.btn_submit {
+        margin-top: 20px;
+    }
+
+}
