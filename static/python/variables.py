@@ -43,7 +43,7 @@ class vGroup:
 
 
 class vDay:
-    def __init__(self, day_id, para_groups: list[vGroup], week, date, is_holiday):
+    def __init__(self, day_id, para_groups: list, week, date, is_holiday):
         self.id = day_id
         self.pars = para_groups
         self.week = week
@@ -52,7 +52,7 @@ class vDay:
 
 
 class vWeek:
-    def __init__(self, week_id, week_start_date, week_end_date, audience, days: list[vDay]):
+    def __init__(self, week_id, week_start_date, week_end_date, audience, days: list):
         self.id = week_id
         self.week_end_date = week_end_date
         self.week_start_date = week_start_date
