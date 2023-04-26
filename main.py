@@ -147,7 +147,6 @@ def user_groups(user_id):
                        db_sess.query(GroupFollow).filter(GroupFollow.user_id == current_user.id).all()))
 
     session['message'] = dumps(ST_message)
-    print(groups)
     return render_template('/user_groups.html', title='Группы пользователя', message=smessage, groups=groups, le=len(groups),
                            dicts=dicts, user=user, follows=follows)
 
@@ -554,12 +553,10 @@ def edit_day(audience_id, day_id):
                                          day1.date <= Group.course_end_date,
                                          Group.audience_id == audience_id,
                                          Group.is_mer == False).all()
-    print(groups)
     pars_le = len(list(filter(lambda gr: list(map(lambda dg: dg.id if dg else None, day.pars)).count(gr.id) < 4,
                          groups)))
     dicts = {'DAYS': DAYS, 'PARS_TIMES': PARS_TIMES}
     session['message'] = dumps(ST_message)
-    print(pars_le, day.pars)
     return render_template('edit_day.html', title='Редиктирование дня', message=smessage, pars_le=pars_le,
                            dicts=dicts, day=day, day1=day1, audience=audience, week=week)
 
@@ -588,7 +585,6 @@ def add_par(audience_id, day_id, par_index):
                                              Group.is_mer == False).all()
         groups = list(filter(lambda gr: list(map(lambda dg: dg.id if dg else None, day.pars)).count(gr.id) < 4,
                              groups))
-        print(day.pars, groups)
         group_list = list(
             map(lambda gr: (gr.id, f'{gr.subject} - №{gr.id}'),
                 groups))
@@ -820,13 +816,11 @@ def accept_create_group():
     teacher = db_sess.query(User).get(form['teacher_id'])
     audience = db_sess.query(Audience).get(form['audience_id'])
     if request.method == 'POST':
-        print(form)
         l = load_week_by_group_form(db_sess, form, last_id)
         db_sess.commit()
         if l:
             la1 = get_group_hours(db_sess, form['st_date'], form['en_date'], last_id)
             group = db_sess.query(Group).get(last_id)
-            print(group.id)
             group.need_hours = la1
             db_sess.commit()
             follow = GroupFollow(
